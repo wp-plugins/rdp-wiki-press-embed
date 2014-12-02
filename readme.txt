@@ -3,7 +3,7 @@ Contributors: rpayne7264, enej, ejackisch, devindra, ctlt-dev, ubcdev
 Tags: mediawiki, wiki, wiki-embed, embed, content framework, wiki inc, pediapress, pediapress embed
 Requires at least: 3.0
 Tested up to: 4.0
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 
 RDP Wiki-Press Embed lets you embed Media Wiki pages in to your site, from sites like Wikipedia, and PediaPress book pages.
 
@@ -62,6 +62,10 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 
 == Changelog ==
 
+
+= 1.0.1 =
+* updated screenshot #2
+
 = 1.0.0 =
 * FEATURE: added wiki content overwrite functionality
 * FEATURE: added PediaPress content overwrite functionality
@@ -70,14 +74,16 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * FEATURE: added check for custom CSS files located in resources/css folder
 * FIX: re-worked code to eliminate some 'Undefined index' notices when reading from various variables
 
-*Changed files:*
+**Changed files:**
+
 * readme.txt
 * WikiEmbed.php
 * admin/settings-page.php
 * resources/css/wiki-embed.css
 * resources/simple_html_dom.php
 
-*New files:*
+**New files:**
+
 * resources/css/pediapress.common.css
 * resources/css/pediapress.custom-sample.css
 * resources/css/wiki.custom-sample.css
