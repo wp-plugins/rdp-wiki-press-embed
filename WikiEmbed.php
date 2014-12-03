@@ -291,6 +291,8 @@ class Wiki_Embed {
                     'wiki-update'     => "30",
                     'wiki-links'      => "default",
                     'wiki-links-new-page-email' => "",
+                    'toc-links'      => "default",
+                    'toc-show'      => 1,
                     'default' => array(
                         'global-content-replace' => 0,
                         'global-content-replace-template' => 'default',
@@ -300,7 +302,8 @@ class Wiki_Embed {
                         'no-edit'     => 1,
                         'no-infobox'  => 0,
                         'tabs'        => 1,
-                        'accordion' => 0
+                        'accordion' => 0,
+
                     ),
                     'security' => array(
                         'whitelist' => null,

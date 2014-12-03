@@ -10,6 +10,8 @@ function wikiembed_settings_page() {
 
 	if ( isset( $_POST[$option] ) ):
 		$value = $_POST[$option];
+
+               $fdisplayTOC = empty($value['toc-show'])? 0 : intval($value['toc-show']);
 		
 		if ( ! is_array( $value ) ) {
 			$value = trim($value);
@@ -17,6 +19,7 @@ function wikiembed_settings_page() {
                     $value = shortcode_atts( $wikiembed_object->default_settings(), $value );
                 }
 		
+                $value['toc-show'] = $fdisplayTOC;
 		$value = stripslashes_deep( $value );
 		$updated = update_option( $option, $value );
 		$wikiembed_options = $value;
@@ -108,6 +111,39 @@ function wikiembed_settings_page() {
 						<div class="help-div">Loads accordion css files on each page of the site.<br /> </div>
 					</td>
 				</tr>
+                                <tr>
+                                    <th valign="top" class="label" scope="row">
+                                            <span class="alignleft">
+                                                    <label for="src">PediaPress TOC Display</label>
+                                            </span>
+                                    </th> 
+                                    <td class="field">
+                                        <?php 
+                                            $fdisplayTOC = empty($wikiembed_options['toc-show'])? 0 : intval($wikiembed_options['toc-show']);
+                                        ?>
+                                        <input type="checkbox" aria-required="true" value="1" name="wikiembed_options[toc-show]" id="wiki-embed-display-toc" <?php checked( $fdisplayTOC); ?> />
+                                        <span>
+                                                <label for="wiki-embed-display-links">Display Table of Contents for PediaPress books</label>
+                                        </span>                                         
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top" class="label" scope="row">
+                                            <span class="alignleft">
+                                                    <label for="src">PediaPress TOC Links</label>
+                                            </span>
+                                    </th> 
+                                    <td class="field">
+                                        <?php
+                                            $sTOCLinks = empty($wikiembed_options['toc-links'])? 'default' : $wikiembed_options['toc-links'];
+                                        ?>                                           
+                                        <label><input name="wikiembed_options[toc-links]" type="radio" value="default"  <?php checked($sTOCLinks,"default"); ?> /> Default &mdash; TOC links are enabled</label>
+                                        <br />
+                                        <label><input name="wikiembed_options[toc-links]" type="radio" value="logged-in" <?php checked($sTOCLinks,"logged-in"); ?> /> Logged-in &mdash; TOC links are active only when a user is logged in</label>
+                                        <br />
+                                        <label><input name="wikiembed_options[toc-links]" type="radio" value="disabled" <?php checked($sTOCLinks,"disabled"); ?>  /> Disabled &mdash; TOC links are completely disabled, all the time</label>                                        
+                                    </td>                                    
+                                </tr>
 			</table>
 			
 			<h3>Global Settings </h3>
@@ -139,8 +175,7 @@ function wikiembed_settings_page() {
 					<th valign="top" class="label" scope="row">
 						<span class="alignleft">
 							<label for="src">Internal wiki links</label>
-						</span>
-						<br />
+						</span><br />
 						<div class="help-div">Internal wiki links are links that take you to a different page on the same wiki.</div>
 					</th>
 					<td class="field">
@@ -201,8 +236,8 @@ function wikiembed_settings_page() {
 						</span>  
 						<br />
 						<div id="display-wiki-source" >
-							<div style="float:left; width:80px;" >Before the link <br /><input type="text" name="wikiembed_options[default][pre-source]" size="7" value="<?php echo esc_attr($wikiembed_options['default']['pre-source']); ?>" /><br /></div>
-							<div style="float:left; width:230px; padding-top:23px;" >http://www.link-to-the-wiki-page.com</div>
+							<div style="float:left;" >Before the link <br /><input type="text" name="wikiembed_options[default][pre-source]" size="7" value="<?php echo esc_attr($wikiembed_options['default']['pre-source']); ?>" /><br /></div>
+							<div style="float:left; width:250px; padding-top:23px;" >http://www.link-to-the-wiki-page.com</div>
 						</div>
 					</td>
 				</tr>
@@ -302,7 +337,9 @@ function wikiembed_options_validate( $wikiembed_options ) {
 		'wiki-update'     => ( is_numeric( $wikiembed_options['wiki-update'] ) ? $wikiembed_options['wiki-update'] : "30" ),
 		'wiki-links'      => ( in_array( $wikiembed_options['wiki-links'], array( "default", "overlay", "new-page","overwrite" ) ) ? $wikiembed_options['wiki-links'] : "default" ),
 		'wiki-links-new-page-email' => wp_rel_nofollow( $wikiembed_options['wiki-links-new-page-email'] ),
-		'default' => array(
+		'toc-show'            => ( isset( $wikiembed_options['toc-show']) && $wikiembed_options['toc-show']            == 1 ? 1 : 0 ),		
+		'toc-links'            => ( isset( $wikiembed_options['toc-links']) ?  trim( $wikiembed_options['toc-links'] ) : null ),		
+                'default' => array(
                         'global-content-replace' => ( isset( $wikiembed_options['default']['global-content-replace'] ) && $wikiembed_options['default']['global-content-replace'] == 1 ? 1 : 0 ),
                         'global-content-replace-template' => $wikiembed_options['default']['global-content-replace-template'],
 			'source'      => ( isset( $wikiembed_options['default']['source'] ) && $wikiembed_options['default']['source'] == 1 ? 1 : 0 ),
@@ -317,3 +354,7 @@ function wikiembed_options_validate( $wikiembed_options ) {
 		),
 	);
 }
+?>
+<style>
+.help-div{clear: both;margin-top: 3px;}
+</style>
