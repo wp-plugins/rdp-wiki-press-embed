@@ -70,6 +70,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * REFACTOR: removed label text from media button so that it now only displays the Wikipedia icon
 * REFACTOR: added a short circuit to main init() function to prevent links to front-end scripts and styles from being generated on the admin side
 * FIX: fixed bug that corrupted AJAX return results
+* FIX: changed screenshot #3
 * UPDATE: added screenshot #4
 
 *Changed files:*
