@@ -58,9 +58,8 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 
 1. A page that list all the wiki content that is embedded on the site. 
 2. A look at the wiki embed settings page. 
-3. A way to embed a media wiki page inside your site. 
-4. Wiki page shortcode helper form
-5. PediaPress book shortcode helper form
+3. Wiki page shortcode embed helper form
+4. PediaPress book shortcode embed helper form
 
 
 == Changelog ==
@@ -71,11 +70,12 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * REFACTOR: removed label text from media button so that it now only displays the Wikipedia icon
 * REFACTOR: added a short circuit to main init() function to prevent links to front-end scripts and styles from being generated on the admin side
 * FIX: fixed bug that corrupted AJAX return results
-* UPDATE: added screenshot #4 & #5
+* UPDATE: added screenshot #4
 
 *Changed files:*
 
 * readme.txt
+* screenshot-3.png
 * WikiEmbed.php
 * admin/admin-overlay.php
 * admin/settings-page.php
@@ -85,7 +85,6 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 *New files:*
 
 * screenshot-4.png
-* screenshot-5.png
 * admin/css/jquery-ui.css
 * admin/css/jquery-ui.theme.min.css
 * admin/js/script.admin-overlay.js
