@@ -123,7 +123,7 @@ function wikiembed_settings_page() {
                                         ?>
                                         <input type="checkbox" aria-required="true" value="1" name="wikiembed_options[toc-show]" id="wiki-embed-display-toc" <?php checked( $fdisplayTOC); ?> />
                                         <span>
-                                                <label for="wiki-embed-display-links">Display Table of Contents for PediaPress books</label>
+                                                <label for="wiki-embed-display-toc">Display Table of Contents for PediaPress books</label>
                                         </span>                                         
                                     </td>
                                 </tr>
@@ -303,6 +303,9 @@ function wikiembed_settings_page() {
 			</p>
 		</form>	
 	</div>
+<style>
+.help-div{clear: both;margin-top: 3px;}
+</style>
 	<?php	
 }
 
@@ -355,6 +358,3 @@ function wikiembed_options_validate( $wikiembed_options ) {
 	);
 }
 ?>
-<style>
-.help-div{clear: both;margin-top: 3px;}
-</style>

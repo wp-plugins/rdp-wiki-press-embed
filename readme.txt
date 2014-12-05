@@ -3,7 +3,7 @@ Contributors: rpayne7264, enej, ejackisch, devindra, ctlt-dev, ubcdev
 Tags: mediawiki, wiki, wiki-embed, embed, content framework, wiki inc, pediapress, pediapress embed
 Requires at least: 3.0
 Tested up to: 4.0
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 
 RDP Wiki-Press Embed lets you embed Media Wiki pages in to your site, from sites like Wikipedia, and PediaPress book pages.
 
@@ -59,9 +59,36 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 1. A page that list all the wiki content that is embedded on the site. 
 2. A look at the wiki embed settings page. 
 3. A way to embed a media wiki page inside your site. 
+4. Wiki page shortcode helper form
+5. PediaPress book shortcode helper form
 
 
 == Changelog ==
+
+= 1.2.0 =
+* REFACTOR: re-worked shortcode pop-up form to use tabs and allow creation of PediaPress shortcodes, with attributes to override global settings.
+* REFACTOR: re-worked class RDP_WE_PPE to handle shortcode attributes
+* REFACTOR: removed label text from media button so that it now only displays the Wikipedia icon
+* REFACTOR: added a short circuit to main init() function to prevent links to front-end scripts and styles from being generated on the admin side
+* FIX: fixed bug that corrupted AJAX return results
+* UPDATE: added screenshot #4 & #5
+
+*Changed files:*
+
+* readme.txt
+* WikiEmbed.php
+* admin/admin-overlay.php
+* admin/settings-page.php
+* resources/rdpWEPPE.php
+* resources/css/pediapress.common.css
+
+*New files:*
+
+* screenshot-4.png
+* screenshot-5.png
+* admin/css/jquery-ui.css
+* admin/css/jquery-ui.theme.min.css
+* admin/js/script.admin-overlay.js
 
 = 1.1.0 =
 * FEATURE: added settings to disable PediaPress book TOC links
@@ -69,9 +96,9 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * FEATURE: added lightbox with iframe to PediaPress book cover images and 'Add to Cart' button
 * REFACTOR: fixed the colorbox skin
 * REFACTOR: fixed layout issues on the settings page
-* updated screenshot #2
+* FIX: updated screenshot #2
 
-**Changed files:**
+*Changed files:*
 
 * readme.txt
 * WikiEmbed.php
@@ -80,7 +107,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * admin/settings-page.php
 * resources/css/colorbox.css
 
-**New files:**
+*New files:*
 
 * resources/js/pediapress-overlay.js
 * resources/css/images/border1.png
@@ -98,7 +125,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * FEATURE: added check for custom CSS files located in resources/css folder
 * FIX: re-worked code to eliminate some 'Undefined index' notices when reading from various variables
 
-**Changed files:**
+*Changed files:*
 
 * readme.txt
 * WikiEmbed.php
@@ -106,7 +133,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * resources/css/wiki-embed.css
 * resources/simple_html_dom.php
 
-**New files:**
+*New files:*
 
 * resources/css/pediapress.common.css
 * resources/css/pediapress.custom-sample.css
