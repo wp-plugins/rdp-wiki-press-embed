@@ -3,7 +3,7 @@
  * Plugin Name: RDP Wiki-Press Embed
  * Plugin URI: http://www.robert-d-payne.com/
  * Description: Enables the inclusion of mediawiki pages and PediaPress book pages into your own blog page or post through the use of shortcodes. Forked from: <a href="http://wordpress.org/plugins/rdp-wiki-press-embed/" target="_blank">Wiki Embed plugin</a>.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: Robert D Payne
  * Author URI: http://www.robert-d-payne.com/
  *
@@ -83,14 +83,15 @@ class Wiki_Embed {
      */
     function __construct() {
             self::$instance = $this;
-            add_action( 'init', array( $this, 'init' ) );
 
             // set the default wiki embed value if the once from the Options are not set
             $this->options       = shortcode_atts( $this->default_settings(), get_option( 'wikiembed_options' ) );
             $this->wikiembeds    = get_option( 'wikiembeds' ); // we might not need to load this here at all...
             $this->content_count = 0; 
             $this->version       = '1.0';
-
+            
+            if(is_admin())return;
+            add_action( 'init', array( $this, 'init' ) );
             // display a page when you are clicked from a wiki page
             add_action( 'template_redirect', array( $this, 'load_page' ) );
             add_filter( 'posts_join', array( $this, 'search_metadata_join' ) );
@@ -323,11 +324,12 @@ class Wiki_Embed {
             $content = '';
             $url = isset($atts['url'])? $atts['url'] : '';
             if(empty($url))$content = 'WikiEmbed - ERROR: No URL specified.';
-            if(strpos($url, 'pediapress.com') !== false){
+            if(empty($content) && strpos($url, 'pediapress.com') !== false){
                 require_once 'resources/rdpWEPPE.php';
-                $content = RDP_WE_PPE::shortcode_handler($url);
+                $content = RDP_WE_PPE::shortcode_handler($url,$atts);
                 $content = apply_filters( 'rdp-wpe-after-pediapress-content-grab', $content );
-            }else{
+            }
+            if(empty ($content)){
                 $content = $this->shortcode_handler($atts);
                 $content = apply_filters( 'rdp-wpe-after-wiki-content-grab', $content );
             }

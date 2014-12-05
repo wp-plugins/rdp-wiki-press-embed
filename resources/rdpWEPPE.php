@@ -1,16 +1,16 @@
 <?php
 if ( ! class_exists('RDP_WE_PPE') ) :
 class RDP_WE_PPE {
-    public static function shortcode_handler($url){
+    public static function shortcode_handler($url,$atts){
         wp_enqueue_script( 'colorbox', plugins_url( '/resources/js/jquery.colorbox.min.js',RDP_WE_PLUGIN_BASENAME),array("jquery"), "1.3.20.2", true );        
         wp_enqueue_script( 'pp-overlay', plugins_url( '/resources/js/pediapress-overlay.js',RDP_WE_PLUGIN_BASENAME),array("jquery",'colorbox'), "1.0", true );        
         wp_enqueue_style( 'wiki-embed-overlay', plugins_url( '/resources/css/colorbox.css',RDP_WE_PLUGIN_BASENAME),false, "1.3.20.2", 'screen');        
-        $content = self::grabContentFromPediaPress($url);
+        $content = self::grabContentFromPediaPress($url,$atts);
         return $content;
     } //shortcode
     
     
-    public static function grabContentFromPediaPress($URL){
+    public static function grabContentFromPediaPress($URL,$atts){
         $html = null;
         $sHTML = '';
         require_once RDP_WE_PLUGIN_BASEDIR .'/resources/simple_html_dom.php'; 
@@ -18,8 +18,17 @@ class RDP_WE_PPE {
         if(!$html)return $sHTML;  
         global $wikiembed_object;     
         $wikiembed_options = $wikiembed_object->options; 
-        $fdisplayTOC = empty($wikiembed_options['toc-show'])? '0' : $wikiembed_options['toc-show'];
-        $sTOCLinks = empty($wikiembed_options['toc-links'])? 'default' : $wikiembed_options['toc-links'];
+        
+        $a = shortcode_atts( array(
+        'url' => '',
+        'toc_show' => empty($wikiembed_options['toc-show'])? '0' : $wikiembed_options['toc-show'],
+        'toc_links' => empty($wikiembed_options['toc-links'])? 'default' : $wikiembed_options['toc-links']
+        ), $atts );
+        
+        if(!is_numeric($a['toc_show']))$a['toc_show'] = 1;
+        $arrTOCLinksDefaults = array('default','disabled','logged-in');
+        if(!in_array( $a['toc_links'], $arrTOCLinksDefaults ))$a['toc_links'] = 'default';
+        
         $bodyID = $html->find('body',0)->id;
         $mainContent = $html->find('div#mainContent',0);
         $baseURL = 'https://pediapress.com';
@@ -46,21 +55,23 @@ class RDP_WE_PPE {
                 $coverImage->src = $baseURL . $coverImage->src;
                 $coverImage->outertext = "<a href='{$URL}' target='_new' class='ppe-cover-link'>" . $coverImage->outertext . "</a>";
                 
-                if(empty($fdisplayTOC)){
+                if(empty($a['toc_show'])){
                     $mainContent->find('h2',0)->outertext = '';
                     $mainContent->find('ul.outline',0)->outertext = '';                    
                 }else{
-                    switch ($sTOCLinks) {
+                    switch ($a['toc_links']) {
                         case 'logged-in':
                             if(!is_user_logged_in()):
                                 foreach($mainContent->find('ul.outline li a') as $link){
                                     $link->href = null;
+                                    $link->class = 'not-allowed';
                                 }
                             endif;
                             break;
                         case 'disabled':
                             foreach($mainContent->find('ul.outline li a') as $link){
                                 $link->href = null;
+                                $link->class = 'not-allowed';
                             }
                             break;
                         default:
