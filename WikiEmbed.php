@@ -58,6 +58,17 @@ define('RDP_WE_PLUGIN_BASEDIR', $dir);
 
 // admin side 
 if(is_admin()){
+    
+    define('PPE_DOWNLOAD_BUTTON_TEXT', 'Download FREE eBook Edition');
+    define('PPE_DOWNLOAD_BUTTON_WIDTH', '250');
+    define('PPE_DOWNLOAD_BUTTON_TOP_COLOR', '#eded00');
+    define('PPE_DOWNLOAD_BUTTON_BOTTOM_COLOR', '#bd7f04');
+    define('PPE_DOWNLOAD_BUTTON_FONT_COLOR', '#ffffff');
+    define('PPE_DOWNLOAD_BUTTON_FONT_HOVER_COLOR', '#444444');
+    define('PPE_DOWNLOAD_BUTTON_BORDER_COLOR', '#eda933');
+    define('PPE_DOWNLOAD_BUTTON_BOX_SHADOW_COLOR', '#fed897');
+    define('PPE_DOWNLOAD_BUTTON_TEXT_SHADOW_COLOR', '#cd8a15');
+    
     require( 'admin/admin-overlay.php' );
     require( 'admin/admin.php' );  
 }
@@ -294,6 +305,15 @@ class Wiki_Embed {
                     'wiki-links-new-page-email' => "",
                     'toc-links'      => "default",
                     'toc-show'      => 1,
+                    'ppe-download-button-text' => PPE_DOWNLOAD_BUTTON_TEXT,
+                    'ppe-download-button-width' => PPE_DOWNLOAD_BUTTON_WIDTH,                
+                    'ppe-download-button-top-color' => PPE_DOWNLOAD_BUTTON_TOP_COLOR,
+                    'ppe-download-button-bottom-color' => PPE_DOWNLOAD_BUTTON_BOTTOM_COLOR,
+                    'ppe-download-button-font-color' => PPE_DOWNLOAD_BUTTON_FONT_COLOR,
+                    'ppe-download-button-font-hover-color' => PPE_DOWNLOAD_BUTTON_FONT_HOVER_COLOR,
+                    'ppe-download-button-border-color' => PPE_DOWNLOAD_BUTTON_BORDER_COLOR,
+                    'ppe-download-button-box-shadow-color' => PPE_DOWNLOAD_BUTTON_BOX_SHADOW_COLOR,
+                    'ppe-download-button-text-shadow-color' => PPE_DOWNLOAD_BUTTON_TEXT_SHADOW_COLOR,
                     'default' => array(
                         'global-content-replace' => 0,
                         'global-content-replace-template' => 'default',
@@ -318,24 +338,24 @@ class Wiki_Embed {
      * @access public
      * @return void
      */
-    function shortcode( $atts ) {
+    function shortcode( $atts,$content = null ) {
             // url is the unique identifier
             $atts = apply_filters( 'wikiembed_override_atts', $atts );
-            $content = '';
+            $sHTML = '';
             $url = isset($atts['url'])? $atts['url'] : '';
-            if(empty($url))$content = 'WikiEmbed - ERROR: No URL specified.';
-            if(empty($content) && strpos($url, 'pediapress.com') !== false){
+            if(empty($url))$sHTML = 'WikiEmbed - ERROR: No URL specified.';
+            if(empty($sHTML) && strpos($url, 'pediapress.com') !== false){
                 require_once 'resources/rdpWEPPE.php';
-                $content = RDP_WE_PPE::shortcode_handler($url,$atts);
-                $content = apply_filters( 'rdp-wpe-after-pediapress-content-grab', $content );
+                $sHTML = RDP_WE_PPE::shortcode_handler($url,$atts,$content);
+                $sHTML = apply_filters( 'rdp-wpe-after-pediapress-content-grab', $sHTML );
             }
-            if(empty ($content)){
-                $content = $this->shortcode_handler($atts);
-                $content = apply_filters( 'rdp-wpe-after-wiki-content-grab', $content );
+            if(empty ($sHTML)){
+                $sHTML = $this->shortcode_handler($atts);
+                $sHTML = apply_filters( 'rdp-wpe-after-wiki-content-grab', $sHTML );
             }
 
-            $content = apply_filters( 'rdp-wpe-shortcode', $content );
-            return $content;
+            $sHTML = apply_filters( 'rdp-wpe-shortcode', $sHTML );
+            return $sHTML;
     }//shortcode
 
 

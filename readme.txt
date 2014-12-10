@@ -1,7 +1,7 @@
 === RDP Wiki-Press Embed ===
 Contributors: rpayne7264, enej, ejackisch, devindra, ctlt-dev, ubcdev
 Tags: mediawiki, wiki, wiki-embed, embed, content framework, wiki inc, pediapress, pediapress embed
-Requires at least: 3.0
+Requires at least: 3.5
 Tested up to: 4.0
 Stable tag: 1.2.0
 
