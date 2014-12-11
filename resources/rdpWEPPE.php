@@ -28,16 +28,16 @@ class RDP_WE_PPE {
         'url' => '',
         'toc_show' => empty($wikiembed_options['toc-show'])? '0' : $wikiembed_options['toc-show'],
         'toc_links' => empty($wikiembed_options['toc-links'])? 'default' : $wikiembed_options['toc-links'],
-        'download_button_content' => empty($content)? empty($wikiembed_options['ppe-download-button-content'])? '' : $wikiembed_options['ppe-download-button-content'] : $content,
-        'download_button_text' => empty($wikiembed_options['ppe-download-button-text'])? PPE_DOWNLOAD_BUTTON_TEXT : $wikiembed_options['ppe-download-button-text'],
-        'download_button_width' => empty($wikiembed_options['ppe-download-button-width'])? PPE_DOWNLOAD_BUTTON_WIDTH : $wikiembed_options['ppe-download-button-width'],
-        'download_button_top_color' => empty($wikiembed_options['ppe-download-button-top-color'])? PPE_DOWNLOAD_BUTTON_TOP_COLOR : $wikiembed_options['ppe-download-button-top-color'],
-        'download_button_font_color' => empty($wikiembed_options['ppe-download-button-font-color'])? PPE_DOWNLOAD_BUTTON_FONT_COLOR : $wikiembed_options['ppe-download-button-font-color'],
-        'download_button_font_hover_color' => empty($wikiembed_options['ppe-download-button-font-hover-color'])? PPE_DOWNLOAD_BUTTON_FONT_HOVER_COLOR : $wikiembed_options['ppe-download-button-font-hover-color'],
-        'download_button_border_color' => empty($wikiembed_options['ppe-download-button-border-color'])? PPE_DOWNLOAD_BUTTON_BORDER_COLOR : $wikiembed_options['ppe-download-button-border-color'],
-        'download_button_bottom_color' => empty($wikiembed_options['ppe-download-button-bottom-color'])? PPE_DOWNLOAD_BUTTON_BOTTOM_COLOR : $wikiembed_options['ppe-download-button-bottom-color'],
-        'download_button_box_shadow_color' => empty($wikiembed_options['ppe-download-button-box-shadow-color'])? PPE_DOWNLOAD_BUTTON_BOX_SHADOW_COLOR : $wikiembed_options['ppe-download-button-box-shadow-color'],
-        'download_button_text_shadow_color' => empty($wikiembed_options['ppe-download-button-text-shadow-color'])? PPE_DOWNLOAD_BUTTON_TEXT_SHADOW_COLOR : $wikiembed_options['ppe-download-button-text-shadow-color'],
+        'cta_button_content' => empty($content)? empty($wikiembed_options['ppe-cta-button-content'])? '' : $wikiembed_options['ppe-cta-button-content'] : $content,
+        'cta_button_text' => empty($wikiembed_options['ppe-cta-button-text'])? PPE_DOWNLOAD_BUTTON_TEXT : $wikiembed_options['ppe-cta-button-text'],
+        'cta_button_width' => empty($wikiembed_options['ppe-cta-button-width'])? PPE_DOWNLOAD_BUTTON_WIDTH : $wikiembed_options['ppe-cta-button-width'],
+        'cta_button_top_color' => empty($wikiembed_options['ppe-cta-button-top-color'])? PPE_DOWNLOAD_BUTTON_TOP_COLOR : $wikiembed_options['ppe-cta-button-top-color'],
+        'cta_button_font_color' => empty($wikiembed_options['ppe-cta-button-font-color'])? PPE_DOWNLOAD_BUTTON_FONT_COLOR : $wikiembed_options['ppe-cta-button-font-color'],
+        'cta_button_font_hover_color' => empty($wikiembed_options['ppe-cta-button-font-hover-color'])? PPE_DOWNLOAD_BUTTON_FONT_HOVER_COLOR : $wikiembed_options['ppe-cta-button-font-hover-color'],
+        'cta_button_border_color' => empty($wikiembed_options['ppe-cta-button-border-color'])? PPE_DOWNLOAD_BUTTON_BORDER_COLOR : $wikiembed_options['ppe-cta-button-border-color'],
+        'cta_button_bottom_color' => empty($wikiembed_options['ppe-cta-button-bottom-color'])? PPE_DOWNLOAD_BUTTON_BOTTOM_COLOR : $wikiembed_options['ppe-cta-button-bottom-color'],
+        'cta_button_box_shadow_color' => empty($wikiembed_options['ppe-cta-button-box-shadow-color'])? PPE_DOWNLOAD_BUTTON_BOX_SHADOW_COLOR : $wikiembed_options['ppe-cta-button-box-shadow-color'],
+        'cta_button_text_shadow_color' => empty($wikiembed_options['ppe-cta-button-text-shadow-color'])? PPE_DOWNLOAD_BUTTON_TEXT_SHADOW_COLOR : $wikiembed_options['ppe-cta-button-text-shadow-color'],
         ), $atts );
         
         if(!is_numeric($a['toc_show']))$a['toc_show'] = 1;
@@ -141,11 +141,11 @@ class RDP_WE_PPE {
                     $metaParasContent .= $metaParas[$i]->outertext;
                 }
 
-                if(!empty($a['download_button_content'])){
+                if(!empty($a['cta_button_content'])){
                     $sDownloadButton = "<div id='rdp-ppe-inline-content-sep'>OR</div>";
-                    $sDownloadButton .= "<div><a id='rdp-ppe-inline-content-link' class='rdp-ppe-cta-button' href='#rdp_ppe_inline_content'>{$a['download_button_text']}</a></div>";
+                    $sDownloadButton .= "<div><a id='rdp-ppe-inline-content-link' class='rdp-ppe-cta-button' href='#rdp_ppe_inline_content'>{$a['cta_button_text']}</a></div>";
                     $sInlineHTML .= "<div id='rdp_ppe_inline_content_wrapper' style='display:none'><div id='rdp_ppe_inline_content' style='padding:10px; background:#fff;'>";
-                    $sInlineHTML .= do_shortcode($a['download_button_content']);
+                    $sInlineHTML .= do_shortcode($a['cta_button_content']);
                     $sInlineHTML .= "</div></div>";
                 }                 
                 $metaData->innertext = $metaParasContent . $sAddToCart . $sDownloadButton;
@@ -162,19 +162,19 @@ class RDP_WE_PPE {
         $style = <<<EOS
 <style type="text/css">
 .rdp-ppe-cta-button {
-	-o-box-shadow:inset 0px 1px 0px 0px {$a['download_button_box_shadow_color']};
-	-moz-box-shadow:inset 0px 1px 0px 0px {$a['download_button_box_shadow_color']};
-	-webkit-box-shadow:inset 0px 1px 0px 0px {$a['download_button_box_shadow_color']};
-	box-shadow:inset 0px 1px 0px 0px {$a['download_button_box_shadow_color']};
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, {$a['download_button_top_color']}), color-stop(1, {$a['download_button_bottom_color']}) );
-	background:-o-gradient( linear, left top, left bottom, color-stop(0.05, {$a['download_button_top_color']}), color-stop(1, {$a['download_button_bottom_color']}) );
-	background:-moz-linear-gradient( center top, {$a['download_button_top_color']} 5%, {$a['download_button_bottom_color']} 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='{$a['download_button_top_color']}', endColorstr='{$a['download_button_bottom_color']}');
-	background-color:{$a['download_button_top_color']};
+	-o-box-shadow:inset 0px 1px 0px 0px {$a['cta_button_box_shadow_color']};
+	-moz-box-shadow:inset 0px 1px 0px 0px {$a['cta_button_box_shadow_color']};
+	-webkit-box-shadow:inset 0px 1px 0px 0px {$a['cta_button_box_shadow_color']};
+	box-shadow:inset 0px 1px 0px 0px {$a['cta_button_box_shadow_color']};
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, {$a['cta_button_top_color']}), color-stop(1, {$a['cta_button_bottom_color']}) );
+	background:-o-gradient( linear, left top, left bottom, color-stop(0.05, {$a['cta_button_top_color']}), color-stop(1, {$a['cta_button_bottom_color']}) );
+	background:-moz-linear-gradient( center top, {$a['cta_button_top_color']} 5%, {$a['cta_button_bottom_color']} 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='{$a['cta_button_top_color']}', endColorstr='{$a['cta_button_bottom_color']}');
+	background-color:{$a['cta_button_top_color']};
         background-image:linear-gradient(
                 to bottom,
-                {$a['download_button_top_color']},
-                {$a['download_button_bottom_color']}
+                {$a['cta_button_top_color']},
+                {$a['cta_button_bottom_color']}
         );            
 	-webkit-border-top-left-radius:8px;
 	-moz-border-radius-topleft:8px;
@@ -189,22 +189,22 @@ class RDP_WE_PPE {
 	-moz-border-radius-bottomleft:8px;
 	border-bottom-left-radius:8px;
 	text-indent:0px;
-	border:1px solid {$a['download_button_border_color']};
+	border:1px solid {$a['cta_button_border_color']};
 	display:inline-block;
-	color:{$a['download_button_font_color']};
+	color:{$a['cta_button_font_color']};
 	font-family:Arial;
 	font-size:15px;
 	font-weight:bold;
 	font-style:normal;
 	height:30px;
 	line-height:30px;
-	width:{$a['download_button_width']}px;
+	width:{$a['cta_button_width']}px;
 	text-decoration:none;
 	text-align:center;
-	text-shadow:1px 1px 0px {$a['download_button_text_shadow_color']};
+	text-shadow:1px 1px 0px {$a['cta_button_text_shadow_color']};
 }
 .rdp-ppe-cta-button:hover{
-    color: {$a['download_button_font_hover_color']};
+    color: {$a['cta_button_font_hover_color']};
 }
 .rdp-ppe-cta-button:active {
 	position:relative;
