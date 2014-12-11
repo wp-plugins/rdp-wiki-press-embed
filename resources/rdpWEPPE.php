@@ -1,16 +1,21 @@
 <?php
 if ( ! class_exists('RDP_WE_PPE') ) :
 class RDP_WE_PPE {
-    public static function shortcode_handler($url,$atts){
+    public static function shortcode_handler($url,$atts,$content = null){
         wp_enqueue_script( 'colorbox', plugins_url( '/resources/js/jquery.colorbox.min.js',RDP_WE_PLUGIN_BASENAME),array("jquery"), "1.3.20.2", true );        
         wp_enqueue_script( 'pp-overlay', plugins_url( '/resources/js/pediapress-overlay.js',RDP_WE_PLUGIN_BASENAME),array("jquery",'colorbox'), "1.0", true );        
+        if(!empty($content)){
+            $params = array('fcontent' => 1);
+            wp_localize_script( 'pp-overlay', 'rdp_we_ppe', $params );
+        } 
+
         wp_enqueue_style( 'wiki-embed-overlay', plugins_url( '/resources/css/colorbox.css',RDP_WE_PLUGIN_BASENAME),false, "1.3.20.2", 'screen');        
-        $content = self::grabContentFromPediaPress($url,$atts);
+        $content = self::grabContentFromPediaPress($url,$atts,$content);
         return $content;
     } //shortcode
     
     
-    public static function grabContentFromPediaPress($URL,$atts){
+    public static function grabContentFromPediaPress($URL,$atts,$content = null){
         $html = null;
         $sHTML = '';
         require_once RDP_WE_PLUGIN_BASEDIR .'/resources/simple_html_dom.php'; 
@@ -22,13 +27,24 @@ class RDP_WE_PPE {
         $a = shortcode_atts( array(
         'url' => '',
         'toc_show' => empty($wikiembed_options['toc-show'])? '0' : $wikiembed_options['toc-show'],
-        'toc_links' => empty($wikiembed_options['toc-links'])? 'default' : $wikiembed_options['toc-links']
+        'toc_links' => empty($wikiembed_options['toc-links'])? 'default' : $wikiembed_options['toc-links'],
+        'download_button_content' => empty($content)? empty($wikiembed_options['ppe-download-button-content'])? '' : $wikiembed_options['ppe-download-button-content'] : $content,
+        'download_button_text' => empty($wikiembed_options['ppe-download-button-text'])? PPE_DOWNLOAD_BUTTON_TEXT : $wikiembed_options['ppe-download-button-text'],
+        'download_button_width' => empty($wikiembed_options['ppe-download-button-width'])? PPE_DOWNLOAD_BUTTON_WIDTH : $wikiembed_options['ppe-download-button-width'],
+        'download_button_top_color' => empty($wikiembed_options['ppe-download-button-top-color'])? PPE_DOWNLOAD_BUTTON_TOP_COLOR : $wikiembed_options['ppe-download-button-top-color'],
+        'download_button_font_color' => empty($wikiembed_options['ppe-download-button-font-color'])? PPE_DOWNLOAD_BUTTON_FONT_COLOR : $wikiembed_options['ppe-download-button-font-color'],
+        'download_button_font_hover_color' => empty($wikiembed_options['ppe-download-button-font-hover-color'])? PPE_DOWNLOAD_BUTTON_FONT_HOVER_COLOR : $wikiembed_options['ppe-download-button-font-hover-color'],
+        'download_button_border_color' => empty($wikiembed_options['ppe-download-button-border-color'])? PPE_DOWNLOAD_BUTTON_BORDER_COLOR : $wikiembed_options['ppe-download-button-border-color'],
+        'download_button_bottom_color' => empty($wikiembed_options['ppe-download-button-bottom-color'])? PPE_DOWNLOAD_BUTTON_BOTTOM_COLOR : $wikiembed_options['ppe-download-button-bottom-color'],
+        'download_button_box_shadow_color' => empty($wikiembed_options['ppe-download-button-box-shadow-color'])? PPE_DOWNLOAD_BUTTON_BOX_SHADOW_COLOR : $wikiembed_options['ppe-download-button-box-shadow-color'],
+        'download_button_text_shadow_color' => empty($wikiembed_options['ppe-download-button-text-shadow-color'])? PPE_DOWNLOAD_BUTTON_TEXT_SHADOW_COLOR : $wikiembed_options['ppe-download-button-text-shadow-color'],
         ), $atts );
         
         if(!is_numeric($a['toc_show']))$a['toc_show'] = 1;
         $arrTOCLinksDefaults = array('default','disabled','logged-in');
         if(!in_array( $a['toc_links'], $arrTOCLinksDefaults ))$a['toc_links'] = 'default';
-        
+        $sDownloadButton = '';
+        $sInlineHTML = '';        
         $bodyID = $html->find('body',0)->id;
         $mainContent = $html->find('div#mainContent',0);
         $baseURL = 'https://pediapress.com';
@@ -90,18 +106,20 @@ class RDP_WE_PPE {
                 for ($i = 0; $i < count($s1Divs);$i++ ){
                     if($i > 0)$s1Divs[$i]->outertext = '';
                 }
-                $mainContent->find('#add-to-cart-form span.btn',0)->innertext = "<a class='ppe-add-to-cart' target='_new' href={$URL}>Add to Cart</a><div></div>";
                 
-                $addToCartBox = '';
+                $sPriceCurrency = $mainContent->find('#price-currency',0)->innertext;
+                $sPriceAmount = $mainContent->find('#price-amount',0)->innertext;
+                $sAddToCart = "<div id='add-to-cart-box'><span class='btn'><a class='ppe-add-to-cart' target='_new' href={$URL}>Print Edition - {$sPriceCurrency} {$sPriceAmount}</a><div></div></span></div>";
+                $mainContent->find('#price-amount',0)->outertext = '';
+                $mainContent->find('#price-star',0)->outertext = '';
                  
                 $boundingBoxes = $mainContent->find('.boundingBox');
                 for ($i = 0; $i < count($boundingBoxes);$i++ ){
-                    $boundingBoxes[$i]->style = null;
-                    $boundingBoxes[$i]->class = 'boundingBoxes boundingBox' . $i;
-                    
                     if($i==0){
-                        $addToCartBox = $boundingBoxes[$i]->find('#add-to-cart-box',0)->outertext;
                         $boundingBoxes[$i]->outertext = ''; 
+                    }else{
+                        $boundingBoxes[$i]->style = null;
+                        $boundingBoxes[$i]->class = 'boundingBoxes boundingBox' . $i;                        
                     }
                 }
                 
@@ -122,7 +140,15 @@ class RDP_WE_PPE {
                     
                     $metaParasContent .= $metaParas[$i]->outertext;
                 }
-                $metaData->innertext = $metaParasContent . $addToCartBox;
+
+                if(!empty($a['download_button_content'])){
+                    $sDownloadButton = "<div id='rdp-ppe-inline-content-sep'>OR</div>";
+                    $sDownloadButton .= "<div><a id='rdp-ppe-inline-content-link' class='rdp-ppe-cta-button' href='#rdp_ppe_inline_content'>{$a['download_button_text']}</a></div>";
+                    $sInlineHTML .= "<div id='rdp_ppe_inline_content_wrapper' style='display:none'><div id='rdp_ppe_inline_content' style='padding:10px; background:#fff;'>";
+                    $sInlineHTML .= do_shortcode($a['download_button_content']);
+                    $sInlineHTML .= "</div></div>";
+                }                 
+                $metaData->innertext = $metaParasContent . $sAddToCart . $sDownloadButton;
                 $boundingBoxes[1]->outertext = $s1Divs[0]->outertext . $metaData->outertext; 
                break;
 
@@ -130,9 +156,67 @@ class RDP_WE_PPE {
                 break;
         }//switch ($bodyID)
 
-        $sHTML = $mainContent->outertext;
+        $sHTML = $mainContent->outertext . $sInlineHTML;
         $html->clear();
-        return $sHTML;
+ 
+        $style = <<<EOS
+<style type="text/css">
+.rdp-ppe-cta-button {
+	-o-box-shadow:inset 0px 1px 0px 0px {$a['download_button_box_shadow_color']};
+	-moz-box-shadow:inset 0px 1px 0px 0px {$a['download_button_box_shadow_color']};
+	-webkit-box-shadow:inset 0px 1px 0px 0px {$a['download_button_box_shadow_color']};
+	box-shadow:inset 0px 1px 0px 0px {$a['download_button_box_shadow_color']};
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, {$a['download_button_top_color']}), color-stop(1, {$a['download_button_bottom_color']}) );
+	background:-o-gradient( linear, left top, left bottom, color-stop(0.05, {$a['download_button_top_color']}), color-stop(1, {$a['download_button_bottom_color']}) );
+	background:-moz-linear-gradient( center top, {$a['download_button_top_color']} 5%, {$a['download_button_bottom_color']} 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='{$a['download_button_top_color']}', endColorstr='{$a['download_button_bottom_color']}');
+	background-color:{$a['download_button_top_color']};
+        background-image:linear-gradient(
+                to bottom,
+                {$a['download_button_top_color']},
+                {$a['download_button_bottom_color']}
+        );            
+	-webkit-border-top-left-radius:8px;
+	-moz-border-radius-topleft:8px;
+	border-top-left-radius:8px;
+	-webkit-border-top-right-radius:8px;
+	-moz-border-radius-topright:8px;
+	border-top-right-radius:8px;
+	-webkit-border-bottom-right-radius:8px;
+	-moz-border-radius-bottomright:8px;
+	border-bottom-right-radius:8px;
+	-webkit-border-bottom-left-radius:8px;
+	-moz-border-radius-bottomleft:8px;
+	border-bottom-left-radius:8px;
+	text-indent:0px;
+	border:1px solid {$a['download_button_border_color']};
+	display:inline-block;
+	color:{$a['download_button_font_color']};
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	font-style:normal;
+	height:30px;
+	line-height:30px;
+	width:{$a['download_button_width']}px;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:1px 1px 0px {$a['download_button_text_shadow_color']};
+}
+.rdp-ppe-cta-button:hover{
+    color: {$a['download_button_font_hover_color']};
+}
+.rdp-ppe-cta-button:active {
+	position:relative;
+	top:1px;
+}</style>   
+   
+   
+EOS;
+       
+        
+        
+        return $sHTML . $style;
     }//grabContentFromPediaPress
     
 }//RDP_WE_PPE

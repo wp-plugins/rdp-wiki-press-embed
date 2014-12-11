@@ -22,13 +22,44 @@ function wiki_embed_insert_overlay_form(){
 }
 
 function pp_embed_send_to_editor(){
-    var ppEmbedURL = jQuery("#pp-embed-src").attr('value');
+    var ppEmbedURL = jQuery("#pp-embed-src").val();
     var ppTOCShow =  ( jQuery("#pp-embed-display-toc").attr('checked') ? '1': "0" );
     var ppTOCLinks = '';
     if(ppTOCShow == '1'){
-        sTOCLinks = jQuery("input:radio[name=wiki-embed-toc-links]:checked").attr('value');
+        var sTOCLinks = jQuery("input:radio[name=pp-embed-toc-links]:checked").val();
         ppTOCLinks = " toc_links='"+ sTOCLinks +"'";
     }
-    var win = parent;
-    win.send_to_editor( "[wiki-embed url='"+ppEmbedURL+"' toc_show='"+ ppTOCShow +"'"+ppTOCLinks +" /]" );
+    var sCode = "[wiki-embed url='"+ppEmbedURL+"' toc_show='"+ ppTOCShow +"'"+ ppTOCLinks;   
+    var ppButtonText = "";
+    var ppButtonWidth = "";
+    var ppButtonTopColor = "";
+    var ppButtonBottomColor = "";
+    var ppButtonFontColor = "";
+    var ppButtonFontHoverColor = "";
+    var ppButtonBorderColor = "";
+    var ppButtonBoxShadowColor = "";
+    var ppButtonTextShadowColor = "";
+    var ppButtonContent = jQuery("#pp-embed-download-button-content").val();
+    
+    if(ppButtonContent){
+        if(jQuery("#pp-embed-download-button-text").val() != rdp_we_admin.pp_button_text)ppButtonText = " download_button_text='"+ jQuery("#pp-embed-download-button-text").val() +"'";
+        if(jQuery("#pp-embed-download-button-width").val() != rdp_we_admin.pp_button_width)ppButtonWidth = " download_button_width='"+ jQuery("#pp-embed-download-button-width").val() +"'";
+        if(jQuery("#pp-embed-download-button-top-color").val() != rdp_we_admin.pp_button_top_color)ppButtonTopColor = " download_button_top_color='"+ jQuery("#pp-embed-download-button-top-color").val() +"'";
+        if(jQuery("#pp-embed-download-button-bottom-color").val() != rdp_we_admin.pp_button_bottom_color)ppButtonBottomColor = " download_button_bottom_color='"+ jQuery("#pp-embed-download-button-bottom-color").val() +"'";
+        if(jQuery("#pp-embed-download-font-color").val() != rdp_we_admin.pp_button_font_color)ppButtonFontColor = " download_button_font_color='"+ jQuery("#pp-embed-download-font-color").val() +"'";
+        if(jQuery("#pp-embed-download-button-font-hover-color").val() != rdp_we_admin.pp_button_font_hover_color)ppButtonFontHoverColor = " download_button_font_hover_color='"+ jQuery("#pp-embed-download-button-font-hover-color").val() +"'";
+        if(jQuery("#pp-embed-download-button-border-color").val() != rdp_we_admin.pp_button_border_color)ppButtonBorderColor = " download_button_border_color='"+ jQuery("#pp-embed-download-button-border-color").val() +"'";
+        if(jQuery("#pp-embed-download-button-box-shadow-color").val() != rdp_we_admin.pp_button_box_shadow_color)ppButtonBoxShadowColor = " download_button_box_shadow_color='"+ jQuery("#pp-embed-download-button-box-shadow-color").val() +"'";
+        if(jQuery("#pp-embed-download-button-text-shadow-color").val() != rdp_we_admin.pp_button_text_shadow_color)ppButtonTextShadowColor = " download_button_text_shadow_color='"+ jQuery("#pp-embed-download-button-text-shadow-color").val() +"'";
+        sCode += ppButtonText + ppButtonWidth + ppButtonTopColor + ppButtonFontColor + ppButtonFontHoverColor + ppButtonBorderColor + ppButtonBottomColor + ppButtonBoxShadowColor + ppButtonTextShadowColor;
+    }
+
+    if(ppButtonContent){
+        sCode += "]" + ppButtonContent + "[/wiki-embed]"
+    }else{
+       sCode += " /]"; 
+    }    
+    
+    var win = parent;    
+    win.send_to_editor( sCode );
 }

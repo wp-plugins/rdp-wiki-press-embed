@@ -3,9 +3,25 @@
 
 add_action('admin_init', 'wikiembed_options_init' );
 add_action('admin_menu', 'wikiembed_options_add_page');
+add_action('admin_enqueue_scripts', 'wikiembed_enqueue_admin_js'  );
+
+// Add settings page scripts
+/**
+ * wikiembed_enqueue_admin_js function.
+ * 
+ * @access public
+ * @return void
+ */
+function wikiembed_enqueue_admin_js(){
+    // Css rules for Color Picker
+    wp_enqueue_style( 'wp-color-picker' );
+    wp_enqueue_style('rdp_we_admin_style', plugins_url( '/css/admin.css', __FILE__ ), array('wp-color-picker'));
+    // Make sure to add the wp-color-picker dependecy to js file
+    wp_enqueue_script( 'rdp_we_settings_page_js', plugins_url( '/js/script.settings-page.js', __FILE__ ), array( 'jquery', 'wp-color-picker' ), '', true  );    
+}
+
 
 // Init plugin options to white list our options
-
 /**
  * wikiembed_options_init function.
  * 

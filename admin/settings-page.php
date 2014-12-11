@@ -111,39 +111,6 @@ function wikiembed_settings_page() {
 						<div class="help-div">Loads accordion css files on each page of the site.<br /> </div>
 					</td>
 				</tr>
-                                <tr>
-                                    <th valign="top" class="label" scope="row">
-                                            <span class="alignleft">
-                                                    <label for="src">PediaPress TOC Display</label>
-                                            </span>
-                                    </th> 
-                                    <td class="field">
-                                        <?php 
-                                            $fdisplayTOC = empty($wikiembed_options['toc-show'])? 0 : intval($wikiembed_options['toc-show']);
-                                        ?>
-                                        <input type="checkbox" aria-required="true" value="1" name="wikiembed_options[toc-show]" id="wiki-embed-display-toc" <?php checked( $fdisplayTOC); ?> />
-                                        <span>
-                                                <label for="wiki-embed-display-toc">Display Table of Contents for PediaPress books</label>
-                                        </span>                                         
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th valign="top" class="label" scope="row">
-                                            <span class="alignleft">
-                                                    <label for="src">PediaPress TOC Links</label>
-                                            </span>
-                                    </th> 
-                                    <td class="field">
-                                        <?php
-                                            $sTOCLinks = empty($wikiembed_options['toc-links'])? 'default' : $wikiembed_options['toc-links'];
-                                        ?>                                           
-                                        <label><input name="wikiembed_options[toc-links]" type="radio" value="default"  <?php checked($sTOCLinks,"default"); ?> /> Default &mdash; TOC links are enabled</label>
-                                        <br />
-                                        <label><input name="wikiembed_options[toc-links]" type="radio" value="logged-in" <?php checked($sTOCLinks,"logged-in"); ?> /> Logged-in &mdash; TOC links are active only when a user is logged in</label>
-                                        <br />
-                                        <label><input name="wikiembed_options[toc-links]" type="radio" value="disabled" <?php checked($sTOCLinks,"disabled"); ?>  /> Disabled &mdash; TOC links are completely disabled, all the time</label>                                        
-                                    </td>                                    
-                                </tr>
 			</table>
 			
 			<h3>Global Settings </h3>
@@ -279,6 +246,132 @@ function wikiembed_settings_page() {
 					<div class="help-div"></div>
 					</td>
 				</tr>
+                                <tr>
+                                    <th valign="top" class="label" scope="row">
+                                            <span class="alignleft">
+                                                    <label for="src">PediaPress TOC Display</label>
+                                            </span>
+                                    </th> 
+                                    <td class="field">
+                                        <?php 
+                                            $fdisplayTOC = empty($wikiembed_options['toc-show'])? 0 : intval($wikiembed_options['toc-show']);
+                                        ?>
+                                        <input type="checkbox" aria-required="true" value="1" name="wikiembed_options[toc-show]" id="wiki-embed-display-toc" <?php checked( $fdisplayTOC); ?> />
+                                        <span>
+                                                <label for="wiki-embed-display-toc">Display Table of Contents for PediaPress books</label>
+                                        </span>                                         
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top" class="label" scope="row">
+                                            <span class="alignleft">
+                                                    <label for="src">PediaPress TOC Links</label>
+                                            </span>
+                                    </th> 
+                                    <td class="field">
+                                        <?php
+                                            $sTOCLinks = empty($wikiembed_options['toc-links'])? 'default' : $wikiembed_options['toc-links'];
+                                        ?>                                           
+                                        <label><input name="wikiembed_options[toc-links]" type="radio" value="default"  <?php checked($sTOCLinks,"default"); ?> /> Default &mdash; TOC links are enabled</label>
+                                        <br />
+                                        <label><input name="wikiembed_options[toc-links]" type="radio" value="logged-in" <?php checked($sTOCLinks,"logged-in"); ?> /> Logged-in &mdash; TOC links are active only when a user is logged in</label>
+                                        <br />
+                                        <label><input name="wikiembed_options[toc-links]" type="radio" value="disabled" <?php checked($sTOCLinks,"disabled"); ?>  /> Disabled &mdash; TOC links are completely disabled, all the time</label>                                        
+                                    </td>                                    
+                                </tr>
+                                <tr>
+                                    <th valign="middle" class="label" style="margin-bottom: 9px;padding: 15px 10px 0 0;line-height: 1.3;vertical-align: middle;" scope="row">
+                                        <span class="alignleft">
+                                            <label for="src">PediaPress Download Button</label>
+                                        </span>
+                                    </th> 
+                                    <td class="field" style="padding-bottom: 0;"><?php
+                                            $sPPDownloadButtonText = empty($wikiembed_options['ppe-download-button-text'])? PPE_DOWNLOAD_BUTTON_TEXT : $wikiembed_options['ppe-download-button-text'];
+                                            $sPPDownloadButtonText = esc_attr($sPPDownloadButtonText);
+                                            ?><span style="width: 150px;display: inline-block;">Button Text:</span> <input type="text" name="wikiembed_options[ppe-download-button-text]" id="pp-embed-download-button-text" value="<?php echo $sPPDownloadButtonText ?>" style="width: 250px;" />
+                                   </td>
+                                </tr>
+                                <tr style="line-height: normal;">
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;">
+                                        <?php 
+                                            $sPPDownloadButtonWidth = ( isset( $wikiembed_options['ppe-download-button-width'] ) ) ? $wikiembed_options['ppe-download-button-width'] : PPE_DOWNLOAD_BUTTON_WIDTH;
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;">Width:</span> <input type="text" name="wikiembed_options[ppe-download-button-width]" id="pp-embed-download-button-width" value="<?php echo $sPPDownloadButtonWidth ?>"  style="width: 50px;"/> pixels (max: 500)                                    
+                                    </td>
+                                </tr>                                
+                                <tr>
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;">
+                                        <?php 
+                                            $bgTopColor = ( isset( $wikiembed_options['ppe-download-button-top-color'] ) ) ? $wikiembed_options['ppe-download-button-top-color'] : PPE_DOWNLOAD_BUTTON_TOP_COLOR;
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;">Top Color:</span> <input type="text" name="wikiembed_options[ppe-download-button-top-color]" class="bgTopColor rdp-we-color-picker" data-default-color="<?php echo PPE_DOWNLOAD_BUTTON_TOP_COLOR  ?>" value="<?php echo $bgTopColor ?>" />                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;">
+                                        <?php 
+                                            $bgBottomColor = ( isset( $wikiembed_options['ppe-download-button-bottom-color'] ) ) ? $wikiembed_options['ppe-download-button-bottom-color'] : PPE_DOWNLOAD_BUTTON_BOTTOM_COLOR;
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;">Bottom Color:</span> <input type="text" name="wikiembed_options[ppe-download-button-bottom-color]" class="bgBottomColor rdp-we-color-picker" data-default-color="<?php echo PPE_DOWNLOAD_BUTTON_BOTTOM_COLOR  ?>" value="<?php echo $bgBottomColor ?>" />                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;">
+                                        <?php 
+                                            $fontColor = ( isset( $wikiembed_options['ppe-download-button-font-color'] ) ) ? $wikiembed_options['ppe-download-button-font-color'] : PPE_DOWNLOAD_BUTTON_FONT_COLOR;
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;">Font Color:</span> <input type="text" name="wikiembed_options[ppe-download-button-font-color]" class="fontColor rdp-we-color-picker" data-default-color="<?php echo PPE_DOWNLOAD_BUTTON_FONT_COLOR  ?>" value="<?php echo $fontColor ?>" />                                        
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;">
+                                        <?php 
+                                            $fontHoverColor = ( isset( $wikiembed_options['ppe-download-button-font-hover-color'] ) ) ? $wikiembed_options['ppe-download-button-font-hover-color'] : PPE_DOWNLOAD_BUTTON_FONT_HOVER_COLOR;
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;">Font Hover Color:</span> <input type="text" name="wikiembed_options[ppe-download-button-font-hover-color]" class="fontHoverColor rdp-we-color-picker" data-default-color="<?php echo PPE_DOWNLOAD_BUTTON_FONT_HOVER_COLOR  ?>" value="<?php echo $fontHoverColor ?>" />                                        
+                                    </td>
+                                </tr>  
+                                <tr>
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;">
+                                        <?php 
+                                            $borderColor = ( isset( $wikiembed_options['ppe-download-button-border-color'] ) ) ? $wikiembed_options['ppe-download-button-border-color'] : PPE_DOWNLOAD_BUTTON_BORDER_COLOR;
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;">Border Color:</span> <input type="text" name="wikiembed_options[ppe-download-button-border-color]" class="borderColor rdp-we-color-picker" data-default-color="<?php echo PPE_DOWNLOAD_BUTTON_BORDER_COLOR  ?>" value="<?php echo $borderColor ?>" />                                        
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;">
+                                        <?php 
+                                            $boxShadowColor = ( isset( $wikiembed_options['ppe-download-button-box-shadow-color'] ) ) ? $wikiembed_options['ppe-download-button-box-shadow-color'] : PPE_DOWNLOAD_BUTTON_BOX_SHADOW_COLOR;
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;">Button Shadow Color:</span> <input type="text" name="wikiembed_options[ppe-download-button-box-shadow-color]" class="boxShadowColor rdp-we-color-picker" data-default-color="<?php echo PPE_DOWNLOAD_BUTTON_BOX_SHADOW_COLOR  ?>" value="<?php echo $boxShadowColor ?>" />                                        
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;">
+                                        <?php 
+                                            $textShadowColor = ( isset( $wikiembed_options['ppe-download-button-text-shadow-color'] ) ) ? $wikiembed_options['ppe-download-button-text-shadow-color'] : PPE_DOWNLOAD_BUTTON_TEXT_SHADOW_COLOR;
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;">Text Shadow Color:</span> <input type="text" name="wikiembed_options[ppe-download-button-text-shadow-color]" class="textShadowColor rdp-we-color-picker" data-default-color="<?php echo PPE_DOWNLOAD_BUTTON_TEXT_SHADOW_COLOR  ?>" value="<?php echo $textShadowColor ?>" />                                        
+                                    </td>
+                                </tr>
+                                <tr style="line-height: normal;">
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;position: relative;">
+                                        <?php 
+                                            $sPPDownloadButtonContent = ( isset( $wikiembed_options['ppe-download-button-content'] ) ) ? $wikiembed_options['ppe-download-button-content'] : '';
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;position: absolute; margin-top: 8px">Popup Content:</span> <textarea name="wikiembed_options[ppe-download-button-content]" id="pp-embed-download-button-content" rows="10" cols="50" style="margin: 2px 0 0 152px;"><?php echo esc_textarea($sPPDownloadButtonContent) ?></textarea>                                   
+                                    </td>
+                                </tr>                                   
 			</table>
 			
 			<h3>Security</h3>
@@ -341,7 +434,17 @@ function wikiembed_options_validate( $wikiembed_options ) {
 		'wiki-links'      => ( in_array( $wikiembed_options['wiki-links'], array( "default", "overlay", "new-page","overwrite" ) ) ? $wikiembed_options['wiki-links'] : "default" ),
 		'wiki-links-new-page-email' => wp_rel_nofollow( $wikiembed_options['wiki-links-new-page-email'] ),
 		'toc-show'            => ( isset( $wikiembed_options['toc-show']) && $wikiembed_options['toc-show']            == 1 ? 1 : 0 ),		
-		'toc-links'            => ( isset( $wikiembed_options['toc-links']) ?  trim( $wikiembed_options['toc-links'] ) : null ),		
+		'toc-links'            => ( isset( $wikiembed_options['toc-links']) ?  trim( $wikiembed_options['toc-links'] ) : null ),
+                'ppe-download-button-content' => ( isset($wikiembed_options['ppe-download-button-content']))? $wikiembed_options['ppe-download-button-content'] : '',
+                'ppe-download-button-text' => ( isset($wikiembed_options['ppe-download-button-text']))? $wikiembed_options['ppe-download-button-text'] : PPE_DOWNLOAD_BUTTON_TEXT,
+                'ppe-download-button-width' => ( isset($wikiembed_options['ppe-download-button-width']) && is_numeric($wikiembed_options['ppe-download-button-width']) && (int)$wikiembed_options['ppe-download-button-width'] < 500 )? $wikiembed_options['ppe-download-button-width'] : PPE_DOWNLOAD_BUTTON_WIDTH,
+                'ppe-download-button-top-color' => ( isset($wikiembed_options['ppe-download-button-top-color']))? $wikiembed_options['ppe-download-button-top-color'] : PPE_DOWNLOAD_BUTTON_TOP_COLOR,
+                'ppe-download-button-bottom-color' => ( isset($wikiembed_options['ppe-download-button-bottom-color']))? $wikiembed_options['ppe-download-button-bottom-color'] : PPE_DOWNLOAD_BUTTON_BOTTOM_COLOR,
+                'ppe-download-button-font-color' => ( isset($wikiembed_options['ppe-download-button-font-color']))? $wikiembed_options['ppe-download-button-font-color'] : PPE_DOWNLOAD_BUTTON_FONT_COLOR,
+                'ppe-download-button-font-hover-color' => ( isset($wikiembed_options['ppe-download-button-font-hover-color']))? $wikiembed_options['ppe-download-button-font-hover-color'] : PPE_DOWNLOAD_BUTTON_FONT_HOVER_COLOR,
+                'ppe-download-button-border-color' => ( isset($wikiembed_options['ppe-download-button-border-color']))? $wikiembed_options['ppe-download-button-border-color'] : PPE_DOWNLOAD_BUTTON_BORDER_COLOR,
+                'ppe-download-button-box-shadow-color' => ( isset($wikiembed_options['ppe-download-button-box-shadow-color']))? $wikiembed_options['ppe-download-button-box-shadow-color'] : PPE_DOWNLOAD_BUTTON_BOX_SHADOW_COLOR,
+                'ppe-download-button-text-shadow-color' => ( isset($wikiembed_options['ppe-download-button-text-shadow-color']))? $wikiembed_options['ppe-download-button-text-shadow-color'] : PPE_DOWNLOAD_BUTTON_TEXT_SHADOW_COLOR,
                 'default' => array(
                         'global-content-replace' => ( isset( $wikiembed_options['default']['global-content-replace'] ) && $wikiembed_options['default']['global-content-replace'] == 1 ? 1 : 0 ),
                         'global-content-replace-template' => $wikiembed_options['default']['global-content-replace-template'],

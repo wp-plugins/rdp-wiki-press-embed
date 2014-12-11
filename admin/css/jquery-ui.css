@@ -6,8 +6,7 @@
 
 /* ThickBox overrides */
 #TB_window { width:670px !important; }
-#TB_ajaxContent{width: 640px !important;}
-
+#TB_ajaxContent{width: 640px !important;height: 500px !important}
 
 .ui-helper-reset {
 margin: 0;
