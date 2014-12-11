@@ -3,7 +3,7 @@ Contributors: rpayne7264, enej, ejackisch, devindra, ctlt-dev, ubcdev
 Tags: mediawiki, wiki, wiki-embed, embed, content framework, wiki inc, pediapress, pediapress embed
 Requires at least: 3.5
 Tested up to: 4.0
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 
 RDP Wiki-Press Embed lets you embed Media Wiki pages in to your site, from sites like Wikipedia, and PediaPress book pages.
 
@@ -11,6 +11,8 @@ RDP Wiki-Press Embed lets you embed Media Wiki pages in to your site, from sites
 
 RDP Wiki-Press Embed will pull content from any Media Wiki website (such as wikipedia.org) and from PediaPress.
 It strips and reformats the content, allowing you to supply some arguments to dictate how this works.
+
+RDP Wiki-Press Embed also allows lead capture capabilities, utilizing free PediaPress ebooks as an offer.
 
 Forked from: [Wiki Embed plugin](http://wordpress.org/plugins/wiki-embed/  "Wiki Embed plugin").
 
@@ -23,7 +25,7 @@ Maybe, but why would you want to? That is not what the tool was designed to do.
 
 == Usage ==
 
-RDP Wiki Embed is implemented using the shortcode [wiki-embed]. It accepts the following arguments:
+RDP Wiki-Press Embed is implemented using the shortcode [wiki-embed]. It accepts the following arguments:
 
 * url: (required) the web address of the wiki article that you want to embed on this page.
 * no-edit: Hide the "edit" links from the wiki.
@@ -35,7 +37,30 @@ RDP Wiki Embed is implemented using the shortcode [wiki-embed]. It accepts the f
 Example:
 [wiki-embed url="http://en.wikipedia.org/wiki/Example" no-edit no-contents no-infobox accordion]
 
-For embedding PediaPress pages, only the url argument is supported.
+
+For embedding PediaPress book pages, the following arguments are accepted:
+
+* url: (required) the web address of the PediaPress book that you want to embed on this page.
+* toc_show: 0 (zero) to hide table of contents (TOC) or 1 to show TOC
+* toc_links: Default — TOC links are enabled; Logged-in — TOC links are active only when a user is logged in; Disabled — TOC links are completely disabled, all the time
+* download_button_text: text for call-to-action button
+* download_button_width: integer indicating pixel width of call-to-action button; default is 250; max is 500
+* download_button_top_color: gradient top color
+* download_button_bottom_color: gradient bottom color
+* download_button_font_color: normal button text color
+* download_button_font_hover_color: text color when cursor is on the button
+* download_button_border_color: button border color
+* download_button_box_shadow_color: button's drop shadow color
+* download_button_text_shadow_color: drop shadow color of button's text
+
+For the download button settings to take affect, the shortcode must be an enclosing shortcode, containing text, HTML, and/or another shortcode between the opening and closing shortcode tags.
+
+Examples:
+[wiki-embed url='https://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe']
+
+[wiki-embed url='https://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in']
+
+[wiki-embed url='https://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in' download_button_text='Download FREE eBook Edition' download_button_width='250' download_button_top_color='#eded00' download_button_font_color='#ffffff' download_button_font_hover_color='#444444' download_button_border_color='#eda933' download_button_bottom_color='#bd7f04' download_button_box_shadow_color='#fed897' download_button_text_shadow_color='#cd8915']`<iframe src="http://www.w3schools.com"></iframe>`[/wiki-embed]
 
 
 == Configuration ==
@@ -60,9 +85,42 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 2. A look at the wiki embed settings page. 
 3. Wiki page shortcode embed helper form
 4. PediaPress book shortcode embed helper form
+5. Media button to launch shortcode embed helper form
+6. Call-to-action button on PediaPress book page
 
 
 == Changelog ==
+
+= 1.3.0 =
+* FEATURE: added call-to-action button and pop-up lightbox for PediaPress books
+* REFACTOR: expanded global PediaPress shortcode settings options
+* REFACTOR: re-worked shortcode pop-up form to reflect expanded PediaPress options
+* UPDATE: changed screenshot #2
+* UPDATE: changed screenshot #4
+* UPDATE: added screenshot #5
+* UPDATE: added screenshot #6
+
+*Changed files:*
+
+* readme.txt
+* screenshot-2.png
+* screenshot-4.png
+* WikiEmbed.php
+* admin/admin-overlay.php
+* admin/admin.php
+* admin/css/jquery-ui.css
+* admin/js/script.admin-overlay.js
+* admin/settings-page.php
+* resources/css/pediapress.common.css
+* resources/js/pediapress-overlay.js
+* resources/rdpWEPPE.php
+
+*New files:*
+
+* admin/css/admin.css
+* admin/js/script.settings-page.js
+* screenshot-5.png
+* screenshot-6.png
 
 = 1.2.0 =
 * REFACTOR: re-worked shortcode pop-up form to use tabs and allow creation of PediaPress shortcodes, with attributes to override global settings.
@@ -70,7 +128,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * REFACTOR: removed label text from media button so that it now only displays the Wikipedia icon
 * REFACTOR: added a short circuit to main init() function to prevent links to front-end scripts and styles from being generated on the admin side
 * FIX: fixed bug that corrupted AJAX return results
-* FIX: changed screenshot #3
+* UPDATE: changed screenshot #3
 * UPDATE: added screenshot #4
 
 *Changed files:*
@@ -94,7 +152,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * FEATURE: added settings to disable PediaPress book TOC links
 * FEATURE: added setting to show/hide PediaPress book TOC
 * FEATURE: added lightbox with iframe to PediaPress book cover images and 'Add to Cart' button
-* REFACTOR: fixed the colorbox skin
+* REFACTOR: fixed the Colorbox skin
 * REFACTOR: fixed layout issues on the settings page
 * FIX: updated screenshot #2
 

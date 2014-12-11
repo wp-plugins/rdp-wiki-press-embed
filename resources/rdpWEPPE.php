@@ -28,6 +28,7 @@ class RDP_WE_PPE {
         'url' => '',
         'toc_show' => empty($wikiembed_options['toc-show'])? '0' : $wikiembed_options['toc-show'],
         'toc_links' => empty($wikiembed_options['toc-links'])? 'default' : $wikiembed_options['toc-links'],
+        'download_button_content' => empty($content)? empty($wikiembed_options['ppe-download-button-content'])? '' : $wikiembed_options['ppe-download-button-content'] : $content,
         'download_button_text' => empty($wikiembed_options['ppe-download-button-text'])? PPE_DOWNLOAD_BUTTON_TEXT : $wikiembed_options['ppe-download-button-text'],
         'download_button_width' => empty($wikiembed_options['ppe-download-button-width'])? PPE_DOWNLOAD_BUTTON_WIDTH : $wikiembed_options['ppe-download-button-width'],
         'download_button_top_color' => empty($wikiembed_options['ppe-download-button-top-color'])? PPE_DOWNLOAD_BUTTON_TOP_COLOR : $wikiembed_options['ppe-download-button-top-color'],
@@ -140,11 +141,11 @@ class RDP_WE_PPE {
                     $metaParasContent .= $metaParas[$i]->outertext;
                 }
 
-                if(!empty($content)){
-                    $sDownloadButton = "<div style='padding: 5px 0 5px 60px;font-weight: bold;'>OR</div>";
+                if(!empty($a['download_button_content'])){
+                    $sDownloadButton = "<div id='rdp-ppe-inline-content-sep'>OR</div>";
                     $sDownloadButton .= "<div><a id='rdp-ppe-inline-content-link' class='rdp-ppe-cta-button' href='#rdp_ppe_inline_content'>{$a['download_button_text']}</a></div>";
                     $sInlineHTML .= "<div id='rdp_ppe_inline_content_wrapper' style='display:none'><div id='rdp_ppe_inline_content' style='padding:10px; background:#fff;'>";
-                    $sInlineHTML .= do_shortcode($content);
+                    $sInlineHTML .= do_shortcode($a['download_button_content']);
                     $sInlineHTML .= "</div></div>";
                 }                 
                 $metaData->innertext = $metaParasContent . $sAddToCart . $sDownloadButton;
@@ -193,7 +194,7 @@ class RDP_WE_PPE {
 	color:{$a['download_button_font_color']};
 	font-family:Arial;
 	font-size:15px;
-	font-weight:normal;
+	font-weight:bold;
 	font-style:normal;
 	height:30px;
 	line-height:30px;

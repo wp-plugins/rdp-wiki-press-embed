@@ -3,7 +3,7 @@
  * Plugin Name: RDP Wiki-Press Embed
  * Plugin URI: http://www.robert-d-payne.com/
  * Description: Enables the inclusion of mediawiki pages and PediaPress book pages into your own blog page or post through the use of shortcodes. Forked from: <a href="http://wordpress.org/plugins/rdp-wiki-press-embed/" target="_blank">Wiki Embed plugin</a>.
- * Version: 1.2.0
+ * Version: 1.3.0
  * Author: Robert D Payne
  * Author URI: http://www.robert-d-payne.com/
  *
@@ -55,20 +55,19 @@
 define('RDP_WE_PLUGIN_BASENAME', plugin_basename(__FILE__));
 $dir = plugin_dir_path( __FILE__ );
 define('RDP_WE_PLUGIN_BASEDIR', $dir);
-
+/* download button default values */
+define('PPE_DOWNLOAD_BUTTON_TEXT', 'Download FREE eBook Edition');
+define('PPE_DOWNLOAD_BUTTON_WIDTH', '250');
+define('PPE_DOWNLOAD_BUTTON_TOP_COLOR', '#eded00');
+define('PPE_DOWNLOAD_BUTTON_BOTTOM_COLOR', '#bd7f04');
+define('PPE_DOWNLOAD_BUTTON_FONT_COLOR', '#ffffff');
+define('PPE_DOWNLOAD_BUTTON_FONT_HOVER_COLOR', '#444444');
+define('PPE_DOWNLOAD_BUTTON_BORDER_COLOR', '#eda933');
+define('PPE_DOWNLOAD_BUTTON_BOX_SHADOW_COLOR', '#fed897');
+define('PPE_DOWNLOAD_BUTTON_TEXT_SHADOW_COLOR', '#cd8a15');
+    
 // admin side 
 if(is_admin()){
-    
-    define('PPE_DOWNLOAD_BUTTON_TEXT', 'Download FREE eBook Edition');
-    define('PPE_DOWNLOAD_BUTTON_WIDTH', '250');
-    define('PPE_DOWNLOAD_BUTTON_TOP_COLOR', '#eded00');
-    define('PPE_DOWNLOAD_BUTTON_BOTTOM_COLOR', '#bd7f04');
-    define('PPE_DOWNLOAD_BUTTON_FONT_COLOR', '#ffffff');
-    define('PPE_DOWNLOAD_BUTTON_FONT_HOVER_COLOR', '#444444');
-    define('PPE_DOWNLOAD_BUTTON_BORDER_COLOR', '#eda933');
-    define('PPE_DOWNLOAD_BUTTON_BOX_SHADOW_COLOR', '#fed897');
-    define('PPE_DOWNLOAD_BUTTON_TEXT_SHADOW_COLOR', '#cd8a15');
-    
     require( 'admin/admin-overlay.php' );
     require( 'admin/admin.php' );  
 }
@@ -305,6 +304,7 @@ class Wiki_Embed {
                     'wiki-links-new-page-email' => "",
                     'toc-links'      => "default",
                     'toc-show'      => 1,
+                    'ppe-download-button-content' => '',
                     'ppe-download-button-text' => PPE_DOWNLOAD_BUTTON_TEXT,
                     'ppe-download-button-width' => PPE_DOWNLOAD_BUTTON_WIDTH,                
                     'ppe-download-button-top-color' => PPE_DOWNLOAD_BUTTON_TOP_COLOR,
