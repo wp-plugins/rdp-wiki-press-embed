@@ -62,7 +62,7 @@ Examples:
 
 [wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in']
 
-[wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in' cta_button_top_color='#eded00' cta_button_text_shadow_color='#cd8a15']<iframe src="http://www.w3schools.com"></iframe>[/wiki-embed]
+[wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in' cta_button_top_color='#eded00' cta_button_text_shadow_color='#cd8a15']`<iframe src="http://www.w3schools.com"></iframe>`[/wiki-embed]
 
 
 == Configuration ==
