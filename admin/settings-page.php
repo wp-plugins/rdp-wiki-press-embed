@@ -282,7 +282,7 @@ function wikiembed_settings_page() {
                                 <tr>
                                     <th valign="middle" class="label" style="margin-bottom: 9px;padding: 15px 10px 0 0;line-height: 1.3;vertical-align: middle;" scope="row">
                                         <span class="alignleft">
-                                            <label for="src">PediaPress Download Button</label>
+                                            <label for="src">PediaPress CTA Button</label>
                                         </span>
                                     </th> 
                                     <td class="field" style="padding-bottom: 0;"><?php
