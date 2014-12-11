@@ -58,11 +58,11 @@ For the Call-to-Action button settings to take affect, the shortcode must be an 
 
 Examples:
 
-[wiki-embed url='https://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe']
+[wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe']
 
-[wiki-embed url='https://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in']
+[wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in']
 
-[wiki-embed url='https://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in' cta_button_text='Download FREE eBook Edition' cta_button_width='250' cta_button_top_color='#eded00' cta_button_font_color='#ffffff' cta_button_font_hover_color='#444444' cta_button_border_color='#eda933' cta_button_bottom_color='#bd7f04' cta_button_box_shadow_color='#fed897' cta_button_text_shadow_color='#cd8915']`<iframe src="http://www.w3schools.com"></iframe>`[/wiki-embed]
+[wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in' cta_button_top_color='#eded00' cta_button_text_shadow_color='#cd8a15']<iframe src="http://www.w3schools.com"></iframe>[/wiki-embed]
 
 
 == Configuration ==
