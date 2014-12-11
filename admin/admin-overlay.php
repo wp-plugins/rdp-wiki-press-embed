@@ -159,7 +159,7 @@ function wikiembed_overlay_popup_form() {
                                     <tr>
                                         <th valign="top" class="label" scope="row"></th>
                                         <td class="field">
-                                            <h3>Download Button Settings</h3>
+                                            <h3>CTA Button Settings</h3>
                                             <label for="pp-embed-download-button-content">Popup Content (shortcode/text/HTML)</label><br />
                                             <?php
                                                 $sPPDownloadButtonContent = empty($wikiembed_options['ppe-download-button-content'])? '' : $wikiembed_options['ppe-download-button-content'];
