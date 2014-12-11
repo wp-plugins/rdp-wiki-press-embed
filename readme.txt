@@ -3,13 +3,13 @@ Contributors: rpayne7264, enej, ejackisch, devindra, ctlt-dev, ubcdev
 Tags: mediawiki, wiki, wiki-embed, embed, content framework, wiki inc, pediapress, pediapress embed
 Requires at least: 3.5
 Tested up to: 4.0
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 
-RDP Wiki-Press Embed lets you embed Media Wiki pages in to your site, from sites like Wikipedia, and PediaPress book pages.
+RDP Wiki-Press Embed lets you embed MediaWiki pages in to your site, from sites like Wikipedia, and PediaPress book pages.
 
 == Description ==
 
-RDP Wiki-Press Embed will pull content from any Media Wiki website (such as wikipedia.org) and from PediaPress.
+RDP Wiki-Press Embed will pull content from any MediaWiki website (such as wikipedia.org) and from PediaPress.
 It strips and reformats the content, allowing you to supply some arguments to dictate how this works.
 
 RDP Wiki-Press Embed also allows lead capture capabilities, utilizing free PediaPress ebooks as an offer.
@@ -43,15 +43,15 @@ For embedding PediaPress book pages, the following arguments are accepted:
 * url: (required) the web address of the PediaPress book that you want to embed on this page.
 * toc_show: 0 (zero) to hide table of contents (TOC) or 1 to show TOC
 * toc_links: Default — TOC links are enabled; Logged-in — TOC links are active only when a user is logged in; Disabled — TOC links are completely disabled, all the time
-* download_button_text: text for call-to-action button
-* download_button_width: integer indicating pixel width of call-to-action button; default is 250; max is 500
-* download_button_top_color: gradient top color
-* download_button_bottom_color: gradient bottom color
-* download_button_font_color: normal button text color
-* download_button_font_hover_color: text color when cursor is on the button
-* download_button_border_color: button border color
-* download_button_box_shadow_color: button's drop shadow color
-* download_button_text_shadow_color: drop shadow color of button's text
+* cta_button_text: text for call-to-action button
+* cta_button_width: integer indicating pixel width of call-to-action button; default is 250; max is 500
+* cta_button_top_color: gradient top color
+* cta_button_bottom_color: gradient bottom color
+* cta_button_font_color: normal button text color
+* cta_button_font_hover_color: text color when cursor is on the button
+* cta_button_border_color: button border color
+* cta_button_box_shadow_color: button's drop shadow color
+* cta_button_text_shadow_color: drop shadow color of button's text
 
 For the download button settings to take affect, the shortcode must be an enclosing shortcode, containing text, HTML, and/or another shortcode between the opening and closing shortcode tags.
 
@@ -60,7 +60,7 @@ Examples:
 
 [wiki-embed url='https://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in']
 
-[wiki-embed url='https://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in' download_button_text='Download FREE eBook Edition' download_button_width='250' download_button_top_color='#eded00' download_button_font_color='#ffffff' download_button_font_hover_color='#444444' download_button_border_color='#eda933' download_button_bottom_color='#bd7f04' download_button_box_shadow_color='#fed897' download_button_text_shadow_color='#cd8915']`<iframe src="http://www.w3schools.com"></iframe>`[/wiki-embed]
+[wiki-embed url='https://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in' cta_button_text='Download FREE eBook Edition' cta_button_width='250' cta_button_top_color='#eded00' cta_button_font_color='#ffffff' cta_button_font_hover_color='#444444' cta_button_border_color='#eda933' cta_button_bottom_color='#bd7f04' cta_button_box_shadow_color='#fed897' cta_button_text_shadow_color='#cd8915']`<iframe src="http://www.w3schools.com"></iframe>`[/wiki-embed]
 
 
 == Configuration ==
@@ -74,6 +74,7 @@ Here you can enable/disable various features, define shortcode defaults, and con
 1. Upload `rdp-wiki-embed` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Change the wiki embed settings to your liking
+4. Click the 'Save Changes' button at the bottom of the options page - even if you do not make any changes - so settings take affect
 
 = Extra =
 To make everything pretty, add a wiki.custom.css and pediapress.custom.css file. Start with the wiki.custom-sample.css and pediapress.custom-sample.css files located in the 'resources/css/' folder.
@@ -90,6 +91,9 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 
 
 == Changelog ==
+
+= 1.3.1 =
+* REFACTOR: renamed Call-to-Action variables and shortcode attributes
 
 = 1.3.0 =
 * FEATURE: added call-to-action button and pop-up lightbox for PediaPress books

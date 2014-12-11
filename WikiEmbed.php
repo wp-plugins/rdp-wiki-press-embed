@@ -2,8 +2,8 @@
 /**
  * Plugin Name: RDP Wiki-Press Embed
  * Plugin URI: http://www.robert-d-payne.com/
- * Description: Enables the inclusion of mediawiki pages and PediaPress book pages into your own blog page or post through the use of shortcodes. Forked from: <a href="http://wordpress.org/plugins/rdp-wiki-press-embed/" target="_blank">Wiki Embed plugin</a>.
- * Version: 1.3.0
+ * Description: Enables the inclusion of MediaWiki pages and PediaPress book pages into your own blog page or post through the use of shortcodes. Forked from: <a href="http://wordpress.org/plugins/rdp-wiki-press-embed/" target="_blank">Wiki Embed plugin</a>.
+ * Version: 1.3.1
  * Author: Robert D Payne
  * Author URI: http://www.robert-d-payne.com/
  *
@@ -56,15 +56,15 @@ define('RDP_WE_PLUGIN_BASENAME', plugin_basename(__FILE__));
 $dir = plugin_dir_path( __FILE__ );
 define('RDP_WE_PLUGIN_BASEDIR', $dir);
 /* download button default values */
-define('PPE_DOWNLOAD_BUTTON_TEXT', 'Download FREE eBook Edition');
-define('PPE_DOWNLOAD_BUTTON_WIDTH', '250');
-define('PPE_DOWNLOAD_BUTTON_TOP_COLOR', '#eded00');
-define('PPE_DOWNLOAD_BUTTON_BOTTOM_COLOR', '#bd7f04');
-define('PPE_DOWNLOAD_BUTTON_FONT_COLOR', '#ffffff');
-define('PPE_DOWNLOAD_BUTTON_FONT_HOVER_COLOR', '#444444');
-define('PPE_DOWNLOAD_BUTTON_BORDER_COLOR', '#eda933');
-define('PPE_DOWNLOAD_BUTTON_BOX_SHADOW_COLOR', '#fed897');
-define('PPE_DOWNLOAD_BUTTON_TEXT_SHADOW_COLOR', '#cd8a15');
+define('PPE_CTA_BUTTON_TEXT', 'Download FREE eBook Edition');
+define('PPE_CTA_BUTTON_WIDTH', '250');
+define('PPE_CTA_BUTTON_TOP_COLOR', '#eded00');
+define('PPE_CTA_BUTTON_BOTTOM_COLOR', '#bd7f04');
+define('PPE_CTA_BUTTON_FONT_COLOR', '#ffffff');
+define('PPE_CTA_BUTTON_FONT_HOVER_COLOR', '#444444');
+define('PPE_CTA_BUTTON_BORDER_COLOR', '#eda933');
+define('PPE_CTA_BUTTON_BOX_SHADOW_COLOR', '#fed897');
+define('PPE_CTA_BUTTON_TEXT_SHADOW_COLOR', '#cd8a15');
     
 // admin side 
 if(is_admin()){
@@ -94,7 +94,7 @@ class Wiki_Embed {
     function __construct() {
             self::$instance = $this;
 
-            // set the default wiki embed value if the once from the Options are not set
+            // set the default wiki embed value if the ones from the Options are not set
             $this->options       = shortcode_atts( $this->default_settings(), get_option( 'wikiembed_options' ) );
             $this->wikiembeds    = get_option( 'wikiembeds' ); // we might not need to load this here at all...
             $this->content_count = 0; 
@@ -304,16 +304,16 @@ class Wiki_Embed {
                     'wiki-links-new-page-email' => "",
                     'toc-links'      => "default",
                     'toc-show'      => 1,
-                    'ppe-download-button-content' => '',
-                    'ppe-download-button-text' => PPE_DOWNLOAD_BUTTON_TEXT,
-                    'ppe-download-button-width' => PPE_DOWNLOAD_BUTTON_WIDTH,                
-                    'ppe-download-button-top-color' => PPE_DOWNLOAD_BUTTON_TOP_COLOR,
-                    'ppe-download-button-bottom-color' => PPE_DOWNLOAD_BUTTON_BOTTOM_COLOR,
-                    'ppe-download-button-font-color' => PPE_DOWNLOAD_BUTTON_FONT_COLOR,
-                    'ppe-download-button-font-hover-color' => PPE_DOWNLOAD_BUTTON_FONT_HOVER_COLOR,
-                    'ppe-download-button-border-color' => PPE_DOWNLOAD_BUTTON_BORDER_COLOR,
-                    'ppe-download-button-box-shadow-color' => PPE_DOWNLOAD_BUTTON_BOX_SHADOW_COLOR,
-                    'ppe-download-button-text-shadow-color' => PPE_DOWNLOAD_BUTTON_TEXT_SHADOW_COLOR,
+                    'ppe-cta-button-content' => '',
+                    'ppe-cta-button-text' => PPE_CTA_BUTTON_TEXT,
+                    'ppe-cta-button-width' => PPE_CTA_BUTTON_WIDTH,                
+                    'ppe-cta-button-top-color' => PPE_CTA_BUTTON_TOP_COLOR,
+                    'ppe-cta-button-bottom-color' => PPE_CTA_BUTTON_BOTTOM_COLOR,
+                    'ppe-cta-button-font-color' => PPE_CTA_BUTTON_FONT_COLOR,
+                    'ppe-cta-button-font-hover-color' => PPE_CTA_BUTTON_FONT_HOVER_COLOR,
+                    'ppe-cta-button-border-color' => PPE_CTA_BUTTON_BORDER_COLOR,
+                    'ppe-cta-button-box-shadow-color' => PPE_CTA_BUTTON_BOX_SHADOW_COLOR,
+                    'ppe-cta-button-text-shadow-color' => PPE_CTA_BUTTON_TEXT_SHADOW_COLOR,
                     'default' => array(
                         'global-content-replace' => 0,
                         'global-content-replace-template' => 'default',

@@ -36,15 +36,15 @@ function wikiembed_overlay_popup_form() {
 	if ( in_array( $pagenow, array( "post.php", "post-new.php" ) ) && in_array( $post->post_type , array( "post", "page" ) ) ) {
             wp_enqueue_script('wiki-embed-admin-overlay', plugins_url( '/admin/js/script.admin-overlay.js',RDP_WE_PLUGIN_BASENAME), array("jquery","jquery-ui-tabs"), '1.0', true);
             $params = array(
-                            'pp_button_text' => PPE_DOWNLOAD_BUTTON_TEXT,
-                            'pp_button_width' => PPE_DOWNLOAD_BUTTON_WIDTH,
-                            'pp_button_top_color' => PPE_DOWNLOAD_BUTTON_TOP_COLOR,
-                            'pp_button_bottom_color' => PPE_DOWNLOAD_BUTTON_BOTTOM_COLOR,
-                            'pp_button_font_color' => PPE_DOWNLOAD_BUTTON_FONT_COLOR,
-                            'pp_button_font_hover_color' => PPE_DOWNLOAD_BUTTON_FONT_HOVER_COLOR,
-                            'pp_button_border_color' => PPE_DOWNLOAD_BUTTON_BORDER_COLOR,
-                            'pp_button_box_shadow_color' => PPE_DOWNLOAD_BUTTON_BOX_SHADOW_COLOR,
-                            'pp_button_text_shadow_color' => PPE_DOWNLOAD_BUTTON_TEXT_SHADOW_COLOR
+                            'pp_button_text' => (PPE_CTA_BUTTON_TEXT != $wikiembed_options['ppe-cta-button-text'])? $wikiembed_options['ppe-cta-button-text'] : PPE_CTA_BUTTON_TEXT,
+                            'pp_button_width' => (PPE_CTA_BUTTON_WIDTH != $wikiembed_options['ppe-cta-button-width'])? $wikiembed_options['ppe-cta-button-width'] : PPE_CTA_BUTTON_WIDTH,
+                            'pp_button_top_color' => (PPE_CTA_BUTTON_TOP_COLOR != $wikiembed_options['ppe-cta-button-top-color'])? $wikiembed_options['ppe-cta-button-top-color'] : PPE_CTA_BUTTON_TOP_COLOR,
+                            'pp_button_bottom_color' => (PPE_CTA_BUTTON_BOTTOM_COLOR != $wikiembed_options['ppe-cta-button-bottom-color'])? $wikiembed_options['ppe-cta-button-bottom-color'] : PPE_CTA_BUTTON_BOTTOM_COLOR,
+                            'pp_button_font_color' => (PPE_CTA_BUTTON_FONT_COLOR != $wikiembed_options['ppe-cta-button-font-color'])? $wikiembed_options['ppe-cta-button-font-color'] : PPE_CTA_BUTTON_FONT_COLOR,
+                            'pp_button_font_hover_color' => (PPE_CTA_BUTTON_FONT_HOVER_COLOR != $wikiembed_options['ppe-cta-button-font-hover-color'])? $wikiembed_options['ppe-cta-button-font-hover-color'] : PPE_CTA_BUTTON_FONT_HOVER_COLOR,
+                            'pp_button_border_color' => (PPE_CTA_BUTTON_BORDER_COLOR != $wikiembed_options['ppe-cta-button-border-color'])? $wikiembed_options['ppe-cta-button-border-color'] : PPE_CTA_BUTTON_BORDER_COLOR,
+                            'pp_button_box_shadow_color' => (PPE_CTA_BUTTON_BOX_SHADOW_COLOR != $wikiembed_options['ppe-cta-button-box-shadow-color'])? $wikiembed_options['ppe-cta-button-box-shadow-color'] : PPE_CTA_BUTTON_BOX_SHADOW_COLOR,
+                            'pp_button_text_shadow_color' => (PPE_CTA_BUTTON_TEXT_SHADOW_COLOR != $wikiembed_options['ppe-cta-button-text-shadow-color'])? $wikiembed_options['ppe-cta-button-text-shadow-color'] : PPE_CTA_BUTTON_TEXT_SHADOW_COLOR
                         );
             wp_localize_script('wiki-embed-admin-overlay', 'rdp_we_admin', $params);
             wp_enqueue_style( 'wiki-embed-admin-core-style', plugins_url( '/admin/css/jquery-ui.css',RDP_WE_PLUGIN_BASENAME ), null,'1.11.2' );            
@@ -159,97 +159,97 @@ function wikiembed_overlay_popup_form() {
                                     <tr>
                                         <th valign="top" class="label" scope="row"></th>
                                         <td class="field">
-                                            <h3>Download Button Settings</h3>
-                                            <label for="pp-embed-download-button-content">Popup Content (shortcode/text/HTML)</label><br />
+                                            <h3>CTA Button Settings</h3>
+                                            <label for="ppe-cta-button-content">Popup Content (shortcode/text/HTML)</label><br />
                                             <?php
-                                                $sPPDownloadButtonContent = empty($wikiembed_options['ppe-download-button-content'])? '' : $wikiembed_options['ppe-download-button-content'];
+                                                $sPPDownloadButtonContent = empty($wikiembed_options['ppe-cta-button-content'])? '' : $wikiembed_options['ppe-cta-button-content'];
                                                 $sPPDownloadButtonContent = esc_textarea($sPPDownloadButtonContent);
                                             ?>                                              
-                                            <textarea id="pp-embed-download-button-content"><?php echo $sPPDownloadButtonContent ?></textarea>
+                                            <textarea id="ppe-cta-button-content"><?php echo $sPPDownloadButtonContent ?></textarea>
                                         </td>
                                     </tr>                                    
                                     
                                     <tr>
                                         <th valign="top" class="label" scope="row"></th>
                                         <td class="field">
-                                            <label for="pp-embed-download-button-text">Button Text</label><br />
+                                            <label for="ppe-cta-button-text">Button Text</label><br />
                                             <?php
-                                                $sPPDownloadButtonText = empty($wikiembed_options['ppe-download-button-text'])? PPE_DOWNLOAD_BUTTON_TEXT : $wikiembed_options['ppe-download-button-text'];
+                                                $sPPDownloadButtonText = empty($wikiembed_options['ppe-cta-button-text'])? PPE_CTA_BUTTON_TEXT : $wikiembed_options['ppe-cta-button-text'];
                                                 $sPPDownloadButtonText = esc_attr($sPPDownloadButtonText);
                                             ?>                                              
-                                            <input type="text" id="pp-embed-download-button-text" value="<?php echo $sPPDownloadButtonText ?>" />
+                                            <input type="text" id="ppe-cta-button-text" value="<?php echo $sPPDownloadButtonText ?>" />
                                         </td>
                                     </tr>
                                 <tr style="line-height: normal;">
                                     <th valign="top" style="padding: 0;" class="label" scope="row"></th>
                                     <td class="field" style="padding: 0 10px;">
                                         <?php 
-                                            $sPPDownloadButtonWidth = ( isset( $wikiembed_options['ppe-download-button-width'] ) ) ? $wikiembed_options['ppe-download-button-width'] : PPE_DOWNLOAD_BUTTON_WIDTH;
+                                            $sPPDownloadButtonWidth = ( isset( $wikiembed_options['ppe-cta-button-width'] ) ) ? $wikiembed_options['ppe-cta-button-width'] : PPE_CTA_BUTTON_WIDTH;
                                         ?>
-                                        <span style="width: 150px;display: inline-block;">Width:</span> <input type="text" id="pp-embed-download-button-width" value="<?php echo $sPPDownloadButtonWidth ?>"  style="width: 50px;"/> pixels (max: 500)                                    
+                                        <span style="width: 150px;display: inline-block;">Width:</span> <input type="text" id="ppe-cta-button-width" value="<?php echo $sPPDownloadButtonWidth ?>"  style="width: 50px;"/> pixels (max: 500)                                    
                                     </td>
                                 </tr>                                
                                 <tr>
                                     <th valign="top" style="padding: 0;" class="label" scope="row"></th>
                                     <td class="field" style="padding: 0 10px;">
                                         <?php 
-                                            $bgTopColor = ( isset( $wikiembed_options['ppe-download-button-top-color'] ) ) ? $wikiembed_options['ppe-download-button-top-color'] : PPE_DOWNLOAD_BUTTON_TOP_COLOR;
+                                            $bgTopColor = ( isset( $wikiembed_options['ppe-cta-button-top-color'] ) ) ? $wikiembed_options['ppe-cta-button-top-color'] : PPE_CTA_BUTTON_TOP_COLOR;
                                         ?>
-                                        <span style="width: 150px;display: inline-block;">Top Color:</span> <input type="text" id="pp-embed-download-button-top-color" class="bgTopColor rdp-we-color-picker" data-default-color="<?php echo PPE_DOWNLOAD_BUTTON_TOP_COLOR  ?>" value="<?php echo $bgTopColor ?>" />                                        
+                                        <span style="width: 150px;display: inline-block;">Top Color:</span> <input type="text" id="ppe-cta-button-top-color" class="bgTopColor rdp-we-color-picker" data-default-color="<?php echo PPE_CTA_BUTTON_TOP_COLOR  ?>" value="<?php echo $bgTopColor ?>" />                                        
                                     </td>
                                 </tr>
                                 <tr>
                                     <th valign="top" style="padding: 0;" class="label" scope="row"></th>
                                     <td class="field" style="padding: 0 10px;">
                                         <?php 
-                                            $bgBottomColor = ( isset( $wikiembed_options['ppe-download-button-bottom-color'] ) ) ? $wikiembed_options['ppe-download-button-bottom-color'] : PPE_DOWNLOAD_BUTTON_BOTTOM_COLOR;
+                                            $bgBottomColor = ( isset( $wikiembed_options['ppe-cta-button-bottom-color'] ) ) ? $wikiembed_options['ppe-cta-button-bottom-color'] : PPE_CTA_BUTTON_BOTTOM_COLOR;
                                         ?>
-                                        <span style="width: 150px;display: inline-block;">Bottom Color:</span> <input type="text" id="pp-embed-download-button-bottom-color" class="bgBottomColor rdp-we-color-picker" data-default-color="<?php echo PPE_DOWNLOAD_BUTTON_BOTTOM_COLOR  ?>" value="<?php echo $bgBottomColor ?>" />                                        
+                                        <span style="width: 150px;display: inline-block;">Bottom Color:</span> <input type="text" id="ppe-cta-button-bottom-color" class="bgBottomColor rdp-we-color-picker" data-default-color="<?php echo PPE_CTA_BUTTON_BOTTOM_COLOR  ?>" value="<?php echo $bgBottomColor ?>" />                                        
                                     </td>
                                 </tr>
                                 <tr>
                                     <th valign="top" style="padding: 0;" class="label" scope="row"></th>
                                     <td class="field" style="padding: 0 10px;">
                                         <?php 
-                                            $fontColor = ( isset( $wikiembed_options['ppe-download-button-font-color'] ) ) ? $wikiembed_options['ppe-download-button-font-color'] : PPE_DOWNLOAD_BUTTON_FONT_COLOR;
+                                            $fontColor = ( isset( $wikiembed_options['ppe-cta-button-font-color'] ) ) ? $wikiembed_options['ppe-cta-button-font-color'] : PPE_CTA_BUTTON_FONT_COLOR;
                                         ?>
-                                        <span style="width: 150px;display: inline-block;">Font Color:</span> <input type="text" id="pp-embed-download-font-color" class="fontColor rdp-we-color-picker" data-default-color="<?php echo PPE_DOWNLOAD_BUTTON_FONT_COLOR  ?>" value="<?php echo $fontColor ?>" />                                        
+                                        <span style="width: 150px;display: inline-block;">Font Color:</span> <input type="text" id="ppe-cta-button-font-color" class="fontColor rdp-we-color-picker" data-default-color="<?php echo PPE_CTA_BUTTON_FONT_COLOR  ?>" value="<?php echo $fontColor ?>" />                                        
                                     </td>
                                 </tr> 
                                 <tr>
                                     <th valign="top" style="padding: 0;" class="label" scope="row"></th>
                                     <td class="field" style="padding: 0 10px;">
                                         <?php 
-                                            $fontHoverColor = ( isset( $wikiembed_options['ppe-download-button-font-hover-color'] ) ) ? $wikiembed_options['ppe-download-button-font-hover-color'] : PPE_DOWNLOAD_BUTTON_FONT_HOVER_COLOR;
+                                            $fontHoverColor = ( isset( $wikiembed_options['ppe-cta-button-font-hover-color'] ) ) ? $wikiembed_options['ppe-cta-button-font-hover-color'] : PPE_CTA_BUTTON_FONT_HOVER_COLOR;
                                         ?>
-                                        <span style="width: 150px;display: inline-block;">Font Hover Color:</span> <input type="text" id="pp-embed-download-button-font-hover-color" class="fontHoverColor rdp-we-color-picker" data-default-color="<?php echo PPE_DOWNLOAD_BUTTON_FONT_HOVER_COLOR  ?>" value="<?php echo $fontHoverColor ?>" />                                        
+                                        <span style="width: 150px;display: inline-block;">Font Hover Color:</span> <input type="text" id="ppe-cta-button-font-hover-color" class="fontHoverColor rdp-we-color-picker" data-default-color="<?php echo PPE_CTA_BUTTON_FONT_HOVER_COLOR  ?>" value="<?php echo $fontHoverColor ?>" />                                        
                                     </td>
                                 </tr>  
                                 <tr>
                                     <th valign="top" style="padding: 0;" class="label" scope="row"></th>
                                     <td class="field" style="padding: 0 10px;">
                                         <?php 
-                                            $borderColor = ( isset( $wikiembed_options['ppe-download-button-border-color'] ) ) ? $wikiembed_options['ppe-download-button-border-color'] : PPE_DOWNLOAD_BUTTON_BORDER_COLOR;
+                                            $borderColor = ( isset( $wikiembed_options['ppe-cta-button-border-color'] ) ) ? $wikiembed_options['ppe-cta-button-border-color'] : PPE_CTA_BUTTON_BORDER_COLOR;
                                         ?>
-                                        <span style="width: 150px;display: inline-block;">Border Color:</span> <input type="text" id="pp-embed-download-button-border-color" class="borderColor rdp-we-color-picker" data-default-color="<?php echo PPE_DOWNLOAD_BUTTON_BORDER_COLOR  ?>" value="<?php echo $borderColor ?>" />                                        
+                                        <span style="width: 150px;display: inline-block;">Border Color:</span> <input type="text" id="ppe-cta-button-border-color" class="borderColor rdp-we-color-picker" data-default-color="<?php echo PPE_CTA_BUTTON_BORDER_COLOR  ?>" value="<?php echo $borderColor ?>" />                                        
                                     </td>
                                 </tr> 
                                 <tr>
                                     <th valign="top" style="padding: 0;" class="label" scope="row"></th>
                                     <td class="field" style="padding: 0 10px;">
                                         <?php 
-                                            $boxShadowColor = ( isset( $wikiembed_options['ppe-download-button-box-shadow-color'] ) ) ? $wikiembed_options['ppe-download-button-box-shadow-color'] : PPE_DOWNLOAD_BUTTON_BOX_SHADOW_COLOR;
+                                            $boxShadowColor = ( isset( $wikiembed_options['ppe-cta-button-box-shadow-color'] ) ) ? $wikiembed_options['ppe-cta-button-box-shadow-color'] : PPE_CTA_BUTTON_BOX_SHADOW_COLOR;
                                         ?>
-                                        <span style="width: 150px;display: inline-block;">Button Shadow Color:</span> <input type="text" id="pp-embed-download-button-box-shadow-color" class="boxShadowColor rdp-we-color-picker" data-default-color="<?php echo PPE_DOWNLOAD_BUTTON_BOX_SHADOW_COLOR  ?>" value="<?php echo $boxShadowColor ?>" />                                        
+                                        <span style="width: 150px;display: inline-block;">Button Shadow Color:</span> <input type="text" id="ppe-cta-button-box-shadow-color" class="boxShadowColor rdp-we-color-picker" data-default-color="<?php echo PPE_CTA_BUTTON_BOX_SHADOW_COLOR  ?>" value="<?php echo $boxShadowColor ?>" />                                        
                                     </td>
                                 </tr> 
                                 <tr>
                                     <th valign="top" style="padding: 0;" class="label" scope="row"></th>
                                     <td class="field" style="padding: 0 10px;">
                                         <?php 
-                                            $textShadowColor = ( isset( $wikiembed_options['ppe-download-button-text-shadow-color'] ) ) ? $wikiembed_options['ppe-download-button-text-shadow-color'] : PPE_DOWNLOAD_BUTTON_TEXT_SHADOW_COLOR;
+                                            $textShadowColor = ( isset( $wikiembed_options['ppe-cta-button-text-shadow-color'] ) ) ? $wikiembed_options['ppe-cta-button-text-shadow-color'] : PPE_CTA_BUTTON_TEXT_SHADOW_COLOR;
                                         ?>
-                                        <span style="width: 150px;display: inline-block;">Text Shadow Color:</span> <input type="text" id="pp-embed-download-button-text-shadow-color" class="textShadowColor rdp-we-color-picker" data-default-color="<?php echo PPE_DOWNLOAD_BUTTON_TEXT_SHADOW_COLOR  ?>" value="<?php echo $textShadowColor ?>" />                                        
+                                        <span style="width: 150px;display: inline-block;">Text Shadow Color:</span> <input type="text" id="ppe-cta-button-text-shadow-color" class="textShadowColor rdp-we-color-picker" data-default-color="<?php echo PPE_CTA_BUTTON_TEXT_SHADOW_COLOR  ?>" value="<?php echo $textShadowColor ?>" />                                        
                                     </td>
                                 </tr>                                     
                                     <tr>

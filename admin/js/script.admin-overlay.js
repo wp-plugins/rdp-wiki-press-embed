@@ -39,18 +39,18 @@ function pp_embed_send_to_editor(){
     var ppButtonBorderColor = "";
     var ppButtonBoxShadowColor = "";
     var ppButtonTextShadowColor = "";
-    var ppButtonContent = jQuery("#pp-embed-download-button-content").val();
+    var ppButtonContent = jQuery("#ppe-cta-button-content").val();
     
     if(ppButtonContent){
-        if(jQuery("#pp-embed-download-button-text").val() != rdp_we_admin.pp_button_text)ppButtonText = " download_button_text='"+ jQuery("#pp-embed-download-button-text").val() +"'";
-        if(jQuery("#pp-embed-download-button-width").val() != rdp_we_admin.pp_button_width)ppButtonWidth = " download_button_width='"+ jQuery("#pp-embed-download-button-width").val() +"'";
-        if(jQuery("#pp-embed-download-button-top-color").val() != rdp_we_admin.pp_button_top_color)ppButtonTopColor = " download_button_top_color='"+ jQuery("#pp-embed-download-button-top-color").val() +"'";
-        if(jQuery("#pp-embed-download-button-bottom-color").val() != rdp_we_admin.pp_button_bottom_color)ppButtonBottomColor = " download_button_bottom_color='"+ jQuery("#pp-embed-download-button-bottom-color").val() +"'";
-        if(jQuery("#pp-embed-download-font-color").val() != rdp_we_admin.pp_button_font_color)ppButtonFontColor = " download_button_font_color='"+ jQuery("#pp-embed-download-font-color").val() +"'";
-        if(jQuery("#pp-embed-download-button-font-hover-color").val() != rdp_we_admin.pp_button_font_hover_color)ppButtonFontHoverColor = " download_button_font_hover_color='"+ jQuery("#pp-embed-download-button-font-hover-color").val() +"'";
-        if(jQuery("#pp-embed-download-button-border-color").val() != rdp_we_admin.pp_button_border_color)ppButtonBorderColor = " download_button_border_color='"+ jQuery("#pp-embed-download-button-border-color").val() +"'";
-        if(jQuery("#pp-embed-download-button-box-shadow-color").val() != rdp_we_admin.pp_button_box_shadow_color)ppButtonBoxShadowColor = " download_button_box_shadow_color='"+ jQuery("#pp-embed-download-button-box-shadow-color").val() +"'";
-        if(jQuery("#pp-embed-download-button-text-shadow-color").val() != rdp_we_admin.pp_button_text_shadow_color)ppButtonTextShadowColor = " download_button_text_shadow_color='"+ jQuery("#pp-embed-download-button-text-shadow-color").val() +"'";
+        if(jQuery("#ppe-cta-button-text").val() != rdp_we_admin.pp_button_text)ppButtonText = " cta_button_text='"+ jQuery("#ppe-cta-button-text").val() +"'";
+        if(jQuery("#ppe-cta-button-width").val() != rdp_we_admin.pp_button_width)ppButtonWidth = " cta_button_width='"+ jQuery("#ppe-cta-button-width").val() +"'";
+        if(jQuery("#ppe-cta-button-top-color").val() != rdp_we_admin.pp_button_top_color)ppButtonTopColor = " cta_button_top_color='"+ jQuery("#ppe-cta-button-top-color").val() +"'";
+        if(jQuery("#ppe-cta-button-bottom-color").val() != rdp_we_admin.pp_button_bottom_color)ppButtonBottomColor = " cta_button_bottom_color='"+ jQuery("#ppe-cta-button-bottom-color").val() +"'";
+        if(jQuery("#ppe-cta-button-font-color").val() != rdp_we_admin.pp_button_font_color)ppButtonFontColor = " cta_button_font_color='"+ jQuery("#ppe-cta-button-download-font-color").val() +"'";
+        if(jQuery("#ppe-cta-button-font-hover-color").val() != rdp_we_admin.pp_button_font_hover_color)ppButtonFontHoverColor = " cta_button_font_hover_color='"+ jQuery("#ppe-cta-button-font-hover-color").val() +"'";
+        if(jQuery("#ppe-cta-button-border-color").val() != rdp_we_admin.pp_button_border_color)ppButtonBorderColor = " cta_button_border_color='"+ jQuery("#ppe-cta-button-border-color").val() +"'";
+        if(jQuery("#ppe-cta-button-box-shadow-color").val() != rdp_we_admin.pp_button_box_shadow_color)ppButtonBoxShadowColor = " cta_button_box_shadow_color='"+ jQuery("#ppe-cta-button-box-shadow-color").val() +"'";
+        if(jQuery("#ppe-cta-button-text-shadow-color").val() != rdp_we_admin.pp_button_text_shadow_color)ppButtonTextShadowColor = " cta_button_text_shadow_color='"+ jQuery("#ppe-cta-button-text-shadow-color").val() +"'";
         sCode += ppButtonText + ppButtonWidth + ppButtonTopColor + ppButtonFontColor + ppButtonFontHoverColor + ppButtonBorderColor + ppButtonBottomColor + ppButtonBoxShadowColor + ppButtonTextShadowColor;
     }
 
