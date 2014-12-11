@@ -35,6 +35,7 @@ RDP Wiki-Press Embed is implemented using the shortcode [wiki-embed]. It accepts
 * accordion: Replaces the sections of the wiki article with an accordion. This option cannot be used as the same time as 'tabs'.
 
 Example:
+
 [wiki-embed url="http://en.wikipedia.org/wiki/Example" no-edit no-contents no-infobox accordion]
 
 
@@ -53,9 +54,10 @@ For embedding PediaPress book pages, the following arguments are accepted:
 * cta_button_box_shadow_color: button's drop shadow color
 * cta_button_text_shadow_color: drop shadow color of button's text
 
-For the download button settings to take affect, the shortcode must be an enclosing shortcode, containing text, HTML, and/or another shortcode between the opening and closing shortcode tags.
+For the Call-to-Action button settings to take affect, the shortcode must be an enclosing shortcode, containing text, HTML, and/or another shortcode between the opening and closing shortcode tags.
 
 Examples:
+
 [wiki-embed url='https://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe']
 
 [wiki-embed url='https://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in']
