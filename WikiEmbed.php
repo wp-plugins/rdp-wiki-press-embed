@@ -3,7 +3,7 @@
  * Plugin Name: RDP Wiki-Press Embed
  * Plugin URI: http://www.robert-d-payne.com/
  * Description: Enables the inclusion of MediaWiki pages and PediaPress book pages into your own blog page or post through the use of shortcodes. Forked from: <a href="http://wordpress.org/plugins/rdp-wiki-press-embed/" target="_blank">Wiki Embed plugin</a>.
- * Version: 1.3.1
+ * Version: 1.3.2
  * Author: Robert D Payne
  * Author URI: http://www.robert-d-payne.com/
  *
@@ -100,8 +100,9 @@ class Wiki_Embed {
             $this->content_count = 0; 
             $this->version       = '1.0';
             
-            if(is_admin())return;
+
             add_action( 'init', array( $this, 'init' ) );
+            if(is_admin())return;
             // display a page when you are clicked from a wiki page
             add_action( 'template_redirect', array( $this, 'load_page' ) );
             add_filter( 'posts_join', array( $this, 'search_metadata_join' ) );
@@ -215,18 +216,14 @@ class Wiki_Embed {
      * @return void
      */
     function init() {
-       // handle pediapress css
-        wp_register_style( 'rdp-ppe-style-common', plugins_url( 'resources/css/pediapress.common.css' , __FILE__ ) );
-        wp_enqueue_style( 'rdp-ppe-style-common' );
-        $filename = RDP_WE_PLUGIN_BASEDIR . 'resources/css/pediapress.custom.css';
-        if (file_exists($filename)) {
-            wp_register_style( 'rdp-ppe-style-custom', plugins_url( 'resources/css/pediapress.custom.css' , __FILE__ ),array('rdp-ppe-style-common' ) );
-            wp_enqueue_style( 'rdp-ppe-style-custom' );
-        }              
+        // ajax stuff needed for the overlay	
+        if ( defined( 'DOING_AJAX' ) ) {
+            add_action( 'wp_ajax_wiki_embed', array( $this, 'overlay_ajax' ) );
+            add_action( 'wp_ajax_nopriv_wiki_embed', array( $this, 'overlay_ajax' ) );
+        }        
+       if (is_admin() ) return;
 
-        if ( ! is_admin() ) { // never display this stuff in the admin 
-                add_filter( 'page_link', array( $this, 'page_link' ) );
-        }
+        add_filter( 'page_link', array( $this, 'page_link' ) );
 
         // wiki embed shortcode
         add_shortcode( 'wiki-embed', array( $this, 'shortcode' ) );
@@ -254,14 +251,7 @@ class Wiki_Embed {
 
         if($this->options['wiki-links'] == 'overwrite')add_filter( 'template_include', array( &$this, 'page_template' ), 99 );
 
-        // ajax stuff needed for the overlay	
-        if ( defined( 'DOING_AJAX' ) ) {
-                if ( is_user_logged_in() ) {
-                        add_action( 'wp_ajax_wiki_embed', array( $this, 'overlay_ajax' ) );
-                } else {
-                        add_action( 'wp_ajax_nopriv_wiki_embed', array( $this, 'overlay_ajax' ) );
-                }
-        }
+
     }//init
 
     function content( $content ) {
@@ -345,6 +335,14 @@ class Wiki_Embed {
             $url = isset($atts['url'])? $atts['url'] : '';
             if(empty($url))$sHTML = 'WikiEmbed - ERROR: No URL specified.';
             if(empty($sHTML) && strpos($url, 'pediapress.com') !== false){
+                // handle pediapress css
+                 wp_register_style( 'rdp-ppe-style-common', plugins_url( 'resources/css/pediapress.common.css' , __FILE__ ) );
+                 wp_enqueue_style( 'rdp-ppe-style-common' );
+                 $filename = RDP_WE_PLUGIN_BASEDIR . 'resources/css/pediapress.custom.css';
+                 if (file_exists($filename)) {
+                     wp_register_style( 'rdp-ppe-style-custom', plugins_url( 'resources/css/pediapress.custom.css' , __FILE__ ),array('rdp-ppe-style-common' ) );
+                     wp_enqueue_style( 'rdp-ppe-style-custom' );
+                 }                    
                 require_once 'resources/rdpWEPPE.php';
                 $sHTML = RDP_WE_PPE::shortcode_handler($url,$atts,$content);
                 $sHTML = apply_filters( 'rdp-wpe-after-pediapress-content-grab', $sHTML );
@@ -1320,10 +1318,10 @@ class Wiki_Embed {
                                 <title><?php echo urldecode(esc_attr($_GET['title'])); ?></title>
 
                                 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
-                                <link media="screen" href="<?php bloginfo('stylesheet_url')?>" type="text/css" rel="stylesheet" >
-                                <link media="screen" href="/<?php echo PLUGINDIR ; ?>/rdp-wiki-press-embed/resources/css/wiki-embed.css" type="text/css" rel="stylesheet" >
-                                <link media="screen" href="/<?php echo PLUGINDIR ; ?>/rdp-wiki-press-embed/resources/css/wiki-overlay.css" type="text/css" rel="stylesheet" >
-                                <script src="/<?php echo PLUGINDIR ; ?>/rdp-wiki-press-embed/resources/js/wiki-embed-overlay.js" ></script>
+                                <link media="screen" href="<?php echo bloginfo('stylesheet_url')?>" type="text/css" rel="stylesheet" >
+                                <link media="screen" href="<?php echo plugins_url('/resources/css/wiki-embed.css', __FILE__) ; ?>" type="text/css" rel="stylesheet" >
+                                <link media="screen" href="<?php echo plugins_url('/resources/css/wiki-overlay.css', __FILE__) ; ?>" type="text/css" rel="stylesheet" >
+                                <script src="<?php echo plugins_url('/resources/js/wiki-embed-overlay.js', __FILE__) ; ?>" ></script>
                         </head>
                         <body>
                                 <div id="wiki-embed-iframe">

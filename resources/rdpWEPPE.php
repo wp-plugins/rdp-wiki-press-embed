@@ -161,7 +161,7 @@ class RDP_WE_PPE {
  
         $style = <<<EOS
 <style type="text/css">
-.rdp-ppe-cta-button {
+#mainContent #rdp-ppe-inline-content-link {
 	-o-box-shadow:inset 0px 1px 0px 0px {$a['cta_button_box_shadow_color']};
 	-moz-box-shadow:inset 0px 1px 0px 0px {$a['cta_button_box_shadow_color']};
 	-webkit-box-shadow:inset 0px 1px 0px 0px {$a['cta_button_box_shadow_color']};
@@ -203,10 +203,10 @@ class RDP_WE_PPE {
 	text-align:center;
 	text-shadow:1px 1px 0px {$a['cta_button_text_shadow_color']};
 }
-.rdp-ppe-cta-button:hover{
+#mainContent #rdp-ppe-inline-content-link:hover{
     color: {$a['cta_button_font_hover_color']};
 }
-.rdp-ppe-cta-button:active {
+#mainContent #rdp-ppe-inline-content-link:active {
 	position:relative;
 	top:1px;
 }</style>   
