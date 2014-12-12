@@ -15,7 +15,7 @@ It strips and reformats the content, allowing you to supply some arguments to di
 RDP Wiki-Press Embed also allows lead capture capabilities, utilizing free PediaPress ebooks as an offer.
 
 
-=Known Issues=
+= Known Issues =
 
 * CSS clashes with Lightbox Plus Colorbox plug-in
 
