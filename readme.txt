@@ -3,7 +3,7 @@ Contributors: rpayne7264, enej, ejackisch, devindra, ctlt-dev, ubcdev
 Tags: mediawiki, wiki, wiki-embed, embed, content framework, wiki inc, pediapress, pediapress embed
 Requires at least: 3.5
 Tested up to: 4.0
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 
 RDP Wiki-Press Embed lets you embed MediaWiki pages in to your site, from sites like Wikipedia, and PediaPress book pages.
 
@@ -13,6 +13,12 @@ RDP Wiki-Press Embed will pull content from any MediaWiki website (such as wikip
 It strips and reformats the content, allowing you to supply some arguments to dictate how this works.
 
 RDP Wiki-Press Embed also allows lead capture capabilities, utilizing free PediaPress ebooks as an offer.
+
+
+=Known Issues=
+
+* CSS clashes with Lightbox Plus Colorbox plug-in
+
 
 Forked from: [Wiki Embed plugin](http://wordpress.org/plugins/wiki-embed/  "Wiki Embed plugin").
 
@@ -62,7 +68,7 @@ Examples:
 
 [wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in']
 
-[wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in' cta_button_top_color='#eded00' cta_button_text_shadow_color='#cd8a15']<iframe src="http://www.w3schools.com"></iframe>[/wiki-embed]
+[wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in' cta_button_top_color='#eded00' cta_button_text_shadow_color='#cd8a15']`<iframe src="http://www.w3schools.com"></iframe>`[/wiki-embed]
 
 
 == Configuration ==
@@ -93,6 +99,19 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 
 
 == Changelog ==
+
+= 1.3.2 =
+* REFACTOR: multiple bug fixes
+* REFACTOR: removed extraneous Colorbox script files
+
+*Changed files:*
+
+* readme.txt
+* WikiEmbed.php
+* admin/css/admin.css
+* resources/rdpWEPPE.php
+* resources/js/pediapress-overlay.js
+
 
 = 1.3.1 =
 * REFACTOR: renamed Call-to-Action variables and shortcode attributes
