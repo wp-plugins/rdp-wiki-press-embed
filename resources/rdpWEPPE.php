@@ -3,13 +3,17 @@ if ( ! class_exists('RDP_WE_PPE') ) :
 class RDP_WE_PPE {
     public static function shortcode_handler($url,$atts,$content = null){
         wp_enqueue_script( 'colorbox', plugins_url( '/resources/js/jquery.colorbox.min.js',RDP_WE_PLUGIN_BASENAME),array("jquery"), "1.3.20.2", true );        
-        wp_enqueue_script( 'pp-overlay', plugins_url( '/resources/js/pediapress-overlay.js',RDP_WE_PLUGIN_BASENAME),array("jquery",'colorbox'), "1.0", true );        
+        wp_enqueue_script( 'ppe-overlay', plugins_url( '/resources/js/pediapress-overlay.js',RDP_WE_PLUGIN_BASENAME),array("jquery",'colorbox'), "1.0", true );        
         if(!empty($content)){
             $params = array('fcontent' => 1);
-            wp_localize_script( 'pp-overlay', 'rdp_we_ppe', $params );
+            wp_localize_script( 'ppe-overlay', 'rdp_we_ppe', $params );
+            wp_enqueue_script("jquery-ui-tabs");
+            wp_enqueue_style( 'wiki-embed-admin-core-style', plugins_url( '/admin/css/jquery-ui.css',RDP_WE_PLUGIN_BASENAME ), null,'1.11.2' );            
+            wp_enqueue_style( 'wiki-embed-admin-theme-style', plugins_url( '/admin/css/jquery-ui.theme.min.css',RDP_WE_PLUGIN_BASENAME ), array('wiki-embed-admin-core-style'),'1.11.2' );             
         } 
 
-        wp_enqueue_style( 'wiki-embed-overlay', plugins_url( '/resources/css/colorbox.css',RDP_WE_PLUGIN_BASENAME),false, "1.3.20.2", 'screen');        
+        wp_enqueue_style( 'ppe-colorbox-style', plugins_url( '/resources/css/colorbox.css',RDP_WE_PLUGIN_BASENAME),false, "1.3.20.2", 'screen');        
+        
         $content = self::grabContentFromPediaPress($url,$atts,$content);
         return $content;
     } //shortcode
@@ -18,12 +22,8 @@ class RDP_WE_PPE {
     public static function grabContentFromPediaPress($URL,$atts,$content = null){
         $html = null;
         $sHTML = '';
-        require_once RDP_WE_PLUGIN_BASEDIR .'/resources/simple_html_dom.php'; 
-        $html = rdp_file_get_html($URL);
-        if(!$html)return $sHTML;  
         global $wikiembed_object;     
-        $wikiembed_options = $wikiembed_object->options; 
-        
+        $wikiembed_options = $wikiembed_object->options;         
         $a = shortcode_atts( array(
         'url' => '',
         'toc_show' => empty($wikiembed_options['toc-show'])? '0' : $wikiembed_options['toc-show'],
@@ -43,6 +43,32 @@ class RDP_WE_PPE {
         if(!is_numeric($a['toc_show']))$a['toc_show'] = 1;
         $arrTOCLinksDefaults = array('default','disabled','logged-in');
         if(!in_array( $a['toc_links'], $arrTOCLinksDefaults ))$a['toc_links'] = 'default';
+        
+        $sKEY = esc_url( $a['url'] ).",";
+        $sKEY .= $a['toc_show'] .",";
+        $sKEY .= $a['toc_links'] .",";
+        $sKEY .= $a['cta_button_content'] .",";
+        $sKEY .= $a['cta_button_text'] .",";
+        $sKEY .= $a['cta_button_width'] .",";
+        $sKEY .= $a['cta_button_top_color'] .",";
+        $sKEY .= $a['cta_button_font_color'] .",";
+        $sKEY .= $a['cta_button_font_hover_color'] .",";
+        $sKEY .= $a['cta_button_border_color'] .",";
+        $sKEY .= $a['cta_button_bottom_color'] .",";
+        $sKEY .= $a['cta_button_box_shadow_color'] .",";
+        $sKEY .= $a['cta_button_text_shadow_color'] .",";
+        $sKEY .= is_user_logged_in();
+        $sKEY = 'ppebook-' . md5($sKEY);
+        
+        $cacheInterval = empty($wikiembed_options['ppe-update'])? '0' : $wikiembed_options['ppe-update']; 
+        if(!is_numeric($cacheInterval))$cacheInterval = 0;        
+        if ($cacheInterval > 0 && false !== ( $special_query_results = get_transient( $sKEY ) ) ) return $special_query_results;
+        
+        require_once RDP_WE_PLUGIN_BASEDIR .'/resources/simple_html_dom.php'; 
+        $html = rdp_file_get_html($URL);
+        if(!$html)return $sHTML;  
+
+        
         $sDownloadButton = '';
         $sInlineHTML = '';        
         $bodyID = $html->find('body',0)->id;
@@ -69,8 +95,10 @@ class RDP_WE_PPE {
                 $mainContent->class = 'book_show';
                 $coverImage = $mainContent->find('#coverImage',0);
                 $coverImage->src = $baseURL . $coverImage->src;
-                $coverImage->outertext = "<a href='{$URL}' target='_new' class='ppe-cover-link'>" . $coverImage->outertext . "</a>";
-                
+                $coverImageLink = "<a target='_new' href='";
+                $coverImageLink .= (!empty($a['cta_button_content']))? "#rdp_ppe_inline_content" : $URL ;
+                $coverImageLink .= "' class='ppe-cover-link'>" . $coverImage->outertext . "</a>";
+                $coverImage->outertext = $coverImageLink;
                 if(empty($a['toc_show'])){
                     $mainContent->find('h2',0)->outertext = '';
                     $mainContent->find('ul.outline',0)->outertext = '';                    
@@ -79,15 +107,13 @@ class RDP_WE_PPE {
                         case 'logged-in':
                             if(!is_user_logged_in()):
                                 foreach($mainContent->find('ul.outline li a') as $link){
-                                    $link->href = null;
-                                    $link->class = 'not-allowed';
+                                    $link->outertext = $link->innertext;
                                 }
                             endif;
                             break;
                         case 'disabled':
                             foreach($mainContent->find('ul.outline li a') as $link){
-                                $link->href = null;
-                                $link->class = 'not-allowed';
+                                $link->outertext = $link->innertext;
                             }
                             break;
                         default:
@@ -109,7 +135,10 @@ class RDP_WE_PPE {
                 
                 $sPriceCurrency = $mainContent->find('#price-currency',0)->innertext;
                 $sPriceAmount = $mainContent->find('#price-amount',0)->innertext;
-                $sAddToCart = "<div id='add-to-cart-box'><span class='btn'><a class='ppe-add-to-cart' target='_new' href={$URL}>Print Edition - {$sPriceCurrency} {$sPriceAmount}</a><div></div></span></div>";
+                $sAddToCart = "<div id='add-to-cart-box'><span class='btn'><a href='";
+                $sAddToCart .= (!empty($a['cta_button_content']))? "#rdp_ppe_inline_content" : $URL ;
+                $sAddToCartText = "Purchase Print Edition - {$sPriceCurrency} {$sPriceAmount}";
+                $sAddToCart .= "' class='ppe-add-to-cart' target='_new'>$sAddToCartText</a><div></div></span></div>";
                 $mainContent->find('#price-amount',0)->outertext = '';
                 $mainContent->find('#price-star',0)->outertext = '';
                  
@@ -145,8 +174,19 @@ class RDP_WE_PPE {
                     $sDownloadButton = "<div id='rdp-ppe-inline-content-sep'>OR</div>";
                     $sDownloadButton .= "<div><a id='rdp-ppe-inline-content-link' class='rdp-ppe-cta-button' href='#rdp_ppe_inline_content'>{$a['cta_button_text']}</a></div>";
                     $sInlineHTML .= "<div id='rdp_ppe_inline_content_wrapper' style='display:none'><div id='rdp_ppe_inline_content' style='padding:10px; background:#fff;'>";
+                    $sInlineHTML .= '<div id="wiki-embed-tabs" style="position: static;">';
+                    $sInlineHTML .= "<ul>";
+                    $sInlineHTML .= "<li><a href='#tab-1'>{$a['cta_button_text']}</a></li>";
+                    $sInlineHTML .= "<li><a href='#tab-2'>{$sAddToCartText}</a></li>";
+                    $sInlineHTML .= "</ul>";
+                    $sInlineHTML .= '<div id="tab-1" class="ppe-tab">';
                     $sInlineHTML .= do_shortcode($a['cta_button_content']);
-                    $sInlineHTML .= "</div></div>";
+                    $sInlineHTML .= "</div><!-- #tab-1 -->";
+                    $sInlineHTML .= '<div id="tab-2" class="ppe-tab">';                    
+                    $sInlineHTML .= "<iframe src='{$URL}'></iframe>";
+                    $sInlineHTML .= "</div><!-- #tab-2 -->"; 
+                    $sInlineHTML .= "</div><!-- #ppe-tabs -->";                    
+                    $sInlineHTML .= "</div><!-- #rdp_ppe_inline_content --></div>";
                 }                 
                 $metaData->innertext = $metaParasContent . $sAddToCart . $sDownloadButton;
                 $boundingBoxes[1]->outertext = $s1Divs[0]->outertext . $metaData->outertext; 
@@ -214,10 +254,12 @@ class RDP_WE_PPE {
    
 EOS;
        
-        
-        
-        return $sHTML . $style;
+        $sHTML .= $style;
+
+        if($cacheInterval > 0)set_transient( $sKEY, $sHTML, $cacheInterval * HOUR_IN_SECONDS );
+        return $sHTML;
     }//grabContentFromPediaPress
+    
     
 }//RDP_WE_PPE
 endif;
