@@ -3,7 +3,7 @@
  * Plugin Name: RDP Wiki-Press Embed
  * Plugin URI: http://www.robert-d-payne.com/
  * Description: Enables the inclusion of MediaWiki pages and PediaPress book pages into your own blog page or post through the use of shortcodes. Forked from: <a href="http://wordpress.org/plugins/rdp-wiki-press-embed/" target="_blank">Wiki Embed plugin</a>.
- * Version: 1.3.2
+ * Version: 1.4.1
  * Author: Robert D Payne
  * Author URI: http://www.robert-d-payne.com/
  *
@@ -55,7 +55,7 @@
 define('RDP_WE_PLUGIN_BASENAME', plugin_basename(__FILE__));
 $dir = plugin_dir_path( __FILE__ );
 define('RDP_WE_PLUGIN_BASEDIR', $dir);
-/* download button default values */
+/* Call-to-Action button default values */
 define('PPE_CTA_BUTTON_TEXT', 'Download FREE eBook Edition');
 define('PPE_CTA_BUTTON_WIDTH', '250');
 define('PPE_CTA_BUTTON_TOP_COLOR', '#eded00');
@@ -289,7 +289,8 @@ class Wiki_Embed {
                     'style'           => 1,
                     'tabs-style'      => 0,
                     'accordion-style' => 0,
-                    'wiki-update'     => "30",
+                    'ppe-update'     => "12", /* hours */
+                    'wiki-update'     => "30", /* minutes */
                     'wiki-links'      => "default",
                     'wiki-links-new-page-email' => "",
                     'toc-links'      => "default",

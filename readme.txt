@@ -3,7 +3,7 @@ Contributors: rpayne7264, enej, ejackisch, devindra, ctlt-dev, ubcdev
 Tags: mediawiki, wiki, wiki-embed, embed, content framework, wiki inc, pediapress, pediapress embed
 Requires at least: 3.5
 Tested up to: 4.0
-Stable tag: 1.3.2
+Stable tag: 1.4.1
 
 RDP Wiki-Press Embed lets you embed MediaWiki pages in to your site, from sites like Wikipedia, and PediaPress book pages.
 
@@ -60,13 +60,13 @@ For embedding PediaPress book pages, the following arguments are accepted:
 * cta_button_box_shadow_color: button's drop shadow color
 * cta_button_text_shadow_color: drop shadow color of button's text
 
-For the Call-to-Action button settings to take affect, the shortcode must be an enclosing shortcode, containing text, HTML, and/or another shortcode between the opening and closing shortcode tags.
-
 Examples:
 
 [wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe']
 
 [wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in']
+
+For the Call-to-Action button to appear, the shortcode must be an enclosing shortcode, containing text, HTML, and/or another shortcode, between the opening and closing shortcode tags.
 
 [wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in' cta_button_top_color='#eded00' cta_button_text_shadow_color='#cd8a15']`<iframe src="http://www.w3schools.com"></iframe>`[/wiki-embed]
 
@@ -81,7 +81,7 @@ Here you can enable/disable various features, define shortcode defaults, and con
 
 1. Upload `rdp-wiki-embed` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Change the wiki embed settings to your liking
+3. Go to 'Wiki Embed' -> 'Settings' and change the wiki embed settings to your liking
 4. Click the 'Save Changes' button at the bottom of the options page - even if you do not make any changes - so settings take affect
 
 = Extra =
@@ -100,6 +100,32 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 
 == Changelog ==
 
+= 1.4.1 =
+* REFACTOR: added code to ensure the CTA button always opens the first tab
+
+
+= 1.4.0 =
+* FEATURE: added setting to cache PediaPress book pages
+* FEATURE: added button to clear cached PediaPress book pages
+* REFACTOR: updated Call-to-Action pop-up lightbox to use tabs - one for custom content and one that displays the PediPress.com page
+* REFACTOR: changed text of blue Add-to-Cart button to start with 'Purchase Print Edition'
+* REFACTOR: widened right-side book info container
+* REFACTOR: completely removed TOC hyperlinks when the links should be disabled
+* UPDATE: changed screenshot #4
+* UPDATE: changed screenshot #6
+
+*Changed files:*
+
+* readme.txt
+* screenshot-4.png
+* screenshot-6.png
+* WikiEmbed.php
+* admin/settings-page.php
+* resources/rdpWEPPE.php
+* resources/css/pediapress.common.css
+* resources/js/pediapress-overlay.js
+
+
 = 1.3.2 =
 * REFACTOR: multiple bug fixes
 * REFACTOR: removed extraneous Colorbox script files
@@ -117,7 +143,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * REFACTOR: renamed Call-to-Action variables and shortcode attributes
 
 = 1.3.0 =
-* FEATURE: added call-to-action button and pop-up lightbox for PediaPress books
+* FEATURE: added Call-to-Action button and pop-up lightbox for PediaPress books
 * REFACTOR: expanded global PediaPress shortcode settings options
 * REFACTOR: re-worked shortcode pop-up form to reflect expanded PediaPress options
 * UPDATE: changed screenshot #2

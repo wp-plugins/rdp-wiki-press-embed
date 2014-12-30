@@ -8,21 +8,28 @@ function wikiembed_settings_page() {
 	$updated = false;
 	$option = "wikiembed_options";
 
-	if ( isset( $_POST[$option] ) ):
-		$value = $_POST[$option];
+        if(isset($_POST['btnClearPPECache'])){
+            global $wpdb;
+            $sSQL = "DELETE FROM $wpdb->options WHERE option_name LIKE '%_ppebook-%';";
+            $wpdb->query($sSQL);
+            
+        }
+        
+	if (!isset($_POST['btnClearPPECache']) && isset( $_POST[$option] ) ):
+            $value = $_POST[$option];
 
-               $fdisplayTOC = empty($value['toc-show'])? 0 : intval($value['toc-show']);
-		
-		if ( ! is_array( $value ) ) {
-			$value = trim($value);
-		}else{
-                    $value = shortcode_atts( $wikiembed_object->default_settings(), $value );
-                }
-		
-                $value['toc-show'] = $fdisplayTOC;
-		$value = stripslashes_deep( $value );
-		$updated = update_option( $option, $value );
-		$wikiembed_options = $value;
+           $fdisplayTOC = empty($value['toc-show'])? 0 : intval($value['toc-show']);
+
+            if ( ! is_array( $value ) ) {
+                    $value = trim($value);
+            }else{
+                $value = shortcode_atts( $wikiembed_object->default_settings(), $value );
+            }
+
+            $value['toc-show'] = $fdisplayTOC;
+            $value = stripslashes_deep( $value );
+            $updated = update_option( $option, $value );
+            $wikiembed_options = $value;
 	endif; 	
 	
 	$tabs_support = get_theme_support( 'tabs' );
@@ -116,6 +123,26 @@ function wikiembed_settings_page() {
 			<h3>Global Settings </h3>
 			<p>These settings are applied site-wide</p>
 			<table class="form-table">
+				<tr> <!-- Update Content -->
+					<th valign="top" class="label" scope="row">
+						<span class="alignleft">
+							<label for="src">Update content from PediaPress</label>
+						</span>
+					</th>
+					<td class="field">
+						<select name="wikiembed_options[ppe-update]" id="ppe-update">
+							<option value="0" <?php selected( $wikiembed_options['ppe-update'], "0" ); ?>>No Caching</option>
+							<option value="12" <?php selected( $wikiembed_options['ppe-update'], "12" ); ?>>Every 12 Hours </option>
+							<option value="24" <?php selected( $wikiembed_options['ppe-update'], "24" ); ?>>Every 24 Hours </option>
+							<option value="48" <?php selected( $wikiembed_options['ppe-update'], "48" ); ?>>Every 48 Hours </option>
+							<option value="72" <?php selected( $wikiembed_options['ppe-update'], "72" ); ?>>Every 72 Hours </option>
+						</select>
+						<div class="help-div">
+							Set the duration the content of PediaPress book pages to be stored on your site, before it is refreshed again.
+						</div>
+                                            <p><input type="submit" name="btnClearPPECache" value="Clear PediaPress Cache" /></p>
+					</td>
+				</tr>                            
 				<tr> <!-- Update Content -->
 					<th valign="top" class="label" scope="row">
 						<span class="alignleft">
@@ -430,7 +457,8 @@ function wikiembed_options_validate( $wikiembed_options ) {
 		'style'           => ( isset( $wikiembed_options['style']           ) && $wikiembed_options['style']           == 1 ? 1 : 0 ),
 		'tabs-style'      => ( isset( $wikiembed_options['tabs-style']      ) && $wikiembed_options['tabs-style']      == 1 ? 1 : 0 ),
 		'accordion-style' => ( isset( $wikiembed_options['accordion-style'] ) && $wikiembed_options['accordion-style'] == 1 ? 1 : 0 ),
-		'wiki-update'     => ( is_numeric( $wikiembed_options['wiki-update'] ) ? $wikiembed_options['wiki-update'] : "30" ),
+                'ppe-update'     => ( is_numeric( $wikiembed_options['ppe-update'] ) ? $wikiembed_options['ppe-update'] : "12" ), /* hours */
+		'wiki-update'     => ( is_numeric( $wikiembed_options['wiki-update'] ) ? $wikiembed_options['wiki-update'] : "30" ), /* minutes */
 		'wiki-links'      => ( in_array( $wikiembed_options['wiki-links'], array( "default", "overlay", "new-page","overwrite" ) ) ? $wikiembed_options['wiki-links'] : "default" ),
 		'wiki-links-new-page-email' => wp_rel_nofollow( $wikiembed_options['wiki-links-new-page-email'] ),
 		'toc-show'            => ( isset( $wikiembed_options['toc-show']) && $wikiembed_options['toc-show']            == 1 ? 1 : 0 ),		
