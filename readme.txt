@@ -3,7 +3,7 @@ Contributors: rpayne7264, enej, ejackisch, devindra, ctlt-dev, ubcdev
 Tags: mediawiki, wiki, wiki-embed, embed, content framework, wiki inc, pediapress, pediapress embed
 Requires at least: 3.5
 Tested up to: 4.0
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 
 RDP Wiki-Press Embed lets you embed MediaWiki pages in to your site, from sites like Wikipedia, and PediaPress book pages.
 
@@ -99,6 +99,10 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 
 
 == Changelog ==
+
+= 1.4.1 =
+* REFACTOR: added code to ensure the CTA button always opens the first tab
+
 
 = 1.4.0 =
 * FEATURE: added setting to cache PediaPress book pages

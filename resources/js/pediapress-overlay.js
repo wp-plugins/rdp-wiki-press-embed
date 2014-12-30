@@ -33,7 +33,8 @@ function rdp_pp_overlay_onReady(){
                                         inline:true, 
                                         innerWidth: 960, 
                                         innerHeight:"80%",
-                                        transition:"none"
+                                        transition:"none",
+                                        onOpen:function(){ $j( "#wiki-embed-tabs" ).tabs( "option", "active", 0 ); }
                                         }) ;
         $j( "#wiki-embed-tabs" ).tabs(); 
         
