@@ -28,7 +28,7 @@ class RDP_WE_PPE {
         } 
 
         wp_enqueue_style( 'ppe-colorbox-style', plugins_url( '/resources/css/colorbox.css',RDP_WE_PLUGIN_BASENAME),false, "1.3.20.2", 'screen');        
-        do_action('pp_book_scripts_enqueued',$atts, $content);        
+        do_action('rdp_pp_book_scripts_enqueued',$atts, $content);        
     }//handleScripts
     
     public static function grabContentFromPediaPress($url){

@@ -99,6 +99,7 @@ Embedding a PediaPress gallery of books is implemented using the shortcode [wiki
 * cta_button_text_shadow_color: drop shadow color of button's text
 
 The layout for displaying each book in the gallery is based on the template file located at: resources/ppgallery-template/ppgallery.column.results.html
+
 A sample template that displays buttons is located at: resources/ppgallery-template/ppgallery.column.results-sample.html
 
 
@@ -417,59 +418,69 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
  
 == Other Notes ==
 
-= PHP Hook Reference: =
+== PHP Hook Reference: ==
 
-**pp_book_scripts_enqueued**
-Param 1: Shortcode attributes
-Param 2: Shortcode content
-Fires after enqueuing scripts and styles for a single book
+= rdp_pp_book_scripts_enqueued =
 
-**pp_gallery_scripts_enqueued**
-Param 1: Shortcode attributes
-Param 2: Shortcode content
-Fires after enqueuing scripts and styles for a gallery page
+* Param 1: Shortcode attributes
+* Param 2: Shortcode content
+* Fires after enqueuing scripts and styles for a single book
 
+= rdp_pp_gallery_scripts_enqueued =
 
-= PHP Filter Reference: =
-
-**rdp_pp_book_cta_button**
-Param: String containing HTML for Call-to-Action button when displaying a single book
-Return: HTML for Call-to-Action button when displaying a single book
-
-**rdp_pp_book_main_content_classes**
-Param: String containing class names for the #mainContent container when displaying a single book
-Return: class names for the #mainContent container when displaying a single book
-
-**rdp_pp_book_atc_href**
-Param: String containing href value for Call-to-Action button when displaying a single book
-Return: href value for Call-to-Action button when displaying a single book
-
-**rdp_pp_gallery_item**
-Param: String containing HTML for a single gallery item
-Return: HTML for a single gallery item
+* Param 1: Shortcode attributes
+* Param 2: Shortcode content
+* Fires after enqueuing scripts and styles for a gallery page
 
 
-= Javascript Hook Reference: =
+== PHP Filter Reference: ==
 
-**rdp_pp_gallery_colorbox_onOpen**
-Param 1: jQuery Event object
-Param 2: jQuery object that fired the hook
-Fires after updating tab #2 in the Colorbox lightbox
+= rdp_pp_book_cta_button =
+
+* Param: String containing HTML for Call-to-Action button when displaying a single book
+* Return: HTML for Call-to-Action button when displaying a single book
 
 
-= Gallery Item Merge Code Reference: =
+= rdp_pp_book_main_content_classes =
 
-%%BookSize%% = book size
-%%CTAButtonText%% = Call-to-Action text
-%%Editor%% = book editor
-%%Excerpt%% = excerpt for the book
-%%FullTitle%% = concatenation of the book title and sub-title
-%%Image%% = URL to book cover image
-%%Language%% = book language
-%%Link%% = URL to PediaPress.com book page
-%%PostID%% = post id for the book
-%%PostLink%% = URL to the post for the book
-%%PriceAmount%% = book price
-%%PriceCurrency%% = currency denomination
-%%Subtitle%% = book sub-title
-%%Title%% = book title
+* Param: String containing class names for the #mainContent container when displaying a single book
+* Return: class names for the #mainContent container when displaying a single book
+
+
+= rdp_pp_book_atc_href =
+
+* Param: String containing href value for Call-to-Action button when displaying a single book
+* Return: href value for Call-to-Action button when displaying a single book
+
+
+= rdp_pp_gallery_item =
+
+* Param: String containing HTML for a single gallery item
+* Return: HTML for a single gallery item
+
+
+== Javascript Hook Reference: ==
+
+= rdp_pp_gallery_colorbox_onOpen =
+
+* Param 1: jQuery Event object
+* Param 2: jQuery object that fired the hook
+* Fires after updating tab #2 in the Colorbox lightbox
+
+
+== Gallery Item Merge Code Reference: ==
+
+* %%BookSize%% = book size
+* %%CTAButtonText%% = Call-to-Action text
+* %%Editor%% = book editor
+* %%Excerpt%% = excerpt for the book
+* %%FullTitle%% = concatenation of the book title and sub-title
+* %%Image%% = URL to book cover image
+* %%Language%% = book language
+* %%Link%% = URL to PediaPress.com book page
+* %%PostID%% = post id for the book
+* %%PostLink%% = URL to the post for the book
+* %%PriceAmount%% = book price
+* %%PriceCurrency%% = currency denomination
+* %%Subtitle%% = book sub-title
+* %%Title%% = book title
