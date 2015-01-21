@@ -57,6 +57,7 @@ function wikiembed_overlay_popup_form() {
                       <ul>
                         <li><a href="#tabs-1"><?php _e('Wiki Page', 'wiki-embed'); ?></a></li>
                         <li><a href="#tabs-2"><?php _e('PediaPress Book', 'wiki-embed'); ?></a></li>
+                        <li><a href="#tabs-3"><?php _e('PediaPress Gallery', 'wiki-embed'); ?></a></li>
                       </ul>
 			<div id="tabs-1" class="wiki_embed_form_wrap">
                             <div class="media-item media-blank">
@@ -159,6 +160,20 @@ function wikiembed_overlay_popup_form() {
                                     <tr>
                                         <th valign="top" class="label" scope="row"></th>
                                         <td class="field">
+                                            <input type="checkbox" aria-required="true" value="1" name="pp-embed-display-image" id="pp-embed-display-image" checked="checked" /> <span style="margin-right: 8px;"><label for="pp-embed-display-image"> Display cover image</label></span>
+                                            <input type="checkbox" aria-required="true" value="1" name="pp-embed-display-title" id="pp-embed-display-title" checked="checked" /> <span style="margin-right: 8px;"><label for="pp-embed-display-title"> Display title</label></span>                                            
+                                            <input type="checkbox" aria-required="true" value="1" name="pp-embed-display-subtitle" id="pp-embed-display-subtitle" checked="checked" /> <span><label for="pp-embed-display-subtitle"> Display subtitle</label></span>
+                                            <div></div>
+                                            <input type="checkbox" aria-required="true" value="1" name="pp-embed-display-editor" id="pp-embed-display-editor" checked="checked" /> <span  style="margin-right: 8px;"><label for="pp-embed-display-editor"> Display editor</label></span>
+                                            <input type="checkbox" aria-required="true" value="1" name="pp-embed-display-language" id="pp-embed-display-language" checked="checked" /> <span style="margin-right: 8px;"><label for="pp-embed-display-language"> Display language</label></span>
+                                            <input type="checkbox" aria-required="true" value="1" name="pp-embed-display-atc" id="pp-embed-display-atc" checked="checked" /> <span ><label for="pp-embed-display-atc"> Display Add-to-Cart button</label></span>                                        
+                                            <div></div>
+                                            <input type="checkbox" aria-required="true" value="1" name="pp-embed-display-book-size" id="pp-embed-display-book-size" checked="checked" /> <span  style="margin-right: 8px;"><label for="pp-embed-display-book-size"> Display book size</label></span>
+                                        </td>                                        
+                                    </tr>
+                                    <tr>
+                                        <th valign="top" class="label" scope="row"></th>
+                                        <td class="field">
                                             <h3>CTA Button Settings</h3>
                                             <label for="ppe-cta-button-content">Popup Content (shortcode/text/HTML)</label><br />
                                             <?php
@@ -186,7 +201,8 @@ function wikiembed_overlay_popup_form() {
                                         <?php 
                                             $sPPDownloadButtonWidth = ( isset( $wikiembed_options['ppe-cta-button-width'] ) ) ? $wikiembed_options['ppe-cta-button-width'] : PPE_CTA_BUTTON_WIDTH;
                                         ?>
-                                        <span style="width: 150px;display: inline-block;">Width:</span> <input type="text" id="ppe-cta-button-width" value="<?php echo $sPPDownloadButtonWidth ?>"  style="width: 50px;"/> pixels (max: 500)                                    
+                                        <span style="width: 150px;display: inline-block;">Width:</span> <input type="text" id="ppe-cta-button-width" value="<?php echo $sPPDownloadButtonWidth ?>"  style="width: 50px;"/> pixels
+                                        <p style="margin-top: 0;text-align: center;">(max: 500) or <em>auto</em> for normal auto sizing</p>                                  
                                     </td>
                                 </tr>                                
                                 <tr>
@@ -260,11 +276,181 @@ function wikiembed_overlay_popup_form() {
                                     </tr>                                    
                                 </tbody>
                             </table>
-                                                        
-                        
                         </div>
-                    </div>                    
-                    
+                    </div> 
+                        
+                        
+                    <div id="tabs-3" class="pp_embed_form_wrap">
+                        <div class="media-item media-blank">
+                            <table class="describe">
+                                <tbody> 
+                                    <tr>
+                                        <th valign="top" class="label" scope="row" style="width: 200px;">
+                                                <span class="alignleft"><label for="pp-gallery-col"><?php _e('Number of Columns', 'wiki-embed'); ?></label></span>
+                                                <span class="alignright"><abbr class="required" title="required" id="status_img">*</abbr></span>
+                                        </th>
+                                        <td class="field"><input type="text" aria-required="true" value="2" name="pp-gallery-col" id="pp-gallery-col" style="width: 20px;"></td>
+                                    </tr>                                    
+                                    <tr>
+                                        <th valign="top" class="label" scope="row" style="width: 200px;">
+                                                <span class="alignleft"><label for="pp-gallery-num"><?php _e('Number of Results per Page', 'wiki-embed'); ?></label></span>
+                                                <span class="alignright"><abbr class="required" title="required" id="status_img">*</abbr></span>
+                                        </th>
+                                        <td class="field"><input type="text" aria-required="true" value="10" name="pp-gallery-num" id="pp-gallery-num" style="width: 30px;"></td>
+                                    </tr> 
+                                    <tr>
+                                        <th valign="top" class="label" scope="row" style="width: 200px;">
+                                                <span class="alignleft"><label for="pp-gallery-categories"><?php _e('Target Categories', 'wiki-embed'); ?></label></span>
+                                                <span class="alignright"><abbr class="required" title="required" id="status_img"></abbr></span>
+                                        </th>
+                                        <td class="field">
+                                            <div id="pp-gallery-categories" class="container">
+                                                <?php 
+                                                $args = array(
+                                                  'orderby' => 'name',
+                                                  'parent' => 0
+                                                  );
+                                                $categories = get_categories( $args );  
+                                                    foreach ( $categories as $category ) {
+                                                            echo '<input class="pp-gallery-category" name="pp-gallery-category" value="'. $category->term_id . '" type="checkbox" />' . $category->name . '<br/>';
+                                                    }
+                                                ?>
+                                            </div>
+                                        </td>
+                                    </tr> 
+                                    <tr>
+                                        <th valign="top" class="label" scope="row" style="width: 200px;">
+                                                <span class="alignleft"><label for="pp-gallery-tags"><?php _e('Target Tags', 'wiki-embed'); ?></label></span>
+                                                <span class="alignright"><abbr class="required" title="required" id="status_img"></abbr></span>
+                                        </th>
+                                        <td class="field">
+                                            <div id="pp-gallery-tags" class="container">
+                                                <?php 
+                                                $args = array(
+                                                  'orderby' => 'name',
+                                                  'parent' => 0
+                                                  );
+                                                $tags = get_tags( $args );  
+                                                    foreach ( $tags as $tag ) {
+                                                            echo '<input class="pp-gallery-tag" name="pp-gallery-tag" value="'. $tag->term_id . '" type="checkbox" />' . $tag->name . '<br/>';
+                                                    }
+                                                ?>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th valign="top" class="label" scope="row" style="width: 200px;">
+                                                <span class="alignleft"><label for="pp-gallery-sort-col"><?php _e('Sort Field', 'wiki-embed'); ?></label></span>
+                                        </th>
+                                        <td class="field">
+                                            <input type="radio" name="pp-gallery-sort-col" checked="checked" value="post_title">Post Title &nbsp;&nbsp;&nbsp;<input type="radio" name="pp-gallery-sort-col" value="post_date">Post Date
+                                        </td>
+                                    </tr> 
+                                    <tr>
+                                        <th valign="top" class="label" scope="row" style="width: 200px;">
+                                                <span class="alignleft"><label for="pp-gallery-sort-dir"><?php _e('Sort Order', 'wiki-embed'); ?></label></span>
+                                        </th>
+                                        <td class="field">
+                                            <input type="radio" name="pp-gallery-sort-dir" checked="checked" value="ASC">Ascending &nbsp;&nbsp;&nbsp;<input type="radio" name="pp-gallery-sort-dir" value="DESC">Descending
+                                        </td>
+                                    </tr> 
+                                    <tr>
+                                        <th valign="top" class="label" scope="row"></th>
+                                        <td class="field">
+                                            <h3>CTA Button Settings</h3>
+                                            <label for="ppegallery-cta-button-content">Popup Content (shortcode/text/HTML)</label><br />
+                                            <?php
+                                                $sPPDownloadButtonContent = empty($wikiembed_options['ppe-cta-button-content'])? '' : $wikiembed_options['ppe-cta-button-content'];
+                                                $sPPDownloadButtonContent = esc_textarea($sPPDownloadButtonContent);
+                                            ?>                                              
+                                            <textarea id="ppegallery-cta-button-content"><?php echo $sPPDownloadButtonContent ?></textarea>
+                                        </td>
+                                    </tr>                                    
+                                    <tr>
+                                        <th valign="top" class="label" scope="row" style="width: 200px;"></th>
+                                        <td class="field">
+                                            <label for="ppegallery-cta-button-text">CTA Button Text</label>
+                                            <?php
+                                                $sPPDownloadButtonText = empty($wikiembed_options['ppe-cta-button-text'])? PPE_CTA_BUTTON_TEXT : $wikiembed_options['ppe-cta-button-text'];
+                                                $sPPDownloadButtonText = esc_attr($sPPDownloadButtonText);
+                                            ?>                                              
+                                            <input type="text" id="ppegallery-cta-button-text" value="<?php echo $sPPDownloadButtonText ?>" />
+                                        </td>
+                                    </tr>
+                                <tr>
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;">
+                                        <?php 
+                                            $bgTopColor = ( isset( $wikiembed_options['ppe-cta-button-top-color'] ) ) ? $wikiembed_options['ppe-cta-button-top-color'] : PPE_CTA_BUTTON_TOP_COLOR;
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;">Top Color:</span> <input type="text" id="ppegallery-cta-button-top-color" class="bgTopColor rdp-we-color-picker" data-default-color="<?php echo PPE_CTA_BUTTON_TOP_COLOR  ?>" value="<?php echo $bgTopColor ?>" />                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;">
+                                        <?php 
+                                            $bgBottomColor = ( isset( $wikiembed_options['ppe-cta-button-bottom-color'] ) ) ? $wikiembed_options['ppe-cta-button-bottom-color'] : PPE_CTA_BUTTON_BOTTOM_COLOR;
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;">Bottom Color:</span> <input type="text" id="ppegallery-cta-button-bottom-color" class="bgBottomColor rdp-we-color-picker" data-default-color="<?php echo PPE_CTA_BUTTON_BOTTOM_COLOR  ?>" value="<?php echo $bgBottomColor ?>" />                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;">
+                                        <?php 
+                                            $fontColor = ( isset( $wikiembed_options['ppe-cta-button-font-color'] ) ) ? $wikiembed_options['ppe-cta-button-font-color'] : PPE_CTA_BUTTON_FONT_COLOR;
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;">Font Color:</span> <input type="text" id="ppegallery-cta-button-font-color" class="fontColor rdp-we-color-picker" data-default-color="<?php echo PPE_CTA_BUTTON_FONT_COLOR  ?>" value="<?php echo $fontColor ?>" />                                        
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;">
+                                        <?php 
+                                            $fontHoverColor = ( isset( $wikiembed_options['ppe-cta-button-font-hover-color'] ) ) ? $wikiembed_options['ppe-cta-button-font-hover-color'] : PPE_CTA_BUTTON_FONT_HOVER_COLOR;
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;">Font Hover Color:</span> <input type="text" id="ppegallery-cta-button-font-hover-color" class="fontHoverColor rdp-we-color-picker" data-default-color="<?php echo PPE_CTA_BUTTON_FONT_HOVER_COLOR  ?>" value="<?php echo $fontHoverColor ?>" />                                        
+                                    </td>
+                                </tr>  
+                                <tr>
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;">
+                                        <?php 
+                                            $borderColor = ( isset( $wikiembed_options['ppe-cta-button-border-color'] ) ) ? $wikiembed_options['ppe-cta-button-border-color'] : PPE_CTA_BUTTON_BORDER_COLOR;
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;">Border Color:</span> <input type="text" id="ppegallery-cta-button-border-color" class="borderColor rdp-we-color-picker" data-default-color="<?php echo PPE_CTA_BUTTON_BORDER_COLOR  ?>" value="<?php echo $borderColor ?>" />                                        
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;">
+                                        <?php 
+                                            $boxShadowColor = ( isset( $wikiembed_options['ppe-cta-button-box-shadow-color'] ) ) ? $wikiembed_options['ppe-cta-button-box-shadow-color'] : PPE_CTA_BUTTON_BOX_SHADOW_COLOR;
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;">Button Shadow Color:</span> <input type="text" id="ppegallery-cta-button-box-shadow-color" class="boxShadowColor rdp-we-color-picker" data-default-color="<?php echo PPE_CTA_BUTTON_BOX_SHADOW_COLOR  ?>" value="<?php echo $boxShadowColor ?>" />                                        
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <th valign="top" style="padding: 0;" class="label" scope="row"></th>
+                                    <td class="field" style="padding: 0 10px;">
+                                        <?php 
+                                            $textShadowColor = ( isset( $wikiembed_options['ppe-cta-button-text-shadow-color'] ) ) ? $wikiembed_options['ppe-cta-button-text-shadow-color'] : PPE_CTA_BUTTON_TEXT_SHADOW_COLOR;
+                                        ?>
+                                        <span style="width: 150px;display: inline-block;">Text Shadow Color:</span> <input type="text" id="ppegallery-cta-button-text-shadow-color" class="textShadowColor rdp-we-color-picker" data-default-color="<?php echo PPE_CTA_BUTTON_TEXT_SHADOW_COLOR  ?>" value="<?php echo $textShadowColor ?>" />                                        
+                                    </td>
+                                </tr>                                     
+                                    <tr>
+                                        <td></td>
+                                        <td><br />
+                                                <input type="button" value="Insert into Post/ Page" onclick="pp_gallery_send_to_editor();" id="btnPPGallery" class="button">
+                                        </td>
+                                    </tr>
+                                  
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>                     
                     </div><!-- wiki-embed-tabs -->
 		</div><!-- end #wiki_embed_form -->
 		<?php

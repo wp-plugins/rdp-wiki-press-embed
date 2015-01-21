@@ -5,10 +5,15 @@
 
 #mainContent {
     width: 100%;
-    padding-left: 4.4%;
+    padding-left: 0;
     padding-top: 10px;
     margin: 0 auto;
     position: relative;
+}
+
+#mainContent.book_gallery {
+    position: static;
+    padding-left: 0;
 }
 
 #mainContent .red {
@@ -21,10 +26,6 @@
 
 #mainContent .clear {
     clear: both;
-}
-
-#mainContent .not-allowed {
-    cursor:not-allowed;
 }
 
 em {
@@ -80,6 +81,8 @@ strong {
 #mainContent .small {
     font-size: 90%;
 }
+
+
 
 #mainContent h1,#mainContent h2,#mainContent h3 {
     clear: both;
@@ -156,8 +159,14 @@ strong {
 
 #mainContent .s0l {
     position: relative;
-    margin-left: 24px;
+    margin-left: 8px;
 }
+
+#mainContent.no-cover .s0l {
+    margin-left: 0;
+}
+
+#mainContent.no-cover #rdp-ppe-cta-button-box{margin-bottom: 24px;}
 
 #mainContent .s0l h1+div{position: absolute; bottom: 0; right: 0; text-align: right; width: 314px;}
 
@@ -202,7 +211,11 @@ strong {
 }
 
 #mainContent .w4 {
-    width: 206px;
+    width: auto;
+}
+
+#mainContent #metadata.w4 {
+    width: 326px;
 }
 
 #mainContent .w5 {
@@ -409,50 +422,50 @@ strong {
     text-align: right;
 }
 
-#mainContent .btn {
-    display: inline-block;
-    position: relative;
-    margin: 0;
-    padding: 0 6px 0 0;
-    height: 28px;
+#mainContent .ppe-add-to-cart,
+#mainContent .rdp-pp-gallery-add-to-cart-container a{
+	-moz-box-shadow:inset 0px 1px 0px 0px #97c4fe;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #97c4fe;
+	box-shadow:inset 0px 1px 0px 0px #97c4fe;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #7ba9f2), color-stop(1, #04458f) );
+	background:-moz-linear-gradient( center top, #7ba9f2 5%, #04458f 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#7ba9f2', endColorstr='#04458f');
+	background-color:#7ba9f2;
+	-webkit-border-top-left-radius:6px;
+	-moz-border-radius-topleft:6px;
+	border-top-left-radius:6px;
+	-webkit-border-top-right-radius:6px;
+	-moz-border-radius-topright:6px;
+	border-top-right-radius:6px;
+	-webkit-border-bottom-right-radius:6px;
+	-moz-border-radius-bottomright:6px;
+	border-bottom-right-radius:6px;
+	-webkit-border-bottom-left-radius:6px;
+	-moz-border-radius-bottomleft:6px;
+	border-bottom-left-radius:6px;
+	text-indent:0;
+	border:1px solid #337fed;
+	display:inline-block;
+	color:#ffffff;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:normal;
+	font-style:normal;
+	height:20px;
+	line-height:20px;
+        padding: 0 15px;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:1px 1px 0px #1570cd;
 }
-
-#mainContent .btn input,#mainContent .btn button,#mainContent .btn a {
-    display: inline-block;
-    background: transparent;
-    margin: 0;
-    padding: 0 6px 3px 12px;
-    border-width: 0;
-    text-decoration: none;
-    text-align: center;
-    color: rgb(220,220,220);
-    height: 28px;
-    background: transparent url(https://pediapress.com/resources/images/btn.png) no-repeat left top;
-    line-height: 28px;
-    cursor: pointer;
+#mainContent .ppe-add-to-cart:hover,
+#mainContent .rdp-pp-gallery-add-to-cart-container a:hover {
+    color: #f0f0f0;
 }
-
-#mainContent .btn div {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 6px;
-    height: 28px;
-    margin: 0;
-    padding: 0;
-    background: transparent url(https://pediapress.com/resources/images/btn.png) no-repeat right top;
-}
-
-#mainContent .btn button:hover,#mainContent .btn input:hover,#mainContent .btn a:hover,#mainContent .btn button:focus,#mainContent .btn input:focus,#mainContent .btn a:focus {
-    color: rgb(240,240,240);
-}
-
-#mainContent .btn button:active,#mainContent .btn input:active,#mainContent .btn a:active {
-    color: rgb(255,255,255);
-}
-
-#mainContent .btn button:focus,#mainContent .btn input:focus,#mainContent .btn a:focus,#mainContent .btn button:active,#mainContent .btn input:active,#mainContent .btn a:active {
-    outline: none;
+#mainContent .ppe-add-to-cart:active,
+#mainContent .rdp-pp-gallery-add-to-cart-container a:active {
+	position:relative;
+	top:1px;
 }
 
 body#errorpage {
@@ -472,8 +485,6 @@ body#errorpage {
     margin-top: 1em;
     margin-bottom: 0.5em;
 }
-
-#rdp-ppe-inline-content-sep{padding: 5px 0 5px 60px;font-weight: bold;}
 
 #pp_index .noBox {
     margin-bottom: 30px;
@@ -1175,17 +1186,42 @@ body#errorpage {
     font-size: 140%;
 }
 
-#mainContent.book_show #metadata p,
-#add-to-cart-box{
+#mainContent.book_show .rdp-ppe-inline-content-sep{padding: 5px 0 5px 106px;font-weight: bold;}
+
+#mainContent.book_gallery .rdp-pp-gallery-metadata-container{width: 56%;float: left;padding-left: 6px;}
+#mainContent.book_gallery .rdp-pp-gallery-inline-content-sep{padding: 0;margin: 3px 0;text-align: center;font-weight: bold;}
+
+#mainContent.book_show #metadata p, #mainContent.book_gallery div.weppgallery-box p{
     font-size: 12px;
-    margin-top: 8px;
-    margin-bottom: 0;
-    line-height: 18px;
+    padding: 0;
+    margin: 0 0 3px;
+    line-height: normal;
+}
+
+#mainContent.book_gallery div.weppgallery-box p.cover-image-container,
+#mainContent.book_gallery div.weppgallery-box p.rdp-pp-gallery-add-to-cart-container,
+#mainContent.book_gallery div.weppgallery-box p.rdp-pp-gallery-cta-button-container
+{
+    text-align: center;
 }
 
 #mainContent.book_show #metadata p:first-of-type {
     margin-top: 0;
 }
+
+#mainContent.book_show #metadata p:last-of-type {
+    margin-bottom: 8px;
+}
+
+#mainContent.book_show #metadata p label{display: block;font-weight: bold;color: #000;}
+
+
+#mainContent.book_gallery div.weppgallery-box p.editor-container,
+#mainContent.book_gallery div.weppgallery-box p.subtitle-container,
+#mainContent.book_gallery div.weppgallery-box p.language-container,
+#mainContent.book_gallery div.weppgallery-box p.excerpt-container,
+#mainContent.book_gallery div.weppgallery-box p.price-currency-container,
+#mainContent.book_gallery div.weppgallery-box p.price-amount-container{font-size: 11px;}
 
 #mainContent.book_show #metadata .tag {
     font-size: 90%;
@@ -1208,6 +1244,8 @@ body#errorpage {
     height: 311px;
     text-align: center;
 }
+
+#mainContent.book_show #coverPreviewArea div a:hover{cursor: pointer;}
 
 #mainContent.book_show li.chapter {
     font-weight: bold;
@@ -1296,4 +1334,30 @@ li.book-digest {
 
 .book-digest .title {
     font-size: 120%;
+}
+
+#rdp_ppe_inline_content{padding:10px; background:#fff;}
+#rdp_ppe_inline_content .ui-tabs .ppe-tab iframe,
+#rdp_pp_gallery_inline_content .ui-tabs .ppe-tab iframe{width: 100%;height:100%;}
+div.weppgallery-row-sep{height: 2px;background: none;}
+div.weppgallery-box{vertical-align: top;border: solid 1px #EEEEEE;padding: 4px;display: inline-block;margin: 0 0 8px 4px;}
+div.weppgallery-col-0{margin-left: 0}
+#rdp-weppg-paging-controls button, 
+#rdp-weppg-paging-controls input[type=button], 
+#rdp-weppg-paging-controls input[type=reset], 
+#rdp-weppg-paging-controls input[type=submit]{
+    padding: 6px 8px;
+    height: auto;
+    font-size: 13px;
+}
+
+#rdp-weppg-paging-controls input[disabled]{cursor: not-allowed;}
+
+
+@media only screen and (max-width: 500px) {
+    div.weppgallery-box {
+        display: block;
+        width:100%;
+        margin: 0 0 6px;
+    }
 }
