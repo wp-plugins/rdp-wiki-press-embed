@@ -418,56 +418,57 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
  
 == Other Notes ==
 
-= PHP Hook Reference: =
+== PHP Hook Reference: ==
 
-**pp_book_scripts_enqueued**
+=pp_book_scripts_enqueued=
 
 * Param 1: Shortcode attributes
 * Param 2: Shortcode content
 * Fires after enqueuing scripts and styles for a single book
 
-**pp_gallery_scripts_enqueued**
+=pp_gallery_scripts_enqueued=
 
 * Param 1: Shortcode attributes
 * Param 2: Shortcode content
 * Fires after enqueuing scripts and styles for a gallery page
 
 
-= PHP Filter Reference: =
+== PHP Filter Reference: ==
 
-**rdp_pp_book_cta_button**
+=rdp_pp_book_cta_button=
 
 * Param: String containing HTML for Call-to-Action button when displaying a single book
 * Return: HTML for Call-to-Action button when displaying a single book
 
 
-**rdp_pp_book_main_content_classes**
+=rdp_pp_book_main_content_classes=
 
 * Param: String containing class names for the #mainContent container when displaying a single book
 * Return: class names for the #mainContent container when displaying a single book
 
 
-**rdp_pp_book_atc_href**
+=rdp_pp_book_atc_href=
 
 * Param: String containing href value for Call-to-Action button when displaying a single book
 * Return: href value for Call-to-Action button when displaying a single book
 
 
-**rdp_pp_gallery_item**
+=rdp_pp_gallery_item=
 
 * Param: String containing HTML for a single gallery item
 * Return: HTML for a single gallery item
 
 
-= Javascript Hook Reference: =
+== Javascript Hook Reference: ==
 
-**rdp_pp_gallery_colorbox_onOpen**
+=rdp_pp_gallery_colorbox_onOpen=
+
 * Param 1: jQuery Event object
 * Param 2: jQuery object that fired the hook
 * Fires after updating tab #2 in the Colorbox lightbox
 
 
-= Gallery Item Merge Code Reference: =
+== Gallery Item Merge Code Reference: ==
 
 * %%BookSize%% = book size
 * %%CTAButtonText%% = Call-to-Action text
