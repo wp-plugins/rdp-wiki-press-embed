@@ -462,7 +462,6 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 = Javascript Hook Reference: =
 
 **rdp_pp_gallery_colorbox_onOpen**
-
 * Param 1: jQuery Event object
 * Param 2: jQuery object that fired the hook
 * Fires after updating tab #2 in the Colorbox lightbox
