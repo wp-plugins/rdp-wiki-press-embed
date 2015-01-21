@@ -137,9 +137,9 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 2. A look at the wiki embed settings page. 
 3. Wiki page shortcode embed helper form
 4. PediaPress book shortcode embed helper form
-7. PediaPress gallery shortcode embed helper form
-5. Media button to launch shortcode embed helper form
-6. Call-to-action button on PediaPress book page
+5. PediaPress gallery shortcode embed helper form
+6. Media button to launch shortcode embed helper form
+7. Call-to-action button on PediaPress book page
 
 
 == Changelog ==
