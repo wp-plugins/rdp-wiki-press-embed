@@ -1,4 +1,4 @@
-var $j=jQuery.noConflict();
+ $j=jQuery.noConflict();
 // Use jQuery via $j(...)
 
 $j(document).ready(rdp_pp_overlay_onReady);
@@ -10,15 +10,6 @@ function rdp_pp_overlay_onReady(){
         $j(".ppe-cover-link").colorbox({iframe:true, innerWidth: 960, innerHeight:"80%",transition:"none"})
         $j(".ppe-add-to-cart").colorbox({iframe:true, innerWidth: 960, innerHeight:"80%",transition:"none"})
     }else{
-
-        $j(".ppe-cover-link").colorbox(
-                                    {returnFocus:false,
-                                    inline:true, 
-                                    innerWidth: 960, 
-                                    innerHeight:"80%",
-                                    transition:"none"
-                                    }); 
-
         $j(".ppe-add-to-cart").colorbox(
                                     {returnFocus:false,
                                     inline:true, 
@@ -28,7 +19,7 @@ function rdp_pp_overlay_onReady(){
                                     });                                   
 
 
-        $j("#rdp-ppe-inline-content-link").colorbox(
+        $j(".rdp-ppe-cta-button").colorbox(
                                         {returnFocus:false,
                                         inline:true, 
                                         innerWidth: 960, 

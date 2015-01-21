@@ -3,7 +3,7 @@
  * Plugin Name: RDP Wiki-Press Embed
  * Plugin URI: http://www.robert-d-payne.com/
  * Description: Enables the inclusion of MediaWiki pages and PediaPress book pages into your own blog page or post through the use of shortcodes. Forked from: <a href="http://wordpress.org/plugins/rdp-wiki-press-embed/" target="_blank">Wiki Embed plugin</a>.
- * Version: 1.4.1
+ * Version: 2.0.0
  * Author: Robert D Payne
  * Author URI: http://www.robert-d-payne.com/
  *
@@ -69,7 +69,7 @@ define('PPE_CTA_BUTTON_TEXT_SHADOW_COLOR', '#cd8a15');
 // admin side 
 if(is_admin()){
     require( 'admin/admin-overlay.php' );
-    require( 'admin/admin.php' );  
+    require( 'admin/admin.php' );    
 }
 
 class Wiki_Embed {
@@ -97,8 +97,10 @@ class Wiki_Embed {
             // set the default wiki embed value if the ones from the Options are not set
             $this->options       = shortcode_atts( $this->default_settings(), get_option( 'wikiembed_options' ) );
             $this->wikiembeds    = get_option( 'wikiembeds' ); // we might not need to load this here at all...
+            if(empty($this->wikiembeds))$this->wikiembeds = array();
+            
             $this->content_count = 0; 
-            $this->version       = '1.0';
+            $this->version       = '2.0.0';
             
 
             add_action( 'init', array( $this, 'init' ) );
@@ -221,15 +223,21 @@ class Wiki_Embed {
             add_action( 'wp_ajax_wiki_embed', array( $this, 'overlay_ajax' ) );
             add_action( 'wp_ajax_nopriv_wiki_embed', array( $this, 'overlay_ajax' ) );
         }        
-       if (is_admin() ) return;
+
 
         add_filter( 'page_link', array( $this, 'page_link' ) );
 
         // wiki embed shortcode
+        require_once 'resources/rdpWEPPE.php';
         add_shortcode( 'wiki-embed', array( $this, 'shortcode' ) );
+        
+        // pediapress gallery shortcode
+        require_once 'resources/rdpWEPPGallery.php';
+        add_shortcode( 'wiki-embed-ppgallery', 'RDP_WE_PPGALLERY::shortcode' );        
 
         add_action( 'wp_footer', array( $this, 'print_scripts' ) );
-
+        add_action( 'save_post', array( $this, 'save_meta'), 10, 3 );
+        if (is_admin() ) return;
         // global wiki content replace
         $fGlobalCR = (isset($this->options['default']['global-content-replace']))? $this->options['default']['global-content-replace'] : 0;
         if(!is_numeric($fGlobalCR))$fGlobalCR = 0;
@@ -253,6 +261,15 @@ class Wiki_Embed {
 
 
     }//init
+    
+    function save_meta( $post_id, $post, $update ) {
+        if ( has_shortcode( $post->post_content, 'wiki-embed' ) ) { 
+            $sKey  = get_post_meta($post_id, RDP_WE_PPE::$postMetaKey, true);
+            delete_transient($sKey);
+            delete_post_meta($post_id, RDP_WE_PPE::$postMetaKey);
+            $var = do_shortcode( $post->post_content );
+        }
+    }//save_meta
 
     function content( $content ) {
         if(!isset($_GET['wikiembed-override-url']))return $content;
@@ -289,7 +306,6 @@ class Wiki_Embed {
                     'style'           => 1,
                     'tabs-style'      => 0,
                     'accordion-style' => 0,
-                    'ppe-update'     => "12", /* hours */
                     'wiki-update'     => "30", /* minutes */
                     'wiki-links'      => "default",
                     'wiki-links-new-page-email' => "",
@@ -344,16 +360,16 @@ class Wiki_Embed {
                      wp_register_style( 'rdp-ppe-style-custom', plugins_url( 'resources/css/pediapress.custom.css' , __FILE__ ),array('rdp-ppe-style-common' ) );
                      wp_enqueue_style( 'rdp-ppe-style-custom' );
                  }                    
-                require_once 'resources/rdpWEPPE.php';
+                
                 $sHTML = RDP_WE_PPE::shortcode_handler($url,$atts,$content);
-                $sHTML = apply_filters( 'rdp-wpe-after-pediapress-content-grab', $sHTML );
+                $sHTML = apply_filters( 'rdp_wpe_after_pediapress_content_grab', $sHTML );
             }
             if(empty ($sHTML)){
                 $sHTML = $this->shortcode_handler($atts);
-                $sHTML = apply_filters( 'rdp-wpe-after-wiki-content-grab', $sHTML );
+                $sHTML = apply_filters( 'rdp_wpe_after_wiki_content_grab', $sHTML );
             }
 
-            $sHTML = apply_filters( 'rdp-wpe-shortcode', $sHTML );
+            $sHTML = apply_filters( 'rdp_wpe_shortcode', $sHTML );
             return $sHTML;
     }//shortcode
 
@@ -796,10 +812,23 @@ class Wiki_Embed {
             // get the cached version 
             $wiki_page_body = (empty($update) || !is_numeric($update))? false : $this->get_cache( $wiki_page_id );
 
-            if ( $wiki_page_body && $this->wikiembeds[$wiki_page_id]['expires_on'] < time() && ! ( isset( $_GET['refresh'] ) && wp_verify_nonce( $_GET['refresh'], $wiki_page_id ) ) ) {
+            $isExpired = true;
+            if(is_array($this->wikiembeds)){
+                if(array_key_exists($wiki_page_id,$this->wikiembeds)){
+                    if(is_array($this->wikiembeds[$wiki_page_id])){
+                        try{
+                            $isExpired = ($this->wikiembeds[$wiki_page_id]['expires_on'] < time());
+                        }catch (Exception $e) {
+                            //ignore error
+                        }
+                    }                 
+                }                
+            }
+
+            if ( $wiki_page_body && $isExpired && ! ( isset( $_GET['refresh'] ) && wp_verify_nonce( $_GET['refresh'], $wiki_page_id ) ) ) {
                     //If the cache exists but is expired (and an immediate refresh has not been forced:
                     // Refresh it at the end!
-                    register_shutdown_function( array( $this, 'refresh_after_load'), $url, $has_accordion, $has_tabs, $has_no_contents, $has_no_edit, $has_no_infobox, $update, $has_source, $remove );
+                    register_shutdown_function( array( $this, 'refresh_after_load'), $url, $has_accordion, $has_tabs, $has_no_contents, $has_no_edit, $has_no_infobox, $update, $remove );
             } elseif ( ! $wiki_page_body || ( current_user_can( 'publish_pages' ) && isset( $_GET['refresh'] ) && wp_verify_nonce( $_GET['refresh'], $wiki_page_id ) ) ) {	
                     //Get page from remote site
                     $wiki_page_body  = $this->remote_request_wikipage( $url, $update );
@@ -885,7 +914,21 @@ class Wiki_Embed {
             $wikiembed_id = $this->get_page_id( $url, false, false, false, false, false ); // just the url gets converted to the id 
             $wiki_page_body = (empty($update) || !is_numeric($update))? false : $this->get_cache( $wikiembed_id );
             // grab the content from the cache
-            if ( false === $wiki_page_body || $this->wikiembeds[$wikiembed_id]['expires_on'] < time() ) {
+            
+            $isExpired = true;
+            if(is_array($this->wikiembeds)){
+                if(array_key_exists($wikiembed_id,$this->wikiembeds)){
+                    if(is_array($this->wikiembeds[$wikiembed_id])){
+                        try{
+                            $isExpired = ($this->wikiembeds[$wikiembed_id]['expires_on'] < time());
+                        }catch (Exception $e) {
+                            //ignore error
+                        }
+                    }                
+                }                
+            }
+
+            if ( false === $wiki_page_body || $isExpired ) {
                     // else return the 
                     $wiki_page = wp_remote_request( $this->action_url( $url ) );
 
@@ -1502,7 +1545,7 @@ class Wiki_Embed {
      * @param mixed $remove (default: null)
      * @return void
      */
-    function refresh_after_load($url, $has_accordion, $has_tabs, $has_no_contents, $has_no_edit, $has_no_infobox, $update, $has_source, $remove = null ) {
+    function refresh_after_load($url, $has_accordion, $has_tabs, $has_no_contents, $has_no_edit, $has_no_infobox, $update, $remove = null ) {
             //Get page from remote site
             global $wikiembeds,$wikiembed_options;
             $wiki_page_id = $this->get_page_id( $url, $has_accordion, $has_tabs, $has_no_contents, $has_no_edit, $has_no_infobox,  $remove );

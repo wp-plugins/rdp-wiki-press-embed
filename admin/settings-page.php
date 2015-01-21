@@ -12,7 +12,14 @@ function wikiembed_settings_page() {
             global $wpdb;
             $sSQL = "DELETE FROM $wpdb->options WHERE option_name LIKE '%_ppebook-%';";
             $wpdb->query($sSQL);
-            
+            $sSQL = "DELETE FROM $wpdb->postmeta WHERE meta_key LIKE 'ppebook-cache-key';";
+            $wpdb->query($sSQL); 
+            $sPath = RDP_WE_PLUGIN_BASEDIR . 'resources/img-cache/*';
+            $files = glob($sPath); // get all file names
+            foreach($files as $file){ // iterate files
+              if(is_file($file))
+                unlink($file); // delete file
+            }            
         }
         
 	if (!isset($_POST['btnClearPPECache']) && isset( $_POST[$option] ) ):
@@ -126,20 +133,10 @@ function wikiembed_settings_page() {
 				<tr> <!-- Update Content -->
 					<th valign="top" class="label" scope="row">
 						<span class="alignleft">
-							<label for="src">Update content from PediaPress</label>
+							<label for="src">Delete stored PediaPress content</label>
 						</span>
 					</th>
 					<td class="field">
-						<select name="wikiembed_options[ppe-update]" id="ppe-update">
-							<option value="0" <?php selected( $wikiembed_options['ppe-update'], "0" ); ?>>No Caching</option>
-							<option value="12" <?php selected( $wikiembed_options['ppe-update'], "12" ); ?>>Every 12 Hours </option>
-							<option value="24" <?php selected( $wikiembed_options['ppe-update'], "24" ); ?>>Every 24 Hours </option>
-							<option value="48" <?php selected( $wikiembed_options['ppe-update'], "48" ); ?>>Every 48 Hours </option>
-							<option value="72" <?php selected( $wikiembed_options['ppe-update'], "72" ); ?>>Every 72 Hours </option>
-						</select>
-						<div class="help-div">
-							Set the duration the content of PediaPress book pages to be stored on your site, before it is refreshed again.
-						</div>
                                             <p><input type="submit" name="btnClearPPECache" value="Clear PediaPress Cache" /></p>
 					</td>
 				</tr>                            
@@ -324,7 +321,7 @@ function wikiembed_settings_page() {
                                         <?php 
                                             $sPPDownloadButtonWidth = ( isset( $wikiembed_options['ppe-cta-button-width'] ) ) ? $wikiembed_options['ppe-cta-button-width'] : PPE_CTA_BUTTON_WIDTH;
                                         ?>
-                                        <span style="width: 150px;display: inline-block;">Width:</span> <input type="text" name="wikiembed_options[ppe-cta-button-width]" id="pp-embed-download-button-width" value="<?php echo $sPPDownloadButtonWidth ?>"  style="width: 50px;"/> pixels (max: 500)                                    
+                                        <span style="width: 150px;display: inline-block;">Width:</span> <input type="text" name="wikiembed_options[ppe-cta-button-width]" id="pp-embed-download-button-width" value="<?php echo $sPPDownloadButtonWidth ?>"  style="width: 50px;"/> pixels (max: 500) or <i>auto</i> for normal auto sizing                                    
                                     </td>
                                 </tr>                                
                                 <tr>
@@ -451,13 +448,19 @@ function wiki_embed_add_help_text( $contextual_help, $screen_id, $screen ) {
 
 // Sanitize and validate input. Accepts an array, return a sanitized array.
 function wikiembed_options_validate( $wikiembed_options ) {
+    $ctaButtonWidth = 'auto';
+    if(isset($wikiembed_options['ppe-cta-button-width']) && is_numeric($wikiembed_options['ppe-cta-button-width'])){
+        if((int)$wikiembed_options['ppe-cta-button-width'] > 0 && (int)$wikiembed_options['ppe-cta-button-width'] > 500 )$ctaButtonWidth = PPE_CTA_BUTTON_WIDTH;
+
+    } 
+    
+    
 	return array(
 		'tabs'            => ( isset( $wikiembed_options['tabs']            ) && $wikiembed_options['tabs']            == 1 ? 1 : 0 ),
 		'accordians'      => ( isset( $wikiembed_options['accordions']      ) && $wikiembed_options['accordions']      == 1 ? 1 : 0 ),
 		'style'           => ( isset( $wikiembed_options['style']           ) && $wikiembed_options['style']           == 1 ? 1 : 0 ),
 		'tabs-style'      => ( isset( $wikiembed_options['tabs-style']      ) && $wikiembed_options['tabs-style']      == 1 ? 1 : 0 ),
 		'accordion-style' => ( isset( $wikiembed_options['accordion-style'] ) && $wikiembed_options['accordion-style'] == 1 ? 1 : 0 ),
-                'ppe-update'     => ( is_numeric( $wikiembed_options['ppe-update'] ) ? $wikiembed_options['ppe-update'] : "12" ), /* hours */
 		'wiki-update'     => ( is_numeric( $wikiembed_options['wiki-update'] ) ? $wikiembed_options['wiki-update'] : "30" ), /* minutes */
 		'wiki-links'      => ( in_array( $wikiembed_options['wiki-links'], array( "default", "overlay", "new-page","overwrite" ) ) ? $wikiembed_options['wiki-links'] : "default" ),
 		'wiki-links-new-page-email' => wp_rel_nofollow( $wikiembed_options['wiki-links-new-page-email'] ),
@@ -465,7 +468,7 @@ function wikiembed_options_validate( $wikiembed_options ) {
 		'toc-links'            => ( isset( $wikiembed_options['toc-links']) ?  trim( $wikiembed_options['toc-links'] ) : null ),
                 'ppe-cta-button-content' => ( isset($wikiembed_options['ppe-cta-button-content']))? $wikiembed_options['ppe-cta-button-content'] : '',
                 'ppe-cta-button-text' => ( isset($wikiembed_options['ppe-cta-button-text']))? $wikiembed_options['ppe-cta-button-text'] : PPE_CTA_BUTTON_TEXT,
-                'ppe-cta-button-width' => ( isset($wikiembed_options['ppe-cta-button-width']) && is_numeric($wikiembed_options['ppe-cta-button-width']) && (int)$wikiembed_options['ppe-cta-button-width'] < 500 )? $wikiembed_options['ppe-cta-button-width'] : PPE_CTA_BUTTON_WIDTH,
+                'ppe-cta-button-width' => $ctaButtonWidth,
                 'ppe-cta-button-top-color' => ( isset($wikiembed_options['ppe-cta-button-top-color']))? $wikiembed_options['ppe-cta-button-top-color'] : PPE_CTA_BUTTON_TOP_COLOR,
                 'ppe-cta-button-bottom-color' => ( isset($wikiembed_options['ppe-cta-button-bottom-color']))? $wikiembed_options['ppe-cta-button-bottom-color'] : PPE_CTA_BUTTON_BOTTOM_COLOR,
                 'ppe-cta-button-font-color' => ( isset($wikiembed_options['ppe-cta-button-font-color']))? $wikiembed_options['ppe-cta-button-font-color'] : PPE_CTA_BUTTON_FONT_COLOR,

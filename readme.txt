@@ -2,8 +2,8 @@
 Contributors: rpayne7264, enej, ejackisch, devindra, ctlt-dev, ubcdev
 Tags: mediawiki, wiki, wiki-embed, embed, content framework, wiki inc, pediapress, pediapress embed
 Requires at least: 3.5
-Tested up to: 4.0
-Stable tag: 1.4.1
+Tested up to: 4.1
+Stable tag: 2.0.0
 
 RDP Wiki-Press Embed lets you embed MediaWiki pages in to your site, from sites like Wikipedia, and PediaPress book pages.
 
@@ -13,11 +13,13 @@ RDP Wiki-Press Embed will pull content from any MediaWiki website (such as wikip
 It strips and reformats the content, allowing you to supply some arguments to dictate how this works.
 
 RDP Wiki-Press Embed also allows lead capture capabilities, utilizing free PediaPress ebooks as an offer.
+The default behavior is to display two tabs. The first tab will display whatever text, HTML, and/or another shortcode you desire. The second tab will display the original PediaPress.com book page within an iframe.
 
 
 = Known Issues =
 
 * CSS clashes with Lightbox Plus Colorbox plug-in
+* Code clash with WooCommerce product search
 
 
 Forked from: [Wiki Embed plugin](http://wordpress.org/plugins/wiki-embed/  "Wiki Embed plugin").
@@ -48,8 +50,15 @@ Example:
 For embedding PediaPress book pages, the following arguments are accepted:
 
 * url: (required) the web address of the PediaPress book that you want to embed on this page.
-* toc_show: 0 (zero) to hide table of contents (TOC) or 1 to show TOC
+* toc_show: 0 (zero) to hide table of contents (TOC) or 1 to show
 * toc_links: Default — TOC links are enabled; Logged-in — TOC links are active only when a user is logged in; Disabled — TOC links are completely disabled, all the time
+* image_show: 0 (zero) to hide cover image or 1 to show 
+* title_show: 0 (zero) to hide book title or 1 to show 
+* subtitle_show: 0 (zero) to hide book sub-title  or 1 to show 
+* editor_show: 0 (zero) to hide book editor or 1 to show 
+* language_show: 0 (zero) to hide book language or 1 to show 
+* add_to_cart_show: 0 (zero) to hide Add-to-Cart button or 1 to show 
+* book_size_show: 0 (zero) to hide book size or 1 to show 
 * cta_button_text: text for call-to-action button
 * cta_button_width: integer indicating pixel width of call-to-action button; default is 250; max is 500
 * cta_button_top_color: gradient top color
@@ -69,6 +78,40 @@ Examples:
 For the Call-to-Action button to appear, the shortcode must be an enclosing shortcode, containing text, HTML, and/or another shortcode, between the opening and closing shortcode tags.
 
 [wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in' cta_button_top_color='#eded00' cta_button_text_shadow_color='#cd8a15']`<iframe src="http://www.w3schools.com"></iframe>`[/wiki-embed]
+
+
+Embedding a PediaPress gallery of books is implemented using the shortcode [wiki-embed-ppgallery]. It accepts the following arguments:
+
+* col: (required) number of columns to display per page
+* num: (required) number of books to display per page
+* cat: comma separated list of category id numbers books must belong to
+* tag: comma separated list of tag id numbers books must belong to
+* sort_col: column name by which to sort books
+* sort_dir: direction to sort books (ASC / DESC)
+* cta_button_text: text for call-to-action button
+* cta_button_width: integer indicating pixel width of call-to-action button; default is 250; max is 500
+* cta_button_top_color: gradient top color
+* cta_button_bottom_color: gradient bottom color
+* cta_button_font_color: normal button text color
+* cta_button_font_hover_color: text color when cursor is on the button
+* cta_button_border_color: button border color
+* cta_button_box_shadow_color: button's drop shadow color
+* cta_button_text_shadow_color: drop shadow color of button's text
+
+The layout for displaying each book in the gallery is based on the template file located at: resources/ppgallery-template/ppgallery.column.results.html
+A sample template that displays buttons is located at: resources/ppgallery-template/ppgallery.column.results-sample.html
+
+
+Examples:
+
+[wiki-embed-ppgallery col='3' num='3']
+
+[wiki-embed-ppgallery col='2' num='10' cat='5' tag='7,8' sort_col='post_date' sort_dir='DESC' /]
+
+
+For the Call-to-Action button to appear, the shortcode must be an enclosing shortcode, containing text, HTML, and/or another shortcode, between the opening and closing shortcode tags.
+
+[wiki-embed-ppgallery col='3' num='3' cta_button_font_hover_color='#8224e3']`<iframe src="http://www.w3schools.com"></iframe>`[/wiki-embed-ppgallery]
 
 
 == Configuration ==
@@ -94,11 +137,43 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 2. A look at the wiki embed settings page. 
 3. Wiki page shortcode embed helper form
 4. PediaPress book shortcode embed helper form
+7. PediaPress gallery shortcode embed helper form
 5. Media button to launch shortcode embed helper form
 6. Call-to-action button on PediaPress book page
 
 
 == Changelog ==
+
+= 2.0.0 =
+* FEATURE: added shortcode to display gallery of PediaPress books
+* FEATURE: added template support for layout of each gallery item
+* REFACTOR: added hooks and filters to facilitate custom coding
+* REFACTOR: removed cache time for PediaPress books, making the cached data non-expiring
+* REFACTOR: re-worked code so that PediaPress book data is cached, but the rendering of the data is always dynamic
+* REFACTOR: re-worked code so that PediaPress book cover images are stored locally
+* REFACTOR: added code so that saving a post/page will overwrite the cached PediaPress book data
+
+*Changed files:*
+* readme.txt
+* WikiEmbed.php
+* admin/admin-overlay.php
+* admin/settings-page.php
+* admin/css/admin.css
+* admin/js/script.admin-overlay.js
+* resources/rdpWEPPE.php
+* resources/css/pediapress.common.css
+* resources/js/pediapress-overlay.js
+
+*New files:*
+* resources/rdpWEPPEGallery.php
+* resources/ppgallery-template/ppgallery.column.results-sample.html
+* resources/ppgallery-template/ppgallery.column.results.html
+* resources/js/pediapress-gallery-overlay.js
+
+*New folders:*
+* resources/img-cache
+* resources/ppgallery-template
+
 
 = 1.4.1 =
 * REFACTOR: added code to ensure the CTA button always opens the first tab
@@ -340,3 +415,61 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * Is the pre production release, please help us test it.
  
  
+== Other Notes ==
+
+= PHP Hook Reference: =
+
+**pp_book_scripts_enqueued**
+Param 1: Shortcode attributes
+Param 2: Shortcode content
+Fires after enqueuing scripts and styles for a single book
+
+**pp_gallery_scripts_enqueued**
+Param 1: Shortcode attributes
+Param 2: Shortcode content
+Fires after enqueuing scripts and styles for a gallery page
+
+
+= PHP Filter Reference: =
+
+**rdp_pp_book_cta_button**
+Param: String containing HTML for Call-to-Action button when displaying a single book
+Return: HTML for Call-to-Action button when displaying a single book
+
+**rdp_pp_book_main_content_classes**
+Param: String containing class names for the #mainContent container when displaying a single book
+Return: class names for the #mainContent container when displaying a single book
+
+**rdp_pp_book_atc_href**
+Param: String containing href value for Call-to-Action button when displaying a single book
+Return: href value for Call-to-Action button when displaying a single book
+
+**rdp_pp_gallery_item**
+Param: String containing HTML for a single gallery item
+Return: HTML for a single gallery item
+
+
+= Javascript Hook Reference: =
+
+**rdp_pp_gallery_colorbox_onOpen**
+Param 1: jQuery Event object
+Param 2: jQuery object that fired the hook
+Fires after updating tab #2 in the Colorbox lightbox
+
+
+= Gallery Item Merge Code Reference: =
+
+%%BookSize%% = book size
+%%CTAButtonText%% = Call-to-Action text
+%%Editor%% = book editor
+%%Excerpt%% = excerpt for the book
+%%FullTitle%% = concatenation of the book title and sub-title
+%%Image%% = URL to book cover image
+%%Language%% = book language
+%%Link%% = URL to PediaPress.com book page
+%%PostID%% = post id for the book
+%%PostLink%% = URL to the post for the book
+%%PriceAmount%% = book price
+%%PriceCurrency%% = currency denomination
+%%Subtitle%% = book sub-title
+%%Title%% = book title
