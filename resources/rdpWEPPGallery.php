@@ -101,7 +101,7 @@ class RDP_WE_PPGALLERY {
         }  
         wp_enqueue_style( 'pp-gallery-colorbox-style', plugins_url( '/resources/css/colorbox.css',RDP_WE_PLUGIN_BASENAME),false, "1.3.20.2", 'screen');        
         
-        do_action('pp_gallery_scripts_enqueued',$atts, $content);        
+        do_action('rdp_pp_gallery_scripts_enqueued',$atts, $content);        
     }//handleScripts
 
     private static function renderGallery($rows,$cols,$atts){
