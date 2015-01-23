@@ -153,6 +153,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * REFACTOR: re-worked code so that PediaPress book data is cached, but the rendering of the data is always dynamic
 * REFACTOR: re-worked code so that PediaPress book cover images are stored locally
 * REFACTOR: added code so that saving a post/page will overwrite the cached PediaPress book data
+* REFACTOR: added code to address [Fatal error: Cannot use string offset](https://wordpress.org/support/topic/fatal-error-cannot-use-string-offset-3  "Fatal error: Cannot use string offset") issue reported by user ebewley: 
 
 *Changed files:*
 * readme.txt
