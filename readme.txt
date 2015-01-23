@@ -156,6 +156,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * REFACTOR: added code to address [Fatal error: Cannot use string offset](https://wordpress.org/support/topic/fatal-error-cannot-use-string-offset-3  "Fatal error: Cannot use string offset") issue reported by user ebewley: 
 
 *Changed files:*
+
 * readme.txt
 * WikiEmbed.php
 * admin/admin-overlay.php
@@ -166,13 +167,17 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * resources/css/pediapress.common.css
 * resources/js/pediapress-overlay.js
 
+
 *New files:*
+
 * resources/rdpWEPPEGallery.php
 * resources/ppgallery-template/ppgallery.column.results-sample.html
 * resources/ppgallery-template/ppgallery.column.results.html
 * resources/js/pediapress-gallery-overlay.js
 
+
 *New folders:*
+
 * resources/img-cache
 * resources/ppgallery-template
 
