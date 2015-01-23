@@ -145,7 +145,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 
 == Changelog ==
 
-== 2.0.0 ==
+= 2.0.0 =
 * FEATURE: added shortcode to display gallery of PediaPress books
 * FEATURE: added template support for layout of each gallery item
 * REFACTOR: added hooks and filters to facilitate custom coding
@@ -156,7 +156,6 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * REFACTOR: added code to address [Fatal error: Cannot use string offset](https://wordpress.org/support/topic/fatal-error-cannot-use-string-offset-3  "Fatal error: Cannot use string offset") issue reported by user ebewley: 
 
 = Changed files: =
-
 * readme.txt
 * WikiEmbed.php
 * admin/admin-overlay.php
@@ -169,7 +168,6 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 
 
 = New files: =
-
 * resources/rdpWEPPEGallery.php
 * resources/ppgallery-template/ppgallery.column.results-sample.html
 * resources/ppgallery-template/ppgallery.column.results.html
@@ -177,16 +175,15 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 
 
 = New folders: =
-
 * resources/img-cache
 * resources/ppgallery-template
 
 
-== 1.4.1 ==
+= 1.4.1 =
 * REFACTOR: added code to ensure the CTA button always opens the first tab
 
 
-== 1.4.0 ==
+= 1.4.0 =
 * FEATURE: added setting to cache PediaPress book pages
 * FEATURE: added button to clear cached PediaPress book pages
 * REFACTOR: updated Call-to-Action pop-up lightbox to use tabs - one for custom content and one that displays the PediPress.com page
@@ -207,7 +204,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * resources/js/pediapress-overlay.js
 
 
-== 1.3.2 ==
+= 1.3.2 =
 * REFACTOR: multiple bug fixes
 * REFACTOR: removed extraneous Colorbox script files
 
@@ -219,10 +216,10 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * resources/js/pediapress-overlay.js
 
 
-== 1.3.1 ==
+= 1.3.1 =
 * REFACTOR: renamed Call-to-Action variables and shortcode attributes
 
-== 1.3.0 ==
+= 1.3.0 =
 * FEATURE: added Call-to-Action button and pop-up lightbox for PediaPress books
 * REFACTOR: expanded global PediaPress shortcode settings options
 * REFACTOR: re-worked shortcode pop-up form to reflect expanded PediaPress options
@@ -251,7 +248,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * screenshot-5.png
 * screenshot-6.png
 
-== 1.2.0 ==
+= 1.2.0 =
 * REFACTOR: re-worked shortcode pop-up form to use tabs and allow creation of PediaPress shortcodes, with attributes to override global settings.
 * REFACTOR: re-worked class RDP_WE_PPE to handle shortcode attributes
 * REFACTOR: removed label text from media button so that it now only displays the Wikipedia icon
@@ -275,7 +272,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * admin/css/jquery-ui.theme.min.css
 * admin/js/script.admin-overlay.js
 
-== 1.1.0 ==
+= 1.1.0 =
 * FEATURE: added settings to disable PediaPress book TOC links
 * FEATURE: added setting to show/hide PediaPress book TOC
 * FEATURE: added lightbox with iframe to PediaPress book cover images and 'Add to Cart' button
@@ -297,10 +294,10 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * resources/css/images/border2.png
 * resources/css/images/loading.gif
 
-== 1.0.1 ==
+= 1.0.1 =
 * updated screenshot #2
 
-== 1.0.0 ==
+= 1.0.0 =
 * FEATURE: added wiki content overwrite functionality
 * FEATURE: added PediaPress content overwrite functionality
 * FEATURE: added global overwrite functionality for pages not containing the [wiki-embed] shortcode
@@ -324,7 +321,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * resources/js/url.min.js
 * resources/rdpWEPPE.php
 
-== Inherited from Original Wiki Embed Plugin ==
+= Inherited from Original Wiki Embed Plugin =
 = 1.4.5 =
 * wordpress search queries will now also search wiki-embedded content.
 
@@ -417,11 +414,13 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 == PHP Hook Reference: ==
 
 = rdp_pp_book_scripts_enqueued =
+
 * Param 1: Shortcode attributes
 * Param 2: Shortcode content
 * Fires after enqueuing scripts and styles for a single book
 
 = rdp_pp_gallery_scripts_enqueued =
+
 * Param 1: Shortcode attributes
 * Param 2: Shortcode content
 * Fires after enqueuing scripts and styles for a gallery page
@@ -430,21 +429,25 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 == PHP Filter Reference: ==
 
 = rdp_pp_book_cta_button =
+
 * Param: String containing HTML for Call-to-Action button when displaying a single book
 * Return: HTML for Call-to-Action button when displaying a single book
 
 
 = rdp_pp_book_main_content_classes =
+
 * Param: String containing class names for the #mainContent container when displaying a single book
 * Return: class names for the #mainContent container when displaying a single book
 
 
 = rdp_pp_book_atc_href =
+
 * Param: String containing href value for Call-to-Action button when displaying a single book
 * Return: href value for Call-to-Action button when displaying a single book
 
 
 = rdp_pp_gallery_item =
+
 * Param: String containing HTML for a single gallery item
 * Return: HTML for a single gallery item
 
@@ -452,12 +455,14 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 == Javascript Hook Reference: ==
 
 = rdp_pp_gallery_colorbox_onOpen =
+
 * Param 1: jQuery Event object
 * Param 2: jQuery object that fired the hook
 * Fires after updating tab #2 in the Colorbox lightbox
 
 
 == Gallery Item Merge Code Reference: ==
+
 * %%BookSize%% = book size
 * %%CTAButtonText%% = Call-to-Action text
 * %%Editor%% = book editor
