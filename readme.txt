@@ -153,8 +153,9 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * REFACTOR: re-worked code so that PediaPress book data is cached, but the rendering of the data is always dynamic
 * REFACTOR: re-worked code so that PediaPress book cover images are stored locally
 * REFACTOR: added code so that saving a post/page will overwrite the cached PediaPress book data
+* REFACTOR: added code to address [Fatal error: Cannot use string offset](https://wordpress.org/support/topic/fatal-error-cannot-use-string-offset-3  "Fatal error: Cannot use string offset") issue reported by user ebewley: 
 
-*Changed files:*
+= Changed files: =
 * readme.txt
 * WikiEmbed.php
 * admin/admin-overlay.php
@@ -165,13 +166,15 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * resources/css/pediapress.common.css
 * resources/js/pediapress-overlay.js
 
-*New files:*
+
+= New files: =
 * resources/rdpWEPPEGallery.php
 * resources/ppgallery-template/ppgallery.column.results-sample.html
 * resources/ppgallery-template/ppgallery.column.results.html
 * resources/js/pediapress-gallery-overlay.js
 
-*New folders:*
+
+= New folders: =
 * resources/img-cache
 * resources/ppgallery-template
 
@@ -190,8 +193,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * UPDATE: changed screenshot #4
 * UPDATE: changed screenshot #6
 
-*Changed files:*
-
+= Changed files: =
 * readme.txt
 * screenshot-4.png
 * screenshot-6.png
@@ -206,8 +208,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * REFACTOR: multiple bug fixes
 * REFACTOR: removed extraneous Colorbox script files
 
-*Changed files:*
-
+= Changed files: =
 * readme.txt
 * WikiEmbed.php
 * admin/css/admin.css
@@ -227,8 +228,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * UPDATE: added screenshot #5
 * UPDATE: added screenshot #6
 
-*Changed files:*
-
+= Changed files: =
 * readme.txt
 * screenshot-2.png
 * screenshot-4.png
@@ -242,8 +242,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * resources/js/pediapress-overlay.js
 * resources/rdpWEPPE.php
 
-*New files:*
-
+= New files: =
 * admin/css/admin.css
 * admin/js/script.settings-page.js
 * screenshot-5.png
@@ -258,8 +257,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * UPDATE: changed screenshot #3
 * UPDATE: added screenshot #4
 
-*Changed files:*
-
+= Changed files: =
 * readme.txt
 * screenshot-3.png
 * WikiEmbed.php
@@ -268,8 +266,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * resources/rdpWEPPE.php
 * resources/css/pediapress.common.css
 
-*New files:*
-
+= New files: =
 * screenshot-4.png
 * admin/css/jquery-ui.css
 * admin/css/jquery-ui.theme.min.css
@@ -283,8 +280,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * REFACTOR: fixed layout issues on the settings page
 * FIX: updated screenshot #2
 
-*Changed files:*
-
+= Changed files: =
 * readme.txt
 * WikiEmbed.php
 * screenshot-2.png
@@ -292,8 +288,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * admin/settings-page.php
 * resources/css/colorbox.css
 
-*New files:*
-
+= New files: =
 * resources/js/pediapress-overlay.js
 * resources/css/images/border1.png
 * resources/css/images/border2.png
@@ -310,16 +305,14 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 * FEATURE: added check for custom CSS files located in resources/css folder
 * FIX: re-worked code to eliminate some 'Undefined index' notices when reading from various variables
 
-*Changed files:*
-
+= Changed files: =
 * readme.txt
 * WikiEmbed.php
 * admin/settings-page.php
 * resources/css/wiki-embed.css
 * resources/simple_html_dom.php
 
-*New files:*
-
+= New files: =
 * resources/css/pediapress.common.css
 * resources/css/pediapress.custom-sample.css
 * resources/css/wiki.custom-sample.css
