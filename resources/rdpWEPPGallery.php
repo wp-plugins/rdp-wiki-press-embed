@@ -316,7 +316,7 @@ EOS;
         return $sSQL;
     }//buildCountSQL
     
-    private static function buildFetchSQL($termIDs, $start, $rowCount, $orderCol = 'post_title', $orderAttr = 'ASC'){
+    public static function buildFetchSQL($termIDs, $start, $rowCount, $orderCol = 'post_title', $orderAttr = 'ASC'){
         global $wpdb;
         $sSQL = '';
         

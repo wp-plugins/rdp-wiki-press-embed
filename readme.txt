@@ -19,7 +19,7 @@ The default behavior is to display two tabs. The first tab will display whatever
 = Known Issues =
 
 * CSS clashes with Lightbox Plus Colorbox plug-in
-* Code clash with WooCommerce product search
+
 
 
 Forked from: [Wiki Embed plugin](http://wordpress.org/plugins/wiki-embed/  "Wiki Embed plugin").
@@ -144,6 +144,11 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 
 
 == Changelog ==
+
+= 2.1.0 =
+* FEATURE: added global setting for additional text, such as Creative Commons verbage, to be displayed under a book's cover image
+* FEATURE: added RSS feed capability
+* REFACTOR: added code to address interference with WooCommerce product search
 
 = 2.0.0 =
 * FEATURE: added shortcode to display gallery of PediaPress books

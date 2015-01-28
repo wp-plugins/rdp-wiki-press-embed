@@ -3,7 +3,7 @@
  * Plugin Name: RDP Wiki-Press Embed
  * Plugin URI: http://www.robert-d-payne.com/
  * Description: Enables the inclusion of MediaWiki pages and PediaPress book pages into your own blog page or post through the use of shortcodes. Forked from: <a href="http://wordpress.org/plugins/rdp-wiki-press-embed/" target="_blank">Wiki Embed plugin</a>.
- * Version: 2.0.0
+ * Version: 2.1.0
  * Author: Robert D Payne
  * Author URI: http://www.robert-d-payne.com/
  *
@@ -100,7 +100,7 @@ class Wiki_Embed {
             if(empty($this->wikiembeds))$this->wikiembeds = array();
             
             $this->content_count = 0; 
-            $this->version       = '2.0.0';
+            $this->version       = '2.1.0';
             
 
             add_action( 'init', array( $this, 'init' ) );
@@ -237,6 +237,9 @@ class Wiki_Embed {
 
         add_action( 'wp_footer', array( $this, 'print_scripts' ) );
         add_action( 'save_post', array( $this, 'save_meta'), 10, 3 );
+        
+        $this->customRSS();
+        
         if (is_admin() ) return;
         // global wiki content replace
         $fGlobalCR = (isset($this->options['default']['global-content-replace']))? $this->options['default']['global-content-replace'] : 0;
@@ -259,8 +262,199 @@ class Wiki_Embed {
 
         if($this->options['wiki-links'] == 'overwrite')add_filter( 'template_include', array( &$this, 'page_template' ), 99 );
 
-
     }//init
+    
+function customRSS(){
+        add_feed('pediapress',  array( $this, 'customRSSFunc' ));
+        //add_action('do_feed_pediapress', array( $this, 'customRSSFunc' ));
+}  
+
+function customRSSFunc(){
+    $termIDs = '';
+    $catNames = array();
+    $tagNames = array();
+    global $wp_query;
+    
+    foreach($wp_query->tax_query->queries as $taxQuery){
+        switch ($taxQuery['field']) {
+            case 'term_id':
+                foreach($taxQuery['terms'] as $termID){
+                    $oTerm = get_term_by('id', $termID, $taxQuery['taxonomy']);
+                    if(!empty($oTerm)){
+                        if(strlen($termIDs) > 0) $termIDs.= ',';
+                        $termIDs.= $termID;
+                        if($taxQuery['taxonomy'] == 'category')$catNames[] = $oTerm->name;
+                        if($taxQuery['taxonomy'] == 'post_tag')$tagNames[] = $oTerm->name;
+                    }
+                }
+
+                break;
+            case 'slug':
+                foreach($taxQuery['terms'] as $termSlug){
+                    $oTerm = get_term_by('slug', $termSlug, $taxQuery['taxonomy']);
+                    if(!empty($oTerm)){
+                        if(strlen($termIDs) > 0) $termIDs.= ',';
+                        $termIDs .= $oTerm->term_id;
+                        if($taxQuery['taxonomy'] == 'category')$catNames[] = $oTerm->name;
+                        if($taxQuery['taxonomy'] == 'post_tag')$tagNames[] = $oTerm->name;                        
+                    }
+                }
+                break;
+            case 'name':
+                foreach($taxQuery->terms as $termName){
+                    $oTerm = get_term_by('name', $termName, $taxQuery['taxonomy']);
+                    if(!empty($oTerm)){
+                        if(strlen($termIDs) > 0) $termIDs.= ',';
+                        $termIDs .= $oTerm->term_id;
+                        if($taxQuery['taxonomy'] == 'category')$catNames[] = $oTerm->name;
+                        if($taxQuery['taxonomy'] == 'post_tag')$tagNames[] = $oTerm->name;                        
+                    }
+                }
+                break;                
+                
+            default:
+                break;
+        }
+        
+    }
+
+    header('Content-Type: '.feed_content_type('rss-http').'; charset='.get_option('blog_charset'), true);
+    $sRSS = '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>'; 
+    $sRSS .= '<rss version="2.0"><channel>';
+    $sChannelTitle = get_bloginfo('name') . ' PediaPress Feed';
+    $nCatNames = count($catNames);
+    $sChannelDescription = 'PediaPress Feed';
+
+    if($nCatNames):
+        switch ($nCatNames) {
+            case 1:
+                $sChannelDescription .= " for the " . $catNames[0] . " Category" ;
+                break;
+            default:
+                $sChannelDescription .= " for the " . implode(', ', $catNames) . " Categories" ;
+                break;
+        }    
+    endif;
+
+    $nTagNames = count($tagNames);
+    if($nCatNames && $nTagNames)$sChannelDescription .= ' And';
+
+    if($nTagNames):
+        switch ($nTagNames) {
+            case 1:
+                $sChannelDescription .= " for the "  . $tagNames[0] ." Tag";
+                break;
+            default:
+                break;
+                $sChannelDescription .= " for the " . implode(', ', $tagNames) . " Tags" ;        
+        }    
+    endif;
+
+
+    $sRSS .= "<title><![CDATA[$sChannelTitle]]></title>";
+    $Path=$_SERVER['REQUEST_URI'];
+    $URI=site_url().$Path;
+    $sRSS .= "<link><![CDATA[{$URI}]]></link>";
+    $sRSS .= "<description>{$sChannelDescription}</description>";
+    $ESTTZ = new DateTimeZone('America/New_York');
+    $d1=new DateTime();
+    $d1->setTimezone($ESTTZ);
+    $pubDate = $d1->format(DateTime::RSS);
+    $sRSS .= "<pubDate>{$pubDate}</pubDate>";
+
+
+
+
+    $sFetchSQL = RDP_WE_PPGALLERY::buildFetchSQL($termIDs, 0, $this->options['books-per-rss'],'post_date','DESC');
+    global $wpdb;
+    $rows = $wpdb->get_results($sFetchSQL);
+
+    $description = <<<EOD
+<div id="rdp-pp-rss-%%PostID%%" class="rdp-pp-rss-box">   
+<div>
+    <p style="float: left;margin: 0 3px 0 0" class="cover-image-container">
+        <a id="ppe-cover-link-%%PostID%%" href="%%PostLink%%" class="ppe-cover-link" postid="%%PostID%%">
+            <img class="coverImage" src="%%Image%%" alt="%%Title%%" border="0" width="118" height="174" onerror="this.style.display='none'" />
+        </a>
+    </p>
+<div class="rdp-pp-rss-metadata-container" style="min-height: 180px;">
+    <p class="title-container meta" style="font-size: 12px;line-height: normal;margin: 0px 3px 3px 0px;padding: 0px;"><span class="title">%%FullTitle%%</span></p>
+    <p class="editor-container meta" style="font-size: 12px;line-height: normal;margin: 0px 3px 3px 0px;padding: 0px;"><b>Editor:</b><br><span class="editor">%%Editor%%</span></p>
+    <p class="language-container meta" style="font-size: 12px;line-height: normal;margin: 0px 3px 3px 0px;padding: 0px;"><b>Language:</b><br><span class="editor">%%Language%%</span></p>    
+    <p class="book-size-container meta" style="font-size: 12px;line-height: normal;margin: 0px 3px 3px 0px;padding: 0px;"><b>Book Size:</b><br><span class="book-size">%%BookSize%%</span></p>
+</div>
+</div>   
+</div><!-- .weppgallery-box -->
+<div class="clear "rdp-pp-rss-row-sep" style="height: 2px;background: none;"></div>
+EOD;
+
+    foreach($rows as $row):
+        $sRSS .= '<item>';
+        $contentPieces = unserialize($row->option_value);
+        $sDownloadLink = get_post_meta( $row->ID, 'wiki_press_download_url', true );            
+        $sImgSrc = (!empty($contentPieces['cover_img_src']))? $contentPieces['cover_img_src'] : '';
+        $sTitle = (!empty($contentPieces['title']))? $contentPieces['title'] : '';
+        $sSubtitle = (!empty($contentPieces['subtitle']))? $contentPieces['subtitle'] : '';
+        $FullTitle = (!empty($contentPieces['subtitle']))? $sTitle . ': ' . $sSubtitle : $sTitle;
+        $sEditor = (!empty($contentPieces['editor']))? $contentPieces['editor'] : '';
+        $sLanguage = (!empty($contentPieces['language']))? $contentPieces['language'] : '';
+        $sPriceCurrency = (!empty($contentPieces['price_currency']))? $contentPieces['price_currency'] : '';
+        $sPriceAmount = (!empty($contentPieces['price_amount']))? $contentPieces['price_amount'] : '';
+        $sBookSize = (!empty($contentPieces['book_size']))? $contentPieces['book_size'] : '';
+
+        $sPostLink = get_permalink($row->ID);
+        $sExcerpt = wp_trim_words( $row->post_excerpt, 40, '&hellip; <a href="'. $sPostLink .'">Read More</a>' );
+        $title = self::entitiesPlain($row->post_title);
+
+        $sRSS .= "<title><![CDATA[{$title}]]></title>";
+        $sRSS .= "<link><![CDATA[{$sPostLink}]]></link>";
+        $sRSS .= "<guid isPermaLink='true'><![CDATA[{$sPostLink}]]></guid>"; 
+
+        $sGalleryItem = str_replace (array ( 
+            '%%Image%%', 
+            '%%Title%%' , 
+            '%%Subtitle%%' , 
+            '%%Editor%%',
+            '%%Language%%',
+            '%%PriceCurrency%%',
+            '%%PriceAmount%%',
+            '%%PostID%%',
+            '%%Excerpt%%',
+            '%%FullTitle%%',
+            '%%PostLink%%',
+            '%%BookSize%%') , 
+            array ( 
+            $sImgSrc, 
+            $sTitle, 
+            $sSubtitle, 
+            $sEditor,
+            $sLanguage,
+            $sPriceCurrency,
+            $sPriceAmount,
+            $row->ID,
+            $sExcerpt,
+            $FullTitle,
+            $sPostLink,
+            $sBookSize), 
+            $description );
+        $sGalleryItem = self::entitiesPlain($sGalleryItem);
+        $sRSS .= "<description><![CDATA[{$sGalleryItem}]]></description>";
+
+        $d1=new DateTime($row->post_date);
+        $d1->setTimezone($ESTTZ);
+        $pubDate = $d1->format(DateTime::RSS);
+        $sRSS .= "<pubDate>{$pubDate}</pubDate>";
+        $sRSS .= '</item>';        
+    endforeach;
+    $sRSS .= '</channel>';
+    $sRSS .= '</rss>';
+    echo $sRSS;
+    exit;
+}//customRSSFunc
+
+    static function entitiesPlain($string){
+        return str_replace ( array ( '&amp;' , '&quot;', '&apos;' , '&lt;' , '&gt;', '&quest;',  '&#39;' ), array ( '&', '"', "'", '<', '>', '?', "'" ), $string ); 
+    }
     
     function save_meta( $post_id, $post, $update ) {
         if ( has_shortcode( $post->post_content, 'wiki-embed' ) ) { 
@@ -311,6 +505,8 @@ class Wiki_Embed {
                     'wiki-links-new-page-email' => "",
                     'toc-links'      => "default",
                     'toc-show'      => 1,
+                    'books-per-rss' => "10",
+                    'ppe-beneath-cover-content' => '',
                     'ppe-cta-button-content' => '',
                     'ppe-cta-button-text' => PPE_CTA_BUTTON_TEXT,
                     'ppe-cta-button-width' => PPE_CTA_BUTTON_WIDTH,                
@@ -1381,25 +1577,31 @@ class Wiki_Embed {
         die(); // don't need any more help 
     }
 
+
     function search_metadata_join( $join ) {
-            global $wpdb, $wp_query;
-
-            if ( ! is_admin() && $wp_query->is_search ) {
-                    $join .= " LEFT JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND ( ".$wpdb->postmeta.".meta_key = 'wikiembed_content' ) ";
+        global $wpdb, $wp_query;
+        if ( ! is_admin() && $wp_query->is_search ) {
+            $classes = get_body_class();
+            if ( !in_array( 'woocommerce', $classes ) ) {
+                $join .= " LEFT JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND ( ".$wpdb->postmeta.".meta_key = 'wikiembed_content' ) ";
             }
+        }
 
-            return $join;
+        return $join;
     }
 
     function search_metadata_where( $where ) {
-            global $wpdb, $wp, $wp_query;
+        global $wpdb, $wp, $wp_query;
+        if ( ! is_admin() && $wp_query->is_search ) {
+            $classes = get_body_class();
+            if ( !in_array( 'woocommerce', $classes ) ) {
+                $where .=  " OR ( ".$wpdb->postmeta.".meta_value LIKE '%".$wp->query_vars['s']."%' ) ";;
+            }  
+        }
 
-            if ( ! is_admin() && $wp_query->is_search ) {
-                    $where .= " OR ( ".$wpdb->postmeta.".meta_value LIKE '%".$wp->query_vars['s']."%' ) ";
-            }
-
-            return $where;
+        return $where;
     }
+
 
     /**
      * Makes the plugin searchable by Ajaxy Live Search.

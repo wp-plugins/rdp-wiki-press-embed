@@ -182,6 +182,7 @@ class RDP_WE_PPE {
         'language_show' => 1,
         'add_to_cart_show' => 1,
         'book_size_show' => 1,
+        'beneath_cover_content' => empty($wikiembed_options['ppe-beneath-cover-content'])? '' : $wikiembed_options['ppe-beneath-cover-content'],
         'toc_show' => empty($wikiembed_options['toc-show'])? '0' : $wikiembed_options['toc-show'],
         'toc_links' => empty($wikiembed_options['toc-links'])? 'default' : $wikiembed_options['toc-links'],
         'cta_button_content' => empty($content)? empty($wikiembed_options['ppe-cta-button-content'])? '' : $wikiembed_options['ppe-cta-button-content'] : $content,
@@ -241,18 +242,20 @@ class RDP_WE_PPE {
                 
                 $sMainContentClasses = apply_filters('rdp_pp_book_main_content_classes', $sClasses ) ;
                 $sHTML = '<div id="mainContent" class="book_show' . $sMainContentClasses . '">';
-                
+                $sHTML .= '<div class="wrap" style="clear: right;"><div class="s1 w4"><div id="coverPreviewArea" class="nico_18">';
                 if($atts['image_show'] == 1 && !empty($contentPieces['cover_img_src'])):
-                    $sHTML .= '<div class="s1 w4"><div id="coverPreviewArea" class="nico_18"><div class="ready">';
+                    $sHTML .= '<div class="ready">';
                     //$sHTML .= "<a target='_new' href='";
                     //$sHTML .= (!empty($atts['cta_button_content']))? "#rdp_ppe_inline_content" : $URL ;
                     $sHTML .= '<img id="coverImage" src="' . $contentPieces['cover_img_src'] . '" alt="" style="max-width: 201px;height: auto"/>';
                     //$sHTML .= "' class='ppe-cover-link'>" . $coverImage . "</a>";                
-                    $sHTML .= '</div><!-- .ready --></div><!-- #coverPreviewArea --></div><!-- .s1 .w4 -->';                    
+                    $sHTML .= '</div><!-- .ready -->';
+                    
                 endif;
+                if(!empty($atts['beneath_cover_content']))$sHTML .= '<div id="contentBeneathCover">' . $atts['beneath_cover_content'] . '</div>';
+                $sHTML .= '</div><!-- #coverPreviewArea --></div><!-- .s1 .w4 -->';                
                 
                 $fIncludeMeta = $atts['title_show'] == 1 || $atts['subtitle_show'] == 1 || $atts['editor_show'] == 1 || $atts['language_show'] == 1 ;
-                
                 if($fIncludeMeta):
                     $sHTML .= '<div id="metadata" class="s0l w4">';
                     if($atts['title_show'] == 1) $sHTML .= '<p><label id="title-label">Title:</label><span id="title">' . $contentPieces['title'] . '</span></p>';
@@ -296,11 +299,11 @@ class RDP_WE_PPE {
 
                     $sHTML .= '</div><!-- #metadata -->';
                 endif;
-                
+                $sHTML .= '</div>';
                 if(!empty($atts['toc_show'])):
                     $mainContent = rdp_str_get_html('<html><body>'.$contentPieces['toc'].'</body></html>');
                     if($mainContent){
-                        $sHTML .= '<h2>Contents:</h2>';
+                        $sHTML .= '<div></div><h2>Table of Contents:</h2>';
                         switch ($atts['toc_links']) {
                             case 'logged-in':
                                 if(!is_user_logged_in()):

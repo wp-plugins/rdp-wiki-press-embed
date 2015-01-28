@@ -1234,7 +1234,7 @@ body#errorpage {
 #mainContent.book_show #coverPreviewArea {
     padding: 1px 4px 4px 1px;
     width: 201px;
-    height: 375px;
+    height: auto;
 }
 
 #mainContent.book_show #coverPreviewArea div {
@@ -1243,6 +1243,14 @@ body#errorpage {
     width: 201px;
     height: 311px;
     text-align: center;
+}
+
+#mainContent.book_show div#contentBeneathCover,
+#mainContent.book_show div#contentBeneathCover p{
+    height: auto;
+    font-size: .8em;
+    line-height: normal;
+    margin-top: 6px;
 }
 
 #mainContent.book_show #coverPreviewArea div a:hover{cursor: pointer;}
