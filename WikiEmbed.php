@@ -337,7 +337,7 @@ function customRSSFunc(){
     endif;
 
     $nTagNames = count($tagNames);
-    if($nCatNames && $nTagNames)$sChannelDescription .= ' And';
+    if($nCatNames && $nTagNames)$sChannelDescription .= ' And/Or';
 
     if($nTagNames):
         switch ($nTagNames) {

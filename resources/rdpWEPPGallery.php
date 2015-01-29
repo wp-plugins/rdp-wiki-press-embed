@@ -31,7 +31,9 @@ class RDP_WE_PPGALLERY {
         if(!is_numeric($atts['num']))return $sHTML; 
         
         $termIDs = '';
-        if(!empty($atts['cat']))$termIDs = $atts['cat'];
+        if(!empty($atts['cat'])){
+            $termIDs = $atts['cat'];
+        }
         if(!empty($atts['tag'])){
             if(!empty($termIDs))$termIDs .= ',';
             $termIDs .= $atts['tag'];
@@ -58,7 +60,13 @@ class RDP_WE_PPGALLERY {
         $rows = $wpdb->get_results($sFetchSQL);
 
         $sHTML .= self::renderGallery($rows, (int)$atts['col'], $atts);
+        $sHTML .= '<div id="rdp_pp_gallery_footer">';
         $sHTML .= self::renderPaging($paged, $totalPages);
+        $sRSSLink = self::buildRSSLink($atts);
+        $sHTML .= '<a class="rdp-pp-gallery-rss" target="_new" href="' . $sRSSLink . '">';
+        $sHTML .= '<img class="rdp-pp-gallery-rss" src="' . plugins_url( '/css/images/rss-icon.png',__FILE__)  . '" />';
+        $sHTML .= '</a>';
+        $sHTML .= '</div><!-- #rdp_pp_gallery_footer -->';
         $sHTML .= '</div><!-- #mainContent -->';
         $sInlineHTML = '';
         if(!empty($atts['cta_button_content'])){
@@ -80,7 +88,27 @@ class RDP_WE_PPGALLERY {
         $sHTML .= $sInlineHTML;
         self::handleScripts($atts, $content);
         return $sHTML;
-    }//shortcode_handler 
+    }//shortcode_handler
+    
+    private static function buildRSSLink($atts){
+        $sURL = trailingslashit( get_bloginfo('url') );
+        $params = array();
+        if(!empty($atts['cat']))$params['cat'] = $atts['cat'];
+        if(!empty($atts['tag'])){
+            $tagIDs = explode(',', $atts['tag']);
+            $params['tag'] = '';
+            foreach($tagIDs as $termID){
+                $oTerm = get_term_by('id', $termID, 'post_tag');
+                if(!empty($oTerm)){
+                    if(strlen($params['tag']) > 0) $params['tag'] .= ',';
+                    $params['tag'] .= $oTerm->slug;
+                }
+            }            
+        }
+        $params['feed'] = 'pediapress';
+        $sURL = add_query_arg($params,$sURL);
+        return $sURL;
+    }//buildRSSLink
     
     private static function handleScripts($atts,$content = null){
         wp_register_style( 'rdp-ppe-style-common', plugins_url( 'css/pediapress.common.css' , __FILE__ ) );
@@ -108,6 +136,7 @@ class RDP_WE_PPGALLERY {
         $sHTML = '';
         $nCols = (count($rows) < $cols)? count($rows) : $cols ;
         $width = floor(100/$nCols)-1.5;
+        $sClass = '';
         $nCounter = 0;
         $template = file_get_contents(RDP_WE_PLUGIN_BASEDIR . 'resources/ppgallery-template/ppgallery.column.results.html');
         foreach($rows as $row):
@@ -170,11 +199,12 @@ class RDP_WE_PPGALLERY {
             $sHTML .= '<input type="hidden" id="pp-src-' . $row->ID . '" value="' . $contentPieces['link'] . '" />';
             $sHTML .= '</div>';
             $nCounter++;
+            if($nCounter == count($rows))$sClass = ' last';
             if ($nCounter % $cols === 0) {
-                $sHTML .= '<div class="clear weppgallery-row-sep" style="height: 2px;background: none;"></div>';
+                $sHTML .= '<div class="clear weppgallery-row-sep'.$sClass.'" style="height: 2px;background: none;"></div>';
             }
         endforeach;
-        if ($nCounter % $cols !== 0)$sHTML .= '<div class="clear  weppgallery-row-sep" style="height: 2px;background: none;"></div>';
+        if ($nCounter % $cols !== 0)$sHTML .= '<div class="clear weppgallery-row-sep last" style="height: 2px;background: none;"></div>';
         
         $sHTML .= '<style type="text/css">';
         $sHTML .= 'div.weppgallery-box{width: '. $width . '%;}';
@@ -245,7 +275,7 @@ EOS;
     private static function renderPaging($paged,$totalPages){
         if($totalPages == 1)return '';
         
-        $sHTML = '<form id="frmWEPPGallery" method="post" action="">'; 
+        $sHTML = '<form class="rdp-weppg-paging-form" method="post" action="">'; 
         $sHTML .= '<div id="rdp-weppg-paging-controls" class="rdp-weppg-paging-controls"><div class="wrap">';
         $sHTML .= '<input type="submit"';
         if($paged == 1)$sHTML .= ' disabled="disabled" ';

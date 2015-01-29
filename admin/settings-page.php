@@ -418,9 +418,9 @@ function wikiembed_settings_page() {
                                     <td>
                                         <p>Your site has an RSS feed for all books on the site: <a href="<?php bloginfo('url' );  ?>/feed/pediapress" target="_new"><?php bloginfo('url' );  ?>/feed/pediapress</a></p>
                                         <p>You can provide book feeds to only specific categories or tags on your site by using the following formats:</p>
-                                        <p><b><?php bloginfo('url' );  ?>/category/categoryname/feed/pediapress</b></p>
+                                        <p><b><?php bloginfo('url' );  ?>/category/categoryslug/feed/pediapress</b></p>
                                         <p>Or</p>
-                                        <p><b><?php bloginfo('url' );  ?>/tag/tagname/feed/pediapress</b></p>
+                                        <p><b><?php bloginfo('url' );  ?>/tag/tagslug/feed/pediapress</b></p>
                                     </td>
                                 </tr>                            
 				<tr>
