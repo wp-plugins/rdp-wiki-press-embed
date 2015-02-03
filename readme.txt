@@ -45,7 +45,7 @@ RDP Wiki-Press Embed is implemented using the shortcode [wiki-embed]. It accepts
 
 Example:
 
-[wiki-embed url="http://en.wikipedia.org/wiki/Example" no-edit no-contents no-infobox accordion]
+`[wiki-embed url="http://en.wikipedia.org/wiki/Example" no-edit no-contents no-infobox accordion]`
 
 
 = PediaPress Book =
@@ -73,13 +73,13 @@ For embedding PediaPress book pages, the following arguments are accepted:
 
 Examples:
 
-[wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe']
+`[wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe']`
 
-[wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in']
+`[wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in']`
 
 For the Call-to-Action button to appear, the shortcode must be an enclosing shortcode, containing text, HTML, and/or another shortcode, between the opening and closing shortcode tags.
 
-[wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in' cta_button_top_color='#eded00' cta_button_text_shadow_color='#cd8a15']`<iframe src="http://www.w3schools.com"></iframe>`[/wiki-embed]
+`[wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in' cta_button_top_color='#eded00' cta_button_text_shadow_color='#cd8a15']`<iframe src="http://www.w3schools.com"></iframe>`[/wiki-embed]`
 
 
 = PediaPress Gallery =
@@ -101,21 +101,25 @@ Embedding a PediaPress gallery of books is implemented using the shortcode [wiki
 * cta_button_box_shadow_color: button's drop shadow color
 * cta_button_text_shadow_color: drop shadow color of button's text
 
-The layout for displaying each book in the gallery is based on the template file located at: `resources/ppgallery-template/ppgallery.column.results.html`
+The layout for displaying each book in the gallery is based on the template file located at: 
 
-A sample template that displays buttons is located at: `resources/ppgallery-template/ppgallery.column.results-sample.html`
+`resources/ppgallery-template/ppgallery.column.results.html`
+
+A sample template that displays buttons is located at: 
+
+`resources/ppgallery-template/ppgallery.column.results-sample.html`
 
 
 Examples:
 
-[wiki-embed-ppgallery col='3' num='3']
+`[wiki-embed-ppgallery col='3' num='3']`
 
-[wiki-embed-ppgallery col='2' num='10' cat='5' tag='7,8' sort_col='post_date' sort_dir='DESC' /]
+`[wiki-embed-ppgallery col='2' num='10' cat='5' tag='7,8' sort_col='post_date' sort_dir='DESC' /]`
 
 
 For the Call-to-Action button to appear, the shortcode must be an enclosing shortcode, containing text, HTML, and/or another shortcode, between the opening and closing shortcode tags.
 
-[wiki-embed-ppgallery col='3' num='3' cta_button_font_hover_color='#8224e3']`<iframe src="http://www.w3schools.com"></iframe>`[/wiki-embed-ppgallery]
+`[wiki-embed-ppgallery col='3' num='3' cta_button_font_hover_color='#8224e3']<iframe src="http://www.w3schools.com"></iframe>[/wiki-embed-ppgallery]`
 
 
 == Configuration ==
