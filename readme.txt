@@ -130,15 +130,20 @@ Here you can enable/disable various features, define shortcode defaults, and con
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Go to 'Wiki Embed' -> 'Settings' and change the wiki embed settings to your liking
 4. Click the 'Save Changes' button at the bottom of the settings page - even if you do not make any changes - so settings take affect
-5. Go to 'Setting' -> 'Permalinks' and click the 'Save Changes' button so the custom RSS feeds will work.
+5. Go to 'Settings' -> 'Permalinks' and click the 'Save Changes' button so the custom RSS feeds will work.
+
+= Gallery Items =
+To change the way each book is displayed in gallery view, you will need to modify the template file located at: 
+
+`resources/ppgallery-template/ppgallery.column.results.html`
+
+
+A sample template that displays buttons is located at: 
+
+`resources/ppgallery-template/ppgallery.column.results-sample.html`
 
 = Extra =
 To make everything pretty, add a wiki.custom.css and pediapress.custom.css file. Start with the wiki.custom-sample.css and pediapress.custom-sample.css files located in the 'resources/css/' folder.
-
-= Gallery Items =
-To change the way each book is displayed in gallery view, you will need to modify the template file located at: `resources/ppgallery-template/ppgallery.column.results.html`
-
-A sample template that displays buttons is located at: `resources/ppgallery-template/ppgallery.column.results-sample.html`
 
 
 
