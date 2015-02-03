@@ -48,8 +48,7 @@ function wikiembed_settings_page() {
 		<h2>Wiki Embed Settings</h2>
 		<form method="post" action="admin.php?page=wikiembed_settings_page">
 			<?php settings_fields('wikiembed_options'); ?>
-			<a href="#" id="show-help" >Explain More</a>
-			
+		
 			<?php if ( $updated ): ?>
 				<div class="updated below-h2" id="message"><p>Wiki Embed Settings Updated</p></div>
 			<?php endif; ?>
@@ -270,6 +269,20 @@ function wikiembed_settings_page() {
 					<div class="help-div"></div>
 					</td>
 				</tr>
+                                
+                                <tr>
+                                    <th valign="top" class="label" scope="row">
+                                    </th> 
+                                    <td class="field">
+                                            <span class="alignleft">Content to Insert Beneath PediaPress Book Cover Image</span><br />                                        
+                                        <?php 
+                                            $sBeneathCoverContent = ( isset( $wikiembed_options['ppe-beneath-cover-content'] ) ) ? $wikiembed_options['ppe-beneath-cover-content'] : '';
+                                        ?>
+                                            <textarea name="wikiembed_options[ppe-beneath-cover-content]" id="ppe-beneath-cover-content" rows="10" cols="50"><?php echo esc_textarea($sBeneathCoverContent) ?></textarea>                                         
+                                    </td>
+                                </tr>                                
+                                
+                                
                                 <tr>
                                     <th valign="top" class="label" scope="row">
                                             <span class="alignleft">
@@ -397,7 +410,31 @@ function wikiembed_settings_page() {
                                     </td>
                                 </tr>                                   
 			</table>
-			
+                        
+			<h3>PediaPress RSS</h3>
+			<table class="form-table">
+                                <tr>
+                                    <th></th>
+                                    <td>
+                                        <p>Your site has an RSS feed for all books on the site: <a href="<?php bloginfo('url' );  ?>/feed/pediapress" target="_new"><?php bloginfo('url' );  ?>/feed/pediapress</a></p>
+                                        <p>You can provide book feeds to only specific categories or tags on your site by using the following formats:</p>
+                                        <p><b><?php bloginfo('url' );  ?>/category/categoryslug/feed/pediapress</b></p>
+                                        <p>Or</p>
+                                        <p><b><?php bloginfo('url' );  ?>/tag/tagslug/feed/pediapress</b></p>
+                                    </td>
+                                </tr>                            
+				<tr>
+					<th valign="top" class="label" scope="row"></th>
+					<td class="field">
+                                        <?php 
+                                            $sBooksPerRSS = ( isset( $wikiembed_options['books-per-rss'] ) && is_numeric( $wikiembed_options['books-per-rss']) && (int)$wikiembed_options['books-per-rss'] > 1 ) ? $wikiembed_options['books-per-rss'] : '10';
+                                        ?>                                            
+                                            <span>Feeds show the most recent</span> <input name="wikiembed_options[books-per-rss]" type="number" step="1" min="1" id="books-per-rss" value="<?php echo esc_attr($sBooksPerRSS) ?>" class="small-text"/>
+ books
+					</td>
+				</tr>
+			</table>
+                        
 			<h3>Security</h3>
 			<p>Restrict the domains of wikis that you want content to be embedded from.<br />Example: <em>en.wikipedia.org</em> would allow any urls from the english wikipedia, but not from <em>de.wikipedia.org</em> German wikipedia</p>
 			<table class="form-table">
@@ -454,18 +491,23 @@ function wikiembed_options_validate( $wikiembed_options ) {
 
     } 
     
+    $x = isset( $wikiembed_options['books-per-rss'] );
+    $y = is_numeric( $wikiembed_options['books-per-rss']);
+    $z = (int)$wikiembed_options['books-per-rss'] > 1;
     
 	return array(
 		'tabs'            => ( isset( $wikiembed_options['tabs']            ) && $wikiembed_options['tabs']            == 1 ? 1 : 0 ),
 		'accordians'      => ( isset( $wikiembed_options['accordions']      ) && $wikiembed_options['accordions']      == 1 ? 1 : 0 ),
 		'style'           => ( isset( $wikiembed_options['style']           ) && $wikiembed_options['style']           == 1 ? 1 : 0 ),
 		'tabs-style'      => ( isset( $wikiembed_options['tabs-style']      ) && $wikiembed_options['tabs-style']      == 1 ? 1 : 0 ),
+		'books-per-rss' => ( isset( $wikiembed_options['books-per-rss'] ) && is_numeric( $wikiembed_options['books-per-rss']) && (int)$wikiembed_options['books-per-rss'] > 1 ? $wikiembed_options['books-per-rss'] : "10"),
 		'accordion-style' => ( isset( $wikiembed_options['accordion-style'] ) && $wikiembed_options['accordion-style'] == 1 ? 1 : 0 ),
 		'wiki-update'     => ( is_numeric( $wikiembed_options['wiki-update'] ) ? $wikiembed_options['wiki-update'] : "30" ), /* minutes */
 		'wiki-links'      => ( in_array( $wikiembed_options['wiki-links'], array( "default", "overlay", "new-page","overwrite" ) ) ? $wikiembed_options['wiki-links'] : "default" ),
 		'wiki-links-new-page-email' => wp_rel_nofollow( $wikiembed_options['wiki-links-new-page-email'] ),
 		'toc-show'            => ( isset( $wikiembed_options['toc-show']) && $wikiembed_options['toc-show']            == 1 ? 1 : 0 ),		
 		'toc-links'            => ( isset( $wikiembed_options['toc-links']) ?  trim( $wikiembed_options['toc-links'] ) : null ),
+                'ppe-beneath-cover-content' => ( isset($wikiembed_options['ppe-beneath-cover-content']))? $wikiembed_options['ppe-beneath-cover-content'] : '',
                 'ppe-cta-button-content' => ( isset($wikiembed_options['ppe-cta-button-content']))? $wikiembed_options['ppe-cta-button-content'] : '',
                 'ppe-cta-button-text' => ( isset($wikiembed_options['ppe-cta-button-text']))? $wikiembed_options['ppe-cta-button-text'] : PPE_CTA_BUTTON_TEXT,
                 'ppe-cta-button-width' => $ctaButtonWidth,

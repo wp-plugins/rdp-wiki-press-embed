@@ -3,7 +3,7 @@ Contributors: rpayne7264, enej, ejackisch, devindra, ctlt-dev, ubcdev
 Tags: mediawiki, wiki, wiki-embed, embed, content framework, wiki inc, pediapress, pediapress embed
 Requires at least: 3.5
 Tested up to: 4.1
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 
 RDP Wiki-Press Embed lets you embed MediaWiki pages in to your site, from sites like Wikipedia, and PediaPress book pages.
 
@@ -19,7 +19,7 @@ The default behavior is to display two tabs. The first tab will display whatever
 = Known Issues =
 
 * CSS clashes with Lightbox Plus Colorbox plug-in
-* Code clash with WooCommerce product search
+
 
 
 Forked from: [Wiki Embed plugin](http://wordpress.org/plugins/wiki-embed/  "Wiki Embed plugin").
@@ -33,6 +33,7 @@ Maybe, but why would you want to? That is not what the tool was designed to do.
 
 == Usage ==
 
+= Wiki Content =
 RDP Wiki-Press Embed is implemented using the shortcode [wiki-embed]. It accepts the following arguments:
 
 * url: (required) the web address of the wiki article that you want to embed on this page.
@@ -47,6 +48,7 @@ Example:
 [wiki-embed url="http://en.wikipedia.org/wiki/Example" no-edit no-contents no-infobox accordion]
 
 
+= PediaPress Book =
 For embedding PediaPress book pages, the following arguments are accepted:
 
 * url: (required) the web address of the PediaPress book that you want to embed on this page.
@@ -80,6 +82,7 @@ For the Call-to-Action button to appear, the shortcode must be an enclosing shor
 [wiki-embed url='http://pediapress.com/books/show/american-warplanes-of-wwii-fighters-bombe' toc_show='1' toc_links='logged-in' cta_button_top_color='#eded00' cta_button_text_shadow_color='#cd8a15']`<iframe src="http://www.w3schools.com"></iframe>`[/wiki-embed]
 
 
+= PediaPress Gallery =
 Embedding a PediaPress gallery of books is implemented using the shortcode [wiki-embed-ppgallery]. It accepts the following arguments:
 
 * col: (required) number of columns to display per page
@@ -98,9 +101,9 @@ Embedding a PediaPress gallery of books is implemented using the shortcode [wiki
 * cta_button_box_shadow_color: button's drop shadow color
 * cta_button_text_shadow_color: drop shadow color of button's text
 
-The layout for displaying each book in the gallery is based on the template file located at: resources/ppgallery-template/ppgallery.column.results.html
+The layout for displaying each book in the gallery is based on the template file located at: `resources/ppgallery-template/ppgallery.column.results.html`
 
-A sample template that displays buttons is located at: resources/ppgallery-template/ppgallery.column.results-sample.html
+A sample template that displays buttons is located at: `resources/ppgallery-template/ppgallery.column.results-sample.html`
 
 
 Examples:
@@ -126,10 +129,17 @@ Here you can enable/disable various features, define shortcode defaults, and con
 1. Upload `rdp-wiki-embed` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Go to 'Wiki Embed' -> 'Settings' and change the wiki embed settings to your liking
-4. Click the 'Save Changes' button at the bottom of the options page - even if you do not make any changes - so settings take affect
+4. Click the 'Save Changes' button at the bottom of the settings page - even if you do not make any changes - so settings take affect
+5. Go to 'Setting' -> 'Permalinks' and click the 'Save Changes' button so the custom RSS feeds will work.
 
 = Extra =
 To make everything pretty, add a wiki.custom.css and pediapress.custom.css file. Start with the wiki.custom-sample.css and pediapress.custom-sample.css files located in the 'resources/css/' folder.
+
+= Gallery Items =
+To change the way each book is displayed in gallery view, you will need to modify the template file located at: `resources/ppgallery-template/ppgallery.column.results.html`
+
+A sample template that displays buttons is located at: `resources/ppgallery-template/ppgallery.column.results-sample.html`
+
 
 
 == Screenshots ==
@@ -144,6 +154,11 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 
 
 == Changelog ==
+
+= 2.1.0 =
+* FEATURE: added global setting for additional text, such as Creative Commons verbage, to be displayed under a book's cover image
+* FEATURE: added RSS feed capability
+* REFACTOR: added code to address interference with WooCommerce product search
 
 = 2.0.0 =
 * FEATURE: added shortcode to display gallery of PediaPress books

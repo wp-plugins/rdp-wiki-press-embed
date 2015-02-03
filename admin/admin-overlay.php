@@ -308,7 +308,7 @@ function wikiembed_overlay_popup_form() {
                                                 <?php 
                                                 $args = array(
                                                   'orderby' => 'name',
-                                                  'parent' => 0
+                                                  'hide_empty' => 0
                                                   );
                                                 $categories = get_categories( $args );  
                                                     foreach ( $categories as $category ) {
@@ -328,7 +328,7 @@ function wikiembed_overlay_popup_form() {
                                                 <?php 
                                                 $args = array(
                                                   'orderby' => 'name',
-                                                  'parent' => 0
+                                                  'hide_empty' => 0
                                                   );
                                                 $tags = get_tags( $args );  
                                                     foreach ( $tags as $tag ) {
