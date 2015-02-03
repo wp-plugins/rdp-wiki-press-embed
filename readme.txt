@@ -101,9 +101,13 @@ Embedding a PediaPress gallery of books is implemented using the shortcode [wiki
 * cta_button_box_shadow_color: button's drop shadow color
 * cta_button_text_shadow_color: drop shadow color of button's text
 
-The layout for displaying each book in the gallery is based on the template file located at: `resources/ppgallery-template/ppgallery.column.results.html`
+The layout for displaying each book in the gallery is based on the template file located at: 
 
-A sample template that displays buttons is located at: `resources/ppgallery-template/ppgallery.column.results-sample.html`
+`resources/ppgallery-template/ppgallery.column.results.html`
+
+A sample template that displays buttons is located at: 
+
+`resources/ppgallery-template/ppgallery.column.results-sample.html`
 
 
 Examples:
