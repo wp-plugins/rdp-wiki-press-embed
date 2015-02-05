@@ -16,7 +16,7 @@ function rdp_we_overwrite_handle_links(){
     var baseURL = window.location.protocol + "//" + window.location.host + window.location.pathname;
     var baseTarget = url('protocol', WikiEmbedSettings.target_url) + "://" + url('hostname', WikiEmbedSettings.target_url)
 
-    $j(".wiki-embed-overwrite a:not(.external,.new,sup.reference a,.ui-tabs-nav a)").each(function(i){
+    $j(".wiki-embed-overwrite a:not(.external,.new,sup.reference a,.ui-tabs-nav a,[href*='linkedin.com/groups/'])").each(function(i){
         var sHREF = $j(this).attr('href');
         if(typeof sHREF == 'undefined')return true;
         if(sHREF.substring(0, 1) !== '#'){
