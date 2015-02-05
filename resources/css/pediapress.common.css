@@ -1251,6 +1251,7 @@ body#errorpage {
     font-size: .8em;
     line-height: normal;
     margin-top: 6px;
+    display: inline-table;
 }
 
 #mainContent.book_show #coverPreviewArea div a:hover{cursor: pointer;}
