@@ -3,7 +3,7 @@ Contributors: rpayne7264, enej, ejackisch, devindra, ctlt-dev, ubcdev
 Tags: mediawiki, wiki, wiki-embed, embed, content framework, wiki inc, pediapress, pediapress embed
 Requires at least: 3.5
 Tested up to: 4.1
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 
 RDP Wiki-Press Embed lets you embed MediaWiki pages in to your site, from sites like Wikipedia, and PediaPress book pages.
 
@@ -163,6 +163,9 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file.
 
 
 == Changelog ==
+
+= 2.1.1 =
+* REFACTOR: modified code to allow multiple galleries on one page
 
 = 2.1.0 =
 * FEATURE: added global setting for additional text, such as Creative Commons verbage, to be displayed under a book's cover image

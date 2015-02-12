@@ -4,7 +4,8 @@ if ( ! class_exists('RDP_WE_PPGALLERY') ) :
 class RDP_WE_PPGALLERY {
     
     public static function shortcode($atts,$content = null){
-        $sHTML = '<div id="mainContent" class="book_gallery">';
+        $nGUID = uniqid();
+        $sHTML = '<div class="rdp_pp_book_gallery rdp_pp_book_gallery-'. $nGUID .'">';
         global $wikiembed_object;     
         $wikiembed_options = $wikiembed_object->options;          
         $atts = shortcode_atts(array(
@@ -59,7 +60,7 @@ class RDP_WE_PPGALLERY {
         $sFetchSQL = self::buildFetchSQL($termIDs, $start, $atts['num'],$atts['sort_col'],$atts['sort_dir']);
         $rows = $wpdb->get_results($sFetchSQL);
 
-        $sHTML .= self::renderGallery($rows, (int)$atts['col'], $atts);
+        $sHTML .= self::renderGallery($rows, (int)$atts['col'], $atts,$nGUID);
         $sHTML .= '<div id="rdp_pp_gallery_footer">';
         $sHTML .= self::renderPaging($paged, $totalPages);
         $sRSSLink = self::buildRSSLink($atts);
@@ -132,13 +133,14 @@ class RDP_WE_PPGALLERY {
         do_action('rdp_pp_gallery_scripts_enqueued',$atts, $content);        
     }//handleScripts
 
-    private static function renderGallery($rows,$cols,$atts){
+    private static function renderGallery($rows,$cols,$atts,$nGUID){
         $sHTML = '';
         $nCols = (count($rows) < $cols)? count($rows) : $cols ;
         $width = floor(100/$nCols)-1.5;
         $sClass = '';
         $nCounter = 0;
         $template = file_get_contents(RDP_WE_PLUGIN_BASEDIR . 'resources/ppgallery-template/ppgallery.column.results.html');
+
         foreach($rows as $row):
             $contentPieces = unserialize($row->option_value);
             $sLink = '';
@@ -207,12 +209,12 @@ class RDP_WE_PPGALLERY {
         if ($nCounter % $cols !== 0)$sHTML .= '<div class="clear weppgallery-row-sep last" style="height: 2px;background: none;"></div>';
         
         $sHTML .= '<style type="text/css">';
-        $sHTML .= 'div.weppgallery-box{width: '. $width . '%;}';
+        $sHTML .= 'div.rdp_pp_book_gallery-'.$nGUID.' div.weppgallery-box{width: '. $width . '%;}';
         $sHTML .= '</style>';
         
         $style = <<<EOS
 <style type="text/css">
-#mainContent p.rdp-pp-gallery-cta-button-container a {
+div.rdp_pp_book_gallery-{$nGUID} p.rdp-pp-gallery-cta-button-container a {
 	-o-box-shadow:inset 0px 1px 0px 0px {$atts['cta_button_box_shadow_color']};
 	-moz-box-shadow:inset 0px 1px 0px 0px {$atts['cta_button_box_shadow_color']};
 	-webkit-box-shadow:inset 0px 1px 0px 0px {$atts['cta_button_box_shadow_color']};
@@ -255,10 +257,10 @@ class RDP_WE_PPGALLERY {
 	text-align:center;
 	text-shadow:1px 1px 0px {$atts['cta_button_text_shadow_color']};
 }
-#mainContent p.rdp-pp-gallery-cta-button-container a:hover{
+div.rdp_pp_book_gallery-{$nGUID} p.rdp-pp-gallery-cta-button-container a:hover{
     color: {$atts['cta_button_font_hover_color']};
 }
-#mainContent p.rdp-pp-gallery-cta-button-container a:active {
+div.rdp_pp_book_gallery-{$nGUID} p.rdp-pp-gallery-cta-button-container a:active {
 	position:relative;
 	top:1px;
 }</style>   
