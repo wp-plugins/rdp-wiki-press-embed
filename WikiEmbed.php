@@ -266,7 +266,6 @@ class Wiki_Embed {
     
 function customRSS(){
         add_feed('pediapress',  array( $this, 'customRSSFunc' ));
-        //add_action('do_feed_pediapress', array( $this, 'customRSSFunc' ));
 }  
 
 function customRSSFunc(){
@@ -1800,6 +1799,6 @@ EOD;
         }
     }
     /* END OF CACHING */
-}
+}//Wiki_Embed
 
 $wikiembed_object = new Wiki_Embed();
