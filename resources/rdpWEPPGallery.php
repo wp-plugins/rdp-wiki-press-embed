@@ -114,11 +114,13 @@ class RDP_WE_PPGALLERY {
     private static function handleScripts($atts,$content = null){
         wp_register_style( 'rdp-ppe-style-common', plugins_url( 'css/pediapress.common.css' , __FILE__ ) );
         wp_enqueue_style( 'rdp-ppe-style-common' );
-        $filename = RDP_WE_PLUGIN_BASEDIR . 'resources/css/pediapress.custom.css';
+
+        $filename = get_stylesheet_directory() .  '/pediapress.custom.css';
         if (file_exists($filename)) {
-            wp_register_style( 'rdp-ppe-style-custom', plugins_url( 'css/pediapress.custom.css' , __FILE__ ),array('rdp-ppe-style-common' ) );
+            wp_register_style( 'rdp-ppe-style-custom',get_stylesheet_directory_uri() . '/pediapress.custom.css',array('rdp-ppe-style-common' ) );
             wp_enqueue_style( 'rdp-ppe-style-custom' );
-        }         
+        } 
+
         wp_enqueue_script( 'colorbox', plugins_url( '/resources/js/jquery.colorbox.min.js',RDP_WE_PLUGIN_BASENAME),array("jquery"), "1.3.20.2", true );        
         wp_enqueue_script( 'pp-gallery-overlay', plugins_url( '/resources/js/pediapress-gallery-overlay.js',RDP_WE_PLUGIN_BASENAME),array("jquery",'colorbox'), "1.0", true );        
         if(!empty($content)){
@@ -139,7 +141,17 @@ class RDP_WE_PPGALLERY {
         $width = floor(100/$nCols)-1.5;
         $sClass = '';
         $nCounter = 0;
-        $template = file_get_contents(RDP_WE_PLUGIN_BASEDIR . 'resources/ppgallery-template/ppgallery.column.results.html');
+        $template = '';
+        $upload_dir = wp_upload_dir();
+        $imgCacheDir = $upload_dir['basedir'] . '/rdp-wiki-press-embed';
+        $customTemplateSrc = $imgCacheDir . '/ppgallery.column.results.html';
+        
+        if(file_exists($customTemplateSrc)){
+            $template = file_get_contents($customTemplateSrc);
+        }else{
+            $template = file_get_contents(RDP_WE_PLUGIN_BASEDIR . 'resources/ppgallery-template/ppgallery.column.results.html');
+        }
+        
 
         foreach($rows as $row):
             $contentPieces = unserialize($row->option_value);
@@ -149,8 +161,7 @@ class RDP_WE_PPGALLERY {
             }else{
                 $sLink = $contentPieces['link'];
             }
-           
-            $sDownloadLink = get_post_meta( $row->ID, 'wiki_press_download_url', true );            
+                    
             $sImgSrc = (!empty($contentPieces['cover_img_src']))? $contentPieces['cover_img_src'] : '';
             $sTitle = (!empty($contentPieces['title']))? $contentPieces['title'] : '';
             $sSubtitle = (!empty($contentPieces['subtitle']))? $contentPieces['subtitle'] : '';

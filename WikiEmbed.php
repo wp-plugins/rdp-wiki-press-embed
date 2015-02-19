@@ -3,7 +3,7 @@
  * Plugin Name: RDP Wiki-Press Embed
  * Plugin URI: http://www.robert-d-payne.com/
  * Description: Enables the inclusion of MediaWiki pages and PediaPress book pages into your own blog page or post through the use of shortcodes. Forked from: <a href="http://wordpress.org/plugins/rdp-wiki-press-embed/" target="_blank">Wiki Embed plugin</a>.
- * Version: 2.1.1
+ * Version: 2.2.0
  * Author: Robert D Payne
  * Author URI: http://www.robert-d-payne.com/
  *
@@ -100,7 +100,7 @@ class Wiki_Embed {
             if(empty($this->wikiembeds))$this->wikiembeds = array();
             
             $this->content_count = 0; 
-            $this->version       = '2.1.1';
+            $this->version       = '2.2.0';
             
 
             add_action( 'init', array( $this, 'init' ) );
@@ -187,9 +187,9 @@ class Wiki_Embed {
                     default:
             }
 
-        $filename = RDP_WE_PLUGIN_BASEDIR . 'resources/css/wiki.custom.css';
+        $filename = get_stylesheet_directory() . '/wiki.custom.css';
         if (file_exists($filename)) {
-            wp_register_style( 'rdp-we-style-custom', plugins_url( 'resources/css/wiki.custom.css' , __FILE__ ) );
+            wp_register_style( 'rdp-we-style-custom', get_stylesheet_directory_uri() . '/wiki.custom.css' );
             wp_enqueue_style( 'rdp-we-style-custom' );
         }                  
 
@@ -550,9 +550,9 @@ EOD;
                 // handle pediapress css
                  wp_register_style( 'rdp-ppe-style-common', plugins_url( 'resources/css/pediapress.common.css' , __FILE__ ) );
                  wp_enqueue_style( 'rdp-ppe-style-common' );
-                 $filename = RDP_WE_PLUGIN_BASEDIR . 'resources/css/pediapress.custom.css';
+                 $filename = get_stylesheet_directory() .  '/pediapress.custom.css';
                  if (file_exists($filename)) {
-                     wp_register_style( 'rdp-ppe-style-custom', plugins_url( 'resources/css/pediapress.custom.css' , __FILE__ ),array('rdp-ppe-style-common' ) );
+                     wp_register_style( 'rdp-ppe-style-custom',get_stylesheet_directory_uri() . '/pediapress.custom.css',array('rdp-ppe-style-common' ) );
                      wp_enqueue_style( 'rdp-ppe-style-custom' );
                  }                    
                 

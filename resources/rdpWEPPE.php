@@ -103,14 +103,17 @@ class RDP_WE_PPE {
                 }
                 
                 if(!empty($sExt)){
+                    $upload_dir = wp_upload_dir();
                     $imgName = sanitize_title($contentPieces['title']) . $sExt;
-                    $imgCacheSrc = RDP_WE_PLUGIN_BASEDIR . 'resources/img-cache/' . $imgName;
+                    $imgCacheDir = $upload_dir['basedir'] . '/rdp-wiki-press-embed';
+                    if(!file_exists($imgCacheDir))mkdir($imgCacheDir, 0755);
+                    $imgCacheSrc = $imgCacheDir . '/' . $imgName;
                     if(!file_exists($imgCacheSrc)){
                         $fp = fopen($imgCacheSrc, 'x');
                         fwrite($fp, $rawImage['body']); // save the full image
                         fclose($fp);                    
                     }   
-                    $contentPieces['cover_img_src'] = plugins_url( '/resources/img-cache/' . $imgName,RDP_WE_PLUGIN_BASENAME);                    
+                    $contentPieces['cover_img_src'] =  $upload_dir['baseurl'] . '/rdp-wiki-press-embed/' . $imgName;                    
                 }else{
                     $contentPieces['cover_img_src'] = $imgSrc;
                 }
