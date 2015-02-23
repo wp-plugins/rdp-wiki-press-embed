@@ -8,7 +8,7 @@ Stable tag: 0.1.0
 RDP Google Custom Search lets you use Google's Custom Search Engine (CSE) API to add targeted search capability to your site.
 
 == Description ==
-`ATTN: This plugin only works with the PAID version of Google Custom Search.`
+**ATTN: This plugin only works with the PAID version of Google Custom Search.**
 
 With RDP Google Custom Search, you can target your site's contents, or other site's contents. You can add multiple CSEs and allow your visitor to choose one.
 
