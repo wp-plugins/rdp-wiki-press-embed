@@ -24,6 +24,7 @@ function rdp_wcr_handle_links(){
         if(baseTarget != '' && sHREF.substring(0, 1) == '/') sHREF = baseTarget + sHREF;        
         urls = sHREF.match(/(https?:\/\/[^\s]+)/g);
         if(urls == null)return true;
-        $j(this).attr('href',baseURL+jQuery.query.set("wikiembed-override-url", sHREF) ).removeAttr('target');                
+        $j(this).attr('href',baseURL+jQuery.query.set("wikiembed-override-url", sHREF) ).removeAttr('target');    
+        $j(this).data("href",sHREF).addClass('wiki-link');
     });     
 }//rdp_wcr_handle_links

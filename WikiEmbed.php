@@ -3,7 +3,7 @@
  * Plugin Name: RDP Wiki-Press Embed
  * Plugin URI: http://www.robert-d-payne.com/
  * Description: Enables the inclusion of MediaWiki pages and PediaPress book pages into your own blog page or post through the use of shortcodes. Forked from: <a href="http://wordpress.org/plugins/rdp-wiki-press-embed/" target="_blank">Wiki Embed plugin</a>.
- * Version: 2.1.0
+ * Version: 2.4.0
  * Author: Robert D Payne
  * Author URI: http://www.robert-d-payne.com/
  *
@@ -100,7 +100,7 @@ class Wiki_Embed {
             if(empty($this->wikiembeds))$this->wikiembeds = array();
             
             $this->content_count = 0; 
-            $this->version       = '2.1.0';
+            $this->version       = '2.4.0';
             
 
             add_action( 'init', array( $this, 'init' ) );
@@ -187,9 +187,9 @@ class Wiki_Embed {
                     default:
             }
 
-        $filename = RDP_WE_PLUGIN_BASEDIR . 'resources/css/wiki.custom.css';
+        $filename = get_stylesheet_directory() . '/wiki.custom.css';
         if (file_exists($filename)) {
-            wp_register_style( 'rdp-we-style-custom', plugins_url( 'resources/css/wiki.custom.css' , __FILE__ ) );
+            wp_register_style( 'rdp-we-style-custom', get_stylesheet_directory_uri() . '/wiki.custom.css' );
             wp_enqueue_style( 'rdp-we-style-custom' );
         }                  
 
@@ -266,7 +266,6 @@ class Wiki_Embed {
     
 function customRSS(){
         add_feed('pediapress',  array( $this, 'customRSSFunc' ));
-        //add_action('do_feed_pediapress', array( $this, 'customRSSFunc' ));
 }  
 
 function customRSSFunc(){
@@ -551,9 +550,9 @@ EOD;
                 // handle pediapress css
                  wp_register_style( 'rdp-ppe-style-common', plugins_url( 'resources/css/pediapress.common.css' , __FILE__ ) );
                  wp_enqueue_style( 'rdp-ppe-style-common' );
-                 $filename = RDP_WE_PLUGIN_BASEDIR . 'resources/css/pediapress.custom.css';
+                 $filename = get_stylesheet_directory() .  '/pediapress.custom.css';
                  if (file_exists($filename)) {
-                     wp_register_style( 'rdp-ppe-style-custom', plugins_url( 'resources/css/pediapress.custom.css' , __FILE__ ),array('rdp-ppe-style-common' ) );
+                     wp_register_style( 'rdp-ppe-style-custom',get_stylesheet_directory_uri() . '/pediapress.custom.css',array('rdp-ppe-style-common' ) );
                      wp_enqueue_style( 'rdp-ppe-style-custom' );
                  }                    
                 
@@ -562,12 +561,37 @@ EOD;
             }
             if(empty ($sHTML)){
                 $sHTML = $this->shortcode_handler($atts);
+                if(!has_action('wp_footer', array(&$this,'renderTOCMenu'))){
+                    add_action('wp_footer', array(&$this,'renderTOCMenu'));
+                }                
                 $sHTML = apply_filters( 'rdp_wpe_after_wiki_content_grab', $sHTML );
             }
 
             $sHTML = apply_filters( 'rdp_wpe_shortcode', $sHTML );
             return $sHTML;
     }//shortcode
+    
+    public function renderTOCMenu(){
+        $sKey  = get_post_meta(get_the_ID(), RDP_WE_PPE::$postMetaKey, true);
+        $sInlineHTML = '';
+        $contentPieces = array();
+        if(!empty($sKey))$contentPieces = get_transient( $sKey ); 
+        if(empty($contentPieces))return;
+        if(!wp_script_is('colorbox'))wp_enqueue_script( 'colorbox', plugins_url( '/resources/js/jquery.colorbox.min.js',RDP_WE_PLUGIN_BASENAME),array("jquery"), "1.3.20.2", true );   
+        wp_enqueue_script(
+                'rdp_wpe_toc_popup', 
+                plugins_url( '/resources/js/script.toc-popup.js',RDP_WE_PLUGIN_BASENAME),
+                array("jquery"), 
+                $this->version, 
+                true ); 
+        wp_enqueue_style( 'ppe-colorbox-style', plugins_url( '/resources/css/colorbox.css',RDP_WE_PLUGIN_BASENAME),false, "1.3.20.2", 'screen');        
+        
+        $sInlineHTML .= "<div id='rdp_wpe_toc_inline_content_wrapper' style='display:none'><div id='rdp_wpe_toc_inline_content'>";
+        $sInlineHTML .= '<h2>Table of Contents:</h2>';
+        $sInlineHTML .= $contentPieces['toc'];
+        $sInlineHTML .= "</div><!-- #rdp_wpe_inline_content --></div>";
+        echo $sInlineHTML;
+    }//renderTOCMenu
 
 
     private function shortcode_handler($atts){
@@ -1800,6 +1824,6 @@ EOD;
         }
     }
     /* END OF CACHING */
-}
+}//Wiki_Embed
 
 $wikiembed_object = new Wiki_Embed();
