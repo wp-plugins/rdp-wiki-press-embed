@@ -28,7 +28,8 @@ function rdp_we_overwrite_handle_links(){
             if(urls == null){
                 $j(this).removeAttr('href');
             }else{
-                $j(this).attr('href',baseURL+jQuery.query.set("wikiembed-override-url", sHREF) );                
+                $j(this).attr('href',baseURL+jQuery.query.set("wikiembed-override-url", sHREF) ).removeAttr('target');  
+                $j(this).data("href",sHREF).addClass('wiki-link');
             }
 
         }

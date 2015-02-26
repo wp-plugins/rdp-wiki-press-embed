@@ -3,7 +3,7 @@
  * Plugin Name: RDP Wiki-Press Embed
  * Plugin URI: http://www.robert-d-payne.com/
  * Description: Enables the inclusion of MediaWiki pages and PediaPress book pages into your own blog page or post through the use of shortcodes. Forked from: <a href="http://wordpress.org/plugins/rdp-wiki-press-embed/" target="_blank">Wiki Embed plugin</a>.
- * Version: 2.2.0
+ * Version: 2.3.0
  * Author: Robert D Payne
  * Author URI: http://www.robert-d-payne.com/
  *
@@ -100,7 +100,7 @@ class Wiki_Embed {
             if(empty($this->wikiembeds))$this->wikiembeds = array();
             
             $this->content_count = 0; 
-            $this->version       = '2.2.0';
+            $this->version       = '2.3.0';
             
 
             add_action( 'init', array( $this, 'init' ) );
@@ -561,12 +561,37 @@ EOD;
             }
             if(empty ($sHTML)){
                 $sHTML = $this->shortcode_handler($atts);
+                if(!has_action('wp_footer', array(&$this,'renderTOCMenu'))){
+                    add_action('wp_footer', array(&$this,'renderTOCMenu'));
+                }                
                 $sHTML = apply_filters( 'rdp_wpe_after_wiki_content_grab', $sHTML );
             }
 
             $sHTML = apply_filters( 'rdp_wpe_shortcode', $sHTML );
             return $sHTML;
     }//shortcode
+    
+    public function renderTOCMenu(){
+        $sKey  = get_post_meta(get_the_ID(), RDP_WE_PPE::$postMetaKey, true);
+        $sInlineHTML = '';
+        $contentPieces = array();
+        if(!empty($sKey))$contentPieces = get_transient( $sKey ); 
+        if(empty($contentPieces))return;
+        if(!wp_script_is('colorbox'))wp_enqueue_script( 'colorbox', plugins_url( '/resources/js/jquery.colorbox.min.js',RDP_WE_PLUGIN_BASENAME),array("jquery"), "1.3.20.2", true );   
+        wp_enqueue_script(
+                'rdp_wpe_toc_popup', 
+                plugins_url( '/resources/js/script.toc-popup.js',RDP_WE_PLUGIN_BASENAME),
+                array("jquery"), 
+                $this->version, 
+                true ); 
+        wp_enqueue_style( 'ppe-colorbox-style', plugins_url( '/resources/css/colorbox.css',RDP_WE_PLUGIN_BASENAME),false, "1.3.20.2", 'screen');        
+        
+        $sInlineHTML .= "<div id='rdp_wpe_toc_inline_content_wrapper' style='display:none'><div id='rdp_wpe_toc_inline_content'>";
+        $sInlineHTML .= '<h2>Table of Contents:</h2>';
+        $sInlineHTML .= $contentPieces['toc'];
+        $sInlineHTML .= "</div><!-- #rdp_wpe_inline_content --></div>";
+        echo $sInlineHTML;
+    }//renderTOCMenu
 
 
     private function shortcode_handler($atts){

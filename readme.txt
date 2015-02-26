@@ -3,7 +3,7 @@ Contributors: rpayne7264, enej, ejackisch, devindra, ctlt-dev, ubcdev
 Tags: mediawiki, wiki, wiki-embed, embed, content framework, wiki inc, pediapress, pediapress embed
 Requires at least: 3.5
 Tested up to: 4.1
-Stable tag: 2.2.0
+Stable tag: 2.3.0
 
 RDP Wiki-Press Embed lets you embed MediaWiki pages in to your site, from sites like Wikipedia, and PediaPress book pages.
 
@@ -165,6 +165,9 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file 
 
 
 == Changelog ==
+
+= 2.3.0 =
+* FEATURE: added code that adds a Table of Contents (TOC) button to pages derived from clicking a TOC link on a single PediaPress book page.
 
 = 2.2.0 =
 * REFACTOR: modified code to store book cover images in the uploads directory, inside a folder named rdp-wiki-press-embed
