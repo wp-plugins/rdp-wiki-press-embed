@@ -3,7 +3,7 @@ Contributors: rpayne7264, enej, ejackisch, devindra, ctlt-dev, ubcdev
 Tags: mediawiki, wiki, wiki-embed, embed, content framework, wiki inc, pediapress, pediapress embed
 Requires at least: 3.5
 Tested up to: 4.1
-Stable tag: 2.3.0
+Stable tag: 2.4.0
 
 RDP Wiki-Press Embed lets you embed MediaWiki pages in to your site, from sites like Wikipedia, and PediaPress book pages.
 
@@ -87,6 +87,7 @@ Embedding a PediaPress gallery of books is implemented using the shortcode [wiki
 
 * col: (required) number of columns to display per page
 * num: (required) number of books to display per page
+* size: accepted values - small, medium, large - dictate image and font size of gallery elements
 * cat: comma separated list of category id numbers books must belong to
 * tag: comma separated list of tag id numbers books must belong to
 * sort_col: column name by which to sort books
@@ -165,6 +166,14 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file 
 
 
 == Changelog ==
+
+= 2.4.0 =
+* FEATURE: added size attribute to gallery shortcode
+* FEATURE: added ability to pick a size attribute for gallery shortcode to the shortcode helper form
+* REFACTOR: modified common css file to reflect selected gallery size
+* REFACTOR: modified HTML of default gallery results template, including hyperlinking the title to the original post
+* REFACTOR: made book titles bold, as default styling
+
 
 = 2.3.0 =
 * FEATURE: added code that adds a Table of Contents (TOC) button to pages derived from clicking a TOC link on a single PediaPress book page.

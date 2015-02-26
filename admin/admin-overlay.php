@@ -297,7 +297,19 @@ function wikiembed_overlay_popup_form() {
                                                 <span class="alignright"><abbr class="required" title="required" id="status_img">*</abbr></span>
                                         </th>
                                         <td class="field"><input type="text" aria-required="true" value="10" name="pp-gallery-num" id="pp-gallery-num" style="width: 30px;"></td>
-                                    </tr> 
+                                    </tr>
+                                    <tr>
+                                        <th valign="top" class="label" scope="row" style="width: 200px;">
+                                                <span class="alignleft"><label for="pp-gallery-size"><?php _e('Gallery Style', 'wiki-embed'); ?></label></span>
+                                        </th>
+                                        <td class="field">
+                                            <select id="pp-gallery-size">
+                                                <option selected="selected" value="small">Small</option>
+                                                <option value="medium">Medium</option>
+                                                <option value="large">Large</option>
+                                            </select>
+                                        </td>
+                                    </tr>                                    
                                     <tr>
                                         <th valign="top" class="label" scope="row" style="width: 200px;">
                                                 <span class="alignleft"><label for="pp-gallery-categories"><?php _e('Target Categories', 'wiki-embed'); ?></label></span>

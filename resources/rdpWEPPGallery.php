@@ -5,7 +5,7 @@ class RDP_WE_PPGALLERY {
     
     public static function shortcode($atts,$content = null){
         $nGUID = uniqid();
-        $sHTML = '<div class="rdp_pp_book_gallery rdp_pp_book_gallery-'. $nGUID .'">';
+        $sHTML = '';
         global $wikiembed_object;     
         $wikiembed_options = $wikiembed_object->options;          
         $atts = shortcode_atts(array(
@@ -13,6 +13,7 @@ class RDP_WE_PPGALLERY {
             'num' => '10',
             'cat' => '',
             'tag' => '',
+            'size' => 'small',
             'excerpt_length' => 55,
             'sort_col' => 'post_title',
             'sort_dir' => 'ASC',
@@ -59,7 +60,7 @@ class RDP_WE_PPGALLERY {
         $start = ($paged - 1)*(int)$atts['num'];
         $sFetchSQL = self::buildFetchSQL($termIDs, $start, $atts['num'],$atts['sort_col'],$atts['sort_dir']);
         $rows = $wpdb->get_results($sFetchSQL);
-
+        $sHTML .= '<div class="rdp_pp_book_gallery '. strtolower($atts['size']) .' rdp_pp_book_gallery-'. $nGUID .'">';
         $sHTML .= self::renderGallery($rows, (int)$atts['col'], $atts,$nGUID);
         $sHTML .= '<div id="rdp_pp_gallery_footer">';
         $sHTML .= self::renderPaging($paged, $totalPages);
@@ -68,7 +69,7 @@ class RDP_WE_PPGALLERY {
         $sHTML .= '<img class="rdp-pp-gallery-rss" src="' . plugins_url( '/css/images/rss-icon.png',__FILE__)  . '" />';
         $sHTML .= '</a>';
         $sHTML .= '</div><!-- #rdp_pp_gallery_footer -->';
-        $sHTML .= '</div><!-- #mainContent -->';
+        $sHTML .= '</div><!-- .rdp_pp_book_gallery -->';
         $sInlineHTML = '';
         if(!empty($atts['cta_button_content'])){
             $sInlineHTML .= "<div id='rdp_pp_gallery_inline_content_wrapper' style='display:none'><div id='rdp_pp_gallery_inline_content'>";
