@@ -122,8 +122,8 @@ class RDP_WE_PPGALLERY {
             wp_enqueue_style( 'rdp-ppe-style-custom' );
         } 
 
-        wp_enqueue_script( 'colorbox', plugins_url( '/resources/js/jquery.colorbox.min.js',RDP_WE_PLUGIN_BASENAME),array("jquery"), "1.3.20.2", true );        
-        wp_enqueue_script( 'pp-gallery-overlay', plugins_url( '/resources/js/pediapress-gallery-overlay.js',RDP_WE_PLUGIN_BASENAME),array("jquery",'colorbox'), "1.0", true );        
+        wp_enqueue_script( 'jquery-colorbox', plugins_url( '/resources/js/jquery.colorbox.min.js',RDP_WE_PLUGIN_BASENAME),array("jquery"), "1.3.20.2", true );        
+        wp_enqueue_script( 'pp-gallery-overlay', plugins_url( '/resources/js/pediapress-gallery-overlay.js',RDP_WE_PLUGIN_BASENAME),array("jquery",'jquery-colorbox'), "1.0", true );        
         if(!empty($content)){
             $params = array('fcontent' => 1);
             wp_localize_script( 'pp-gallery-overlay', 'rdp_pp_gallery', $params );
@@ -131,7 +131,7 @@ class RDP_WE_PPGALLERY {
             wp_enqueue_style( 'wiki-embed-admin-core-style', plugins_url( '/admin/css/jquery-ui.css',RDP_WE_PLUGIN_BASENAME ), null,'1.11.2' );            
             wp_enqueue_style( 'wiki-embed-admin-theme-style', plugins_url( '/admin/css/jquery-ui.theme.min.css',RDP_WE_PLUGIN_BASENAME ), array('wiki-embed-admin-core-style'),'1.11.2' );             
         }  
-        wp_enqueue_style( 'pp-gallery-colorbox-style', plugins_url( '/resources/css/colorbox.css',RDP_WE_PLUGIN_BASENAME),false, "1.3.20.2", 'screen');        
+        wp_enqueue_style( 'jquery-colorbox', plugins_url( '/resources/css/colorbox.css',RDP_WE_PLUGIN_BASENAME),false, "1.3.20.2", 'screen');        
         
         do_action('rdp_pp_gallery_scripts_enqueued',$atts, $content);        
     }//handleScripts

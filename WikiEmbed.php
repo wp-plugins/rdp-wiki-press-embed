@@ -156,14 +156,14 @@ class Wiki_Embed {
             switch ( $this->options['wiki-links'] ) {
                     case "overlay":
                         // embed this if tabs enabled
-                        wp_register_script( 'colorbox', plugins_url( '/rdp-wiki-press-embed/resources/js/jquery.colorbox.min.js'),array("jquery"), "1.3.20.2", true );
-                        wp_register_script( 'wiki-embed-overlay', plugins_url( '/rdp-wiki-press-embed/resources/js/overlay.js'),array( "colorbox", "jquery" ), $this->version, true );
+                        wp_register_script( 'jquery-colorbox', plugins_url( '/rdp-wiki-press-embed/resources/js/jquery.colorbox.min.js'),array("jquery"), "1.3.20.2", true );
+                        wp_register_script( 'wiki-embed-overlay', plugins_url( '/rdp-wiki-press-embed/resources/js/overlay.js'),array( "jquery-colorbox", "jquery" ), $this->version, true );
                         
                         $params['ajaxurl'] = admin_url('admin-ajax.php');
                         
                         wp_localize_script( 'wiki-embed-overlay', 'WikiEmbedSettings', $params );
-                        wp_enqueue_style( 'wiki-embed-overlay', plugins_url( '/rdp-wiki-press-embed/resources/css/colorbox.css'),false, $this->version, 'screen');
-                        $this->pre_load_scripts[] = 'colorbox';
+                        wp_enqueue_style( 'jquery-colorbox', plugins_url( '/rdp-wiki-press-embed/resources/css/colorbox.css'),false, $this->version, 'screen');
+                        $this->pre_load_scripts[] = 'jquery-colorbox';
                         $this->pre_load_scripts[] = 'wiki-embed-overlay';
                         break;
                     case "new-page":
@@ -577,14 +577,14 @@ EOD;
         $contentPieces = array();
         if(!empty($sKey))$contentPieces = get_transient( $sKey ); 
         if(empty($contentPieces))return;
-        if(!wp_script_is('colorbox'))wp_enqueue_script( 'colorbox', plugins_url( '/resources/js/jquery.colorbox.min.js',RDP_WE_PLUGIN_BASENAME),array("jquery"), "1.3.20.2", true );   
+        if(!wp_script_is('jquery-colorbox'))wp_enqueue_script( 'jquery-colorbox', plugins_url( '/resources/js/jquery.colorbox.min.js',RDP_WE_PLUGIN_BASENAME),array("jquery"), "1.3.20.2", true );   
         wp_enqueue_script(
                 'rdp_wpe_toc_popup', 
                 plugins_url( '/resources/js/script.toc-popup.js',RDP_WE_PLUGIN_BASENAME),
                 array("jquery"), 
                 $this->version, 
                 true ); 
-        wp_enqueue_style( 'ppe-colorbox-style', plugins_url( '/resources/css/colorbox.css',RDP_WE_PLUGIN_BASENAME),false, "1.3.20.2", 'screen');        
+        wp_enqueue_style( 'jquery-colorbox', plugins_url( '/resources/css/colorbox.css',RDP_WE_PLUGIN_BASENAME),false, "1.3.20.2", 'screen');        
         
         $sInlineHTML .= "<div id='rdp_wpe_toc_inline_content_wrapper' style='display:none'><div id='rdp_wpe_toc_inline_content'>";
         $sInlineHTML .= '<h2>Table of Contents:</h2>';
