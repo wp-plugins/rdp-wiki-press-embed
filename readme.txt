@@ -167,6 +167,9 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file 
 
 == Changelog ==
 
+= 2.4.1 =
+* REFACTOR: modified code to try to convert relative image URLs to absolute URLs
+
 = 2.4.0 =
 * FEATURE: added size attribute to gallery shortcode
 * FEATURE: added ability to pick a size attribute for gallery shortcode to the shortcode helper form
