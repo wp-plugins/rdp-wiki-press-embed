@@ -12,7 +12,10 @@ function rdp_wcr_handle_links(){
     var baseTarget = (typeof WikiEmbedSettings != 'undefined')? url('protocol', WikiEmbedSettings.target_url) + "//" + url('hostname', WikiEmbedSettings.target_url): '';
     $j("a").each(function(i){
         if($j(this).hasClass('ppe-add-to-cart'))return true;
-        if($j(this).hasClass('ppe-cover-link'))return true;        
+        if($j(this).hasClass('ppe-cover-link'))return true;  
+        if($j(this).hasClass('image'))return true;  
+        if($j(this).hasClass('rdp-wbb-go-to-wiki-page'))return true;         
+        
         var sHREF = $j(this).attr('href');
 
         if(typeof sHREF == 'undefined')return true;        

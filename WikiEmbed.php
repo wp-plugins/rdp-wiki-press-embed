@@ -584,7 +584,7 @@ EOD;
                 array("jquery"), 
                 $this->version, 
                 true ); 
-        wp_enqueue_style( 'jquery-colorbox', plugins_url( '/resources/css/colorbox.css',RDP_WE_PLUGIN_BASENAME),false, "1.3.20.2", 'screen');        
+        if(!wp_style_is('jquery-colorbox'))wp_enqueue_style( 'jquery-colorbox', plugins_url( '/resources/css/colorbox.css',RDP_WE_PLUGIN_BASENAME),false, "1.3.20.2", 'screen');        
         
         $sInlineHTML .= "<div id='rdp_wpe_toc_inline_content_wrapper' style='display:none'><div id='rdp_wpe_toc_inline_content'>";
         $sInlineHTML .= '<h2>Table of Contents:</h2>';
@@ -1058,7 +1058,9 @@ EOD;
                         require_once( "resources/simple_html_dom.php" );
                         $html = new rdp_simple_html_dom();
                         $html->load('<html><body>'.$wiki_page_body.'</body></html>');
-                        $body = $html->find('div#globalWrapper',0);
+                        $body = $html->find('div#mf-mainpage',0);
+                        $oURLPieces = parse_url($url);
+                        $sSourceDomain = $oURLPieces['scheme'].'://'.$oURLPieces['host'];
                         
                         if($body){
                             foreach($body->find('script') as $script){
@@ -1066,7 +1068,16 @@ EOD;
                             }
                             foreach($body->find('style') as $script){
                                 $script->outertext = '';
-                            }                         
+                            } 
+                            foreach($body->find('img') as $img){
+                                 $oImgPieces = parse_url($img->src);
+                                 if(!isset($oImgPieces['host'])):
+                                     $sPath = $oImgPieces['path'];
+                                     if(substr($sPath, 0, 2) == '..')$sPath = substr($sPath, 3);
+                                     if(substr($sPath, 0, 1) != '/')$sPath = '/'.$sPath;
+                                     $img->src = $sSourceDomain . $sPath;
+                                 endif;
+                            }                             
                             $wiki_page_body = $body->outertext;                            
                         }
                         $html->clear();
@@ -1197,6 +1208,7 @@ EOD;
             //or the http status code is an error then it should not be saved.
             $error_strings = array( "Can't contact the database server" );
             $errors = false;
+            $RV = false;
             foreach ( $error_strings as $error ) {
                     if ( strpos( $wiki_page['body'], $error ) !== false ) {
                             $errors = true;
@@ -1205,10 +1217,12 @@ EOD;
             }
 
             if ( ! $errors && $wiki_page['response']['code'] == 200 ): 
-                    return $wiki_page['body'];
+                    $RV = $wiki_page['body'];
             else:
-                    return false;
-            endif;	
+                    $RV = false;
+            endif;
+            
+            return $RV;
     }
 
     /**
