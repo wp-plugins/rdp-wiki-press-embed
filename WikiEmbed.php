@@ -456,12 +456,11 @@ EOD;
     }
     
     function save_meta( $post_id, $post, $update ) {
-        if ( has_shortcode( $post->post_content, 'wiki-embed' ) ) { 
-            $sKey  = get_post_meta($post_id, RDP_WE_PPE::$postMetaKey, true);
-            delete_transient($sKey);
-            delete_post_meta($post_id, RDP_WE_PPE::$postMetaKey);
-            $var = do_shortcode( $post->post_content );
-        }
+        if ( !has_shortcode( $post->post_content, 'wiki-embed' ) ) return; 
+        $sKey  = get_post_meta($post_id, RDP_WE_PPE::$postMetaKey, true);
+        delete_transient($sKey);
+        delete_post_meta($post_id, RDP_WE_PPE::$postMetaKey);
+        $var = do_shortcode( $post->post_content );
     }//save_meta
 
     function content( $content ) {
