@@ -739,7 +739,7 @@ EOD;
             $wiki_page_id = $this->get_page_id( $wiki_page_url, $accordion, $tabs, $this->options['default']['no-contents'], $this->options['default']['no-edit'], $this->options['default']['no-infobox'] );
 
             // make sure to load scripts
-            $this->load_scripts( $has_tabs, $has_accordion );
+            $this->load_scripts( $tabs, $accordion );
 
             /* Generate the shortcode ? */
             $wiki_embed_shortcode = $this->get_page_shortcode( $wiki_page_url, $accordion, $tabs, $this->options['default']['no-contents'], $this->options['default']['no-edit'], $this->options['default']['no-infobox'] );
@@ -782,6 +782,7 @@ EOD;
             $post = (object) null;
             $post->ID = 0; // wiki-embed is set to 0
             $post->post_title = $title;
+            $post->post_name = sanitize_title($title);
             $post->guid = get_site_url()."?wikiembed-url=".urlencode($url)."&wikiembed-title=".urlencode( $title );
             $post->post_content = $content;
             $post->post_status = "published";
