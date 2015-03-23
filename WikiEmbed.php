@@ -1059,6 +1059,7 @@ EOD;
                         $html = new rdp_simple_html_dom();
                         $html->load('<html><body>'.$wiki_page_body.'</body></html>');
                         $body = $html->find('div#mf-mainpage',0);
+                        if(!$body)$body = $html->find('div.col-md-12',0);
                         $oURLPieces = parse_url($url);
                         $sSourceDomain = $oURLPieces['scheme'].'://'.$oURLPieces['host'];
                         
