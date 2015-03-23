@@ -10,6 +10,8 @@ function rdp_wcr_main_onReady(){
 function rdp_wcr_handle_links(){
     var baseURL = window.location.protocol + "//" + window.location.host + window.location.pathname;
     var baseTarget = (typeof WikiEmbedSettings != 'undefined')? url('protocol', WikiEmbedSettings.target_url) + "//" + url('hostname', WikiEmbedSettings.target_url): '';
+    var oDomains = rdp_wcr.domains.split(',');
+    
     $j("a").each(function(i){
         if($j(this).hasClass('ppe-add-to-cart'))return true;
         if($j(this).hasClass('ppe-cover-link'))return true;  
@@ -20,7 +22,12 @@ function rdp_wcr_handle_links(){
 
         if(typeof sHREF == 'undefined')return true;        
         if(sHREF.substring(0, 1) == '#')return true;
-        var n = rdp_wcr.domains.indexOf(url('domain', sHREF));
+        if(url('?wikiembed-override-url',sHREF))return true;
+        var n = -1;
+        for (i = 0; i < oDomains.length; i++) { 
+            n = sHREF.indexOf(oDomains[i]);
+            if(n >= 0)break;
+        }
         var p = 'pediapress.com'.indexOf(url('domain', sHREF));
         if(n <= 0 && p <= 0)return true;
         if(sHREF.substring(0, 2) == '//') sHREF = 'http:' + sHREF;

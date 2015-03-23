@@ -19,6 +19,7 @@ function rdp_we_overwrite_handle_links(){
     $j(".wiki-embed-overwrite a:not(.external,.new,sup.reference a,.ui-tabs-nav a,[href*='linkedin.com/groups/'],[class*='image'])").each(function(i){
         var sHREF = $j(this).attr('href');
         if(typeof sHREF == 'undefined')return true;
+        if(url('?wikiembed-override-url',sHREF))return true;
         if(sHREF.substring(0, 1) !== '#'){
             
             if(sHREF.substring(0, 2) == '//') sHREF = 'http:' + sHREF;
