@@ -1058,8 +1058,7 @@ EOD;
                         require_once( "resources/simple_html_dom.php" );
                         $html = new rdp_simple_html_dom();
                         $html->load('<html><body>'.$wiki_page_body.'</body></html>');
-                        $body = $html->find('div#mf-mainpage',0);
-                        if(!$body)$body = $html->find('div.col-md-12',0);
+                        $body = $html->find('body',0);
                         $oURLPieces = parse_url($url);
                         $sSourceDomain = $oURLPieces['scheme'].'://'.$oURLPieces['host'];
                         
@@ -1079,7 +1078,7 @@ EOD;
                                      $img->src = $sSourceDomain . $sPath;
                                  endif;
                             }                             
-                            $wiki_page_body = $body->outertext;                            
+                            $wiki_page_body = $html->find('body',0)->innertext;                            
                         }
                         $html->clear();
                         $wiki_page_body = $this->render( $wiki_page_id, $wiki_page_body, $has_no_edit, $has_no_contents , $has_no_infobox, $has_accordion, $has_tabs, $remove );
