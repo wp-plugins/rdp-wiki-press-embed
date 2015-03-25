@@ -18,7 +18,7 @@ class RDP_WE_PPE {
     
     private static function handleScripts($atts,$content = null){
         wp_enqueue_script( 'jquery-colorbox', plugins_url( '/resources/js/jquery.colorbox.min.js',RDP_WE_PLUGIN_BASENAME),array("jquery"), "1.3.20.2", true );        
-        wp_enqueue_script( 'ppe-overlay', plugins_url( '/resources/js/pediapress-overlay.js',RDP_WE_PLUGIN_BASENAME),array("jquery",'jquery-colorbox'), "1.0", true );        
+        wp_enqueue_script( 'ppe-overlay', plugins_url( '/resources/js/pediapress-overlay.js',RDP_WE_PLUGIN_BASENAME),array("jquery"), "1.0", true );        
         $params = array(
             'has_content' => 0,
             'links_active' => 1

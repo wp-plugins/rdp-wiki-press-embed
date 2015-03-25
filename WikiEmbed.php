@@ -1054,6 +1054,7 @@ EOD;
                     $wiki_page_body  = $this->remote_request_wikipage( $url, $update );
 
                     if ( $wiki_page_body ) { // Successfully grabbed remote contnet
+                  
                             //render page content
                         require_once( "resources/simple_html_dom.php" );
                         $html = new rdp_simple_html_dom();
@@ -1081,6 +1082,7 @@ EOD;
                             $wiki_page_body = $html->find('body',0)->innertext;                            
                         }
                         $html->clear();
+                       
                         $wiki_page_body = $this->render( $wiki_page_id, $wiki_page_body, $has_no_edit, $has_no_contents , $has_no_infobox, $has_accordion, $has_tabs, $remove );
                         $worked = $this->update_cache( $wiki_page_id, $wiki_page_body, $update );
                     } else { //Failed, (and there's no cache available) so show an error
@@ -1275,15 +1277,16 @@ EOD;
      * @return void
      */
     function make_safe( $body ) {
+        
             global $allowedposttags;
             $new_tags = $allowedposttags;
 
-            foreach ( $allowedposttags as $tag => $array ) {
-               $new_tags[$tag]['id'] = array();
-               $new_tags[$tag]['class'] = array();
-               $new_tags[$tag]['style'] = array();
-            }
-
+//            foreach ( $allowedposttags as $tag => $array ) {
+//               $new_tags[$tag]['id'] = array();
+//               $new_tags[$tag]['class'] = array();
+//               $new_tags[$tag]['style'] = array();
+//            }
+ 
             // param
             $new_tags['param']['name'] = array();
             $new_tags['param']['value'] = array();
@@ -1312,9 +1315,17 @@ EOD;
             $new_tags['iframe']['height'] = array();
             $new_tags['iframe']['src'] = array();
             $new_tags['iframe']['frameborder'] = array();
-
+   
             // lets sanitize this 
-        $body = wp_kses( $body, $new_tags );
+	$body = wp_kses_no_null($body);
+	$body = wp_kses_js_entities($body);
+	$body = wp_kses_normalize_entities($body); 
+        $allowed_protocols = wp_allowed_protocols();
+        $body = wp_kses_hook($body, $new_tags, $allowed_protocols);
+//echo $body;
+//exit;
+//        $body = wp_kses( $body, $new_tags );
+     
             return $body;
     }
 
