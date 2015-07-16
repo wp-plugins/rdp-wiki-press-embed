@@ -3,7 +3,7 @@ Contributors: rpayne7264, enej, ejackisch, devindra, ctlt-dev, ubcdev
 Tags: mediawiki, wiki, wiki-embed, embed, content framework, wiki inc, pediapress, pediapress embed
 Requires at least: 3.5
 Tested up to: 4.1
-Stable tag: 2.4.0
+Stable tag: 2.4.1
 
 RDP Wiki-Press Embed lets you embed MediaWiki pages in to your site, from sites like Wikipedia, and PediaPress book pages.
 
@@ -169,6 +169,7 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file 
 
 = 2.4.1 =
 * REFACTOR: modified code to try to convert relative image URLs to absolute URLs
+* REFACTOR: modified code to make the shortcode media button show up for all post types
 
 = 2.4.0 =
 * FEATURE: added size attribute to gallery shortcode

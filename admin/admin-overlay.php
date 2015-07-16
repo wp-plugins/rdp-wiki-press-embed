@@ -1,6 +1,6 @@
 <?php
 add_action( 'admin_footer', 'wikiembed_overlay_popup_form' );
-add_action( 'media_buttons_context', 'wikiembed_overlay_buttons' );
+add_action( 'media_buttons', 'wikiembed_overlay_buttons' );
 
 /**
  * wikiembed_overlay_buttons function.
@@ -9,18 +9,12 @@ add_action( 'media_buttons_context', 'wikiembed_overlay_buttons' );
  * @param mixed $context
  * @return void
  */
-function wikiembed_overlay_buttons( $context ) {
-	global $post, $pagenow;
-	
-	if ( in_array( $pagenow, array( "post.php", "post-new.php" ) ) && in_array( $post->post_type , array( "post", "page" ) ) ) {
+function wikiembed_overlay_buttons( $page = null, $target = null ) {
             $wiki_embed_overlay_image_button = plugins_url('/rdp-wiki-press-embed/resources/img/icon.png');
 	    $output_link = '<a href="#TB_inline?height=500&width=690&inlineId=wiki_embed_form" class="thickbox button" title="' .__("RDP Wiki-Press Embed", 'wiki-embed') . '" id="wiki-embed-overlay-button">';
             $output_link .= '<span class="wp-media-buttons-icon" style="background: url('. $wiki_embed_overlay_image_button.'); background-repeat: no-repeat; background-position: left bottom;"/></span>';
             $output_link .= '</a><style>#wiki_embed_form{ display:none;}</style>';
-	    return $context.$output_link;
-	} else {
-    	return $context;
-	}
+	    echo $output_link;
 }
 
 /**
@@ -33,7 +27,6 @@ function wikiembed_overlay_popup_form() {
 	global $wikiembed_object, $pagenow, $post;
 	$wikiembed_options = $wikiembed_object->options;
 	
-	if ( in_array( $pagenow, array( "post.php", "post-new.php" ) ) && in_array( $post->post_type , array( "post", "page" ) ) ) {
             wp_enqueue_script('wiki-embed-admin-overlay', plugins_url( '/admin/js/script.admin-overlay.js',RDP_WE_PLUGIN_BASENAME), array("jquery","jquery-ui-tabs"), '1.0', true);
             $params = array(
                             'pp_button_text' => (PPE_CTA_BUTTON_TEXT != $wikiembed_options['ppe-cta-button-text'])? $wikiembed_options['ppe-cta-button-text'] : PPE_CTA_BUTTON_TEXT,
@@ -466,5 +459,5 @@ function wikiembed_overlay_popup_form() {
                     </div><!-- wiki-embed-tabs -->
 		</div><!-- end #wiki_embed_form -->
 		<?php
-	}
+
 }
