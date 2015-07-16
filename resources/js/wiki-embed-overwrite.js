@@ -10,7 +10,7 @@ function rdp_we_overwrite_onReady(){
 }
 
 function rdp_we_overwrite_handle_links(){
-    $j(".wiki-embed-overwrite a.external").each(function(i){
+    $j(".wiki-embed-overwrite a.external,.wiki-embed-overwrite a[class*='image']").each(function(i){
         $j(this).attr('target', '_blank'); 
     });
     var baseURL = window.location.protocol + "//" + window.location.host + window.location.pathname;
