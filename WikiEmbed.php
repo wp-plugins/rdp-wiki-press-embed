@@ -3,7 +3,7 @@
  * Plugin Name: RDP Wiki-Press Embed
  * Plugin URI: http://www.robert-d-payne.com/
  * Description: Enables the inclusion of MediaWiki pages and PediaPress book pages into your own blog page or post through the use of shortcodes. Forked from: <a href="http://wordpress.org/plugins/rdp-wiki-press-embed/" target="_blank">Wiki Embed plugin</a>.
- * Version: 2.4.1
+ * Version: 2.4.2
  * Author: Robert D Payne
  * Author URI: http://www.robert-d-payne.com/
  *
@@ -100,7 +100,7 @@ class Wiki_Embed {
             if(empty($this->wikiembeds))$this->wikiembeds = array();
             
             $this->content_count = 0; 
-            $this->version       = '2.4.1';
+            $this->version       = '2.4.2';
             
 
             add_action( 'init', array( $this, 'init' ) );
@@ -241,15 +241,16 @@ class Wiki_Embed {
         $this->customRSS();
         
         if (is_admin() ) return;
+        if(!wp_script_is( 'jquery-url', 'registered' )){
+            wp_register_script( 'jquery-url', plugins_url( 'resources/js/url.min.js' , __FILE__ ), array( 'jquery','jquery-query' ), '1.0', TRUE );
+            wp_enqueue_script( 'jquery-url');
+        }        
         // global wiki content replace
         $fGlobalCR = (isset($this->options['default']['global-content-replace']))? $this->options['default']['global-content-replace'] : 0;
         if(!is_numeric($fGlobalCR))$fGlobalCR = 0;
         $text_string = empty($this->options['security']['whitelist'])? '' : $this->options['security']['whitelist'];
         if($fGlobalCR && !empty($text_string)){
-            if(!wp_script_is( 'jquery-url', 'registered' )){
-                wp_register_script( 'jquery-url', plugins_url( 'resources/js/url.min.js' , __FILE__ ), array( 'jquery','jquery-query' ), '1.0', TRUE );
-                wp_enqueue_script( 'jquery-url');
-            }
+
             wp_enqueue_script( 'rdp-wcr', plugins_url( 'resources/js/script.wcr.js' , __FILE__ ), array( 'jquery','jquery-query','jquery-url' ), '1.0', TRUE);
             $str = preg_replace('#\s+#',',',trim($text_string));
             $params = array(
@@ -1078,7 +1079,10 @@ EOD;
                                      if(substr($sPath, 0, 1) != '/')$sPath = '/'.$sPath;
                                      $img->src = $sSourceDomain . $sPath;
                                  endif;
-                            }                             
+                            }
+//                            foreach($body->find('a.image') as $img){
+//                                $img->target = '_new';
+//                            }
                             $wiki_page_body = $html->find('body',0)->innertext;                            
                         }
                         $html->clear();
@@ -1551,13 +1555,21 @@ EOD;
     function overlay_ajax() {
         $sURL = (isset($_GET['url'] ))? $_GET['url'] : '';
         $url = $this->action_url( $sURL );
+        $urlIsFile = strpos($sURL, '/File:');
         //$source_url = esc_url( urldecode( $sURL ) );
         
         $sRemove = (isset($_GET['remove'] ))? $_GET['remove'] : '';
         $remove = esc_attr( urldecode( $sRemove ) );
         
         $sTitle = (isset($_GET['title'] ))? $_GET['title'] : '';
-        $title = esc_html( urldecode( $sTitle ) );
+        $title = '';
+        if(FALSE !== $urlIsFile){
+            $sTitle = stripslashes ($sTitle);
+            $sTitle = self::entitiesPlain($sTitle);
+        }else{
+            $title = esc_html( urldecode( $sTitle ) );            
+        }
+
 
         $plain_html = (isset($_GET['plain_html'] ))? $_GET['plain_html'] : '';
         //$source_url = $this->remove_action_render( $source_url );
@@ -1615,8 +1627,15 @@ EOD;
                         <body>
                                 <div id="wiki-embed-iframe">
                                         <div class="wiki-embed-content">
-                                                <h1 class="wiki-embed-title" ><?php echo $title; ?></h1>
-                                                <?php echo $content; ?>
+                                                <h1 class="wiki-embed-title" ><?php  echo $title;  ?>
+                                                </h1>
+                                                <?php
+                                                    if(FALSE !== $urlIsFile){
+                                                        echo $sTitle;
+                                                    }else{
+                                                        echo $content;            
+                                                    }
+                                                ?>
                                         </div>
                                 </div>
                         </body>

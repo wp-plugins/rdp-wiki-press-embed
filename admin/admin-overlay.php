@@ -10,11 +10,13 @@ add_action( 'media_buttons', 'wikiembed_overlay_buttons' );
  * @return void
  */
 function wikiembed_overlay_buttons( $page = null, $target = null ) {
-            $wiki_embed_overlay_image_button = plugins_url('/rdp-wiki-press-embed/resources/img/icon.png');
-	    $output_link = '<a href="#TB_inline?height=500&width=690&inlineId=wiki_embed_form" class="thickbox button" title="' .__("RDP Wiki-Press Embed", 'wiki-embed') . '" id="wiki-embed-overlay-button">';
-            $output_link .= '<span class="wp-media-buttons-icon" style="background: url('. $wiki_embed_overlay_image_button.'); background-repeat: no-repeat; background-position: left bottom;"/></span>';
-            $output_link .= '</a><style>#wiki_embed_form{ display:none;}</style>';
-	    echo $output_link;
+    global $pagenow;
+    if ( !in_array( $pagenow, array( "post.php", "post-new.php" ) ))return;
+    $wiki_embed_overlay_image_button = plugins_url('/rdp-wiki-press-embed/resources/img/icon.png');
+    $output_link = '<a href="#TB_inline?height=500&width=690&inlineId=wiki_embed_form" class="thickbox button" title="' .__("RDP Wiki-Press Embed", 'wiki-embed') . '" id="wiki-embed-overlay-button">';
+    $output_link .= '<span class="wp-media-buttons-icon" style="background: url('. $wiki_embed_overlay_image_button.'); background-repeat: no-repeat; background-position: left bottom;"/></span>';
+    $output_link .= '</a><style>#wiki_embed_form{ display:none;}</style>';
+    echo $output_link;
 }
 
 /**
@@ -24,7 +26,8 @@ function wikiembed_overlay_buttons( $page = null, $target = null ) {
  * @return void
  */
 function wikiembed_overlay_popup_form() {
-	global $wikiembed_object, $pagenow, $post;
+    global $wikiembed_object, $pagenow, $post;
+    if ( !in_array( $pagenow, array( "post.php", "post-new.php" ) ))return;        
 	$wikiembed_options = $wikiembed_object->options;
 	
             wp_enqueue_script('wiki-embed-admin-overlay', plugins_url( '/admin/js/script.admin-overlay.js',RDP_WE_PLUGIN_BASENAME), array("jquery","jquery-ui-tabs"), '1.0', true);

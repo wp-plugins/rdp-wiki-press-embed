@@ -13,16 +13,15 @@ function rdp_wcr_handle_links(){
     var oDomains = rdp_wcr.domains.split(',');
     
     $j("a").each(function(i){
+        var sHREF = $j(this).attr('href');        
+         if(typeof sHREF == 'undefined')return true;        
+        if(sHREF.substring(0, 1) == '#')return true;
+        if(url('?wikiembed-override-url',sHREF))return true;
         if($j(this).hasClass('ppe-add-to-cart'))return true;
         if($j(this).hasClass('ppe-cover-link'))return true;  
         if($j(this).hasClass('image'))return true;  
         if($j(this).hasClass('rdp-wbb-go-to-wiki-page'))return true;         
-        
-        var sHREF = $j(this).attr('href');
 
-        if(typeof sHREF == 'undefined')return true;        
-        if(sHREF.substring(0, 1) == '#')return true;
-        if(url('?wikiembed-override-url',sHREF))return true;
         var n = -1;
         for (i = 0; i < oDomains.length; i++) { 
             n = sHREF.indexOf(oDomains[i]);

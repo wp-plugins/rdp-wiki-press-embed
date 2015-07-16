@@ -3,7 +3,7 @@ Contributors: rpayne7264, enej, ejackisch, devindra, ctlt-dev, ubcdev
 Tags: mediawiki, wiki, wiki-embed, embed, content framework, wiki inc, pediapress, pediapress embed
 Requires at least: 3.5
 Tested up to: 4.1
-Stable tag: 2.4.1
+Stable tag: 2.4.2
 
 RDP Wiki-Press Embed lets you embed MediaWiki pages in to your site, from sites like Wikipedia, and PediaPress book pages.
 
@@ -32,6 +32,9 @@ Maybe, but why would you want to? That is not what the tool was designed to do.
 
 
 == Usage ==
+
+If you are not using "Overwrite" mode, make sure to un-tick the box for "Look for all links to wiki sites listed in the Security section..."
+
 
 = Wiki Content =
 RDP Wiki-Press Embed is implemented using the shortcode [wiki-embed]. It accepts the following arguments:
@@ -166,6 +169,10 @@ To make everything pretty, add a wiki.custom.css and pediapress.custom.css file 
 
 
 == Changelog ==
+
+= 2.4.2 =
+* REFACTOR: fixed shortcode popup form showing at the bottom of the settings page
+* REFACTOR: modified code to show full image inside light box when clicking on an image, with "Lightbox" selected on the settings page
 
 = 2.4.1 =
 * REFACTOR: modified code to try to convert relative image URLs to absolute URLs
